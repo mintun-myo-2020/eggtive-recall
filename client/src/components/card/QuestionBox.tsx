@@ -11,16 +11,16 @@ import { IQuestion } from "../../interfaces/interfaces";
 type QuestionBoxProps = {
   id?: string;
   question: IQuestion;
-  updateQuestion: (id: string|undefined, newQuestion: IQuestion) => void;
+  updateQuestion: (id: string | undefined, newQuestion: IQuestion) => void;
   handleMouseUpCard: MouseEventHandler<HTMLDivElement>;
 };
-const MIN_TEXTAREA_HEIGHT = 32;
+const MIN_TEXTAREA_HEIGHT = 60;
 
 const QuestionBox: React.FC<QuestionBoxProps> = ({
   id,
   question,
   updateQuestion,
-  handleMouseUpCard
+  handleMouseUpCard,
 }) => {
   const newQuestionTextboxRef = useRef<HTMLTextAreaElement>(null);
   const [isEditingQuestion, setIsEditingQuestion] = useState(false);
@@ -68,24 +68,29 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({
 
   return (
     <div
-      className="p-5 bg-gradient-to-b from-sky-500 text-center"
+      className="max-w-full px-10 pt-10 bg-gradient-to-b to-cyan-400 from-cyan-500 text-center shadow-t-lg rounded-t-full"
       onDoubleClick={handleDoubleClick}
       onMouseUp={handleMouseUpCard}
     >
-      <h1 className="text-xl font-bold hover:cursor-pointer">Question: </h1>
+      <div className="h-10 mt-3"></div>
       {isEditingQuestion ? (
-        <textarea
-          ref={newQuestionTextboxRef}
-          className="text-box resize-none rounded w-4/5 ml-5 mt-2 indent-2"
-          value={newQuestion}
-          onChange={handleQuestionChange}
-          onBlur={handleBlur}
-          onKeyDown={handleKeyPress}
-          placeholder="Enter your question here"
-          autoFocus
-        />
+        <div>
+          <h1 className="text-2xl font-bold"> Question: </h1>
+          <textarea
+            ref={newQuestionTextboxRef}
+            className="text-box resize-none rounded w-full mt-5 px-3 py-2.5 h-4/5"
+            value={newQuestion}
+            onChange={handleQuestionChange}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyPress}
+            placeholder="Enter your question here"
+            autoFocus
+          />
+        </div>
       ) : (
-        <p className="mt-2  hover:cursor-pointer">{newQuestion}</p>
+        <p className="mt-2 font-bold text-2xl break-all hover:cursor-pointer">
+          {newQuestion}
+        </p>
       )}
     </div>
   );

@@ -1,12 +1,17 @@
-import { useState, useEffect, useRef, useLayoutEffect, MouseEventHandler } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useLayoutEffect,
+  MouseEventHandler,
+} from "react";
 import { IAnswer } from "../../interfaces/interfaces";
 
 type AnswerBoxProps = {
   answer: IAnswer;
   id?: string;
-  updateAnswer: (id: string|undefined, answer: IAnswer) => void;
+  updateAnswer: (id: string | undefined, answer: IAnswer) => void;
   handleMouseUpCard: MouseEventHandler<HTMLDivElement>;
-
 };
 const MIN_TEXTAREA_HEIGHT = 32;
 
@@ -83,14 +88,14 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
     if (event.key === "Enter" || event.key === "Escape") {
       if (newAnswer !== "") {
         setIsEditingAnswer(false);
-        
+        setIsAnswerRevealed(false);
       }
     }
   };
   const handleBlur = () => {
     if (newAnswer !== "") {
       setIsEditingAnswer(false);
-      
+      setIsAnswerRevealed(false);
     }
   };
   useEffect(() => {
@@ -100,9 +105,10 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
   }, [remainingTries]);
 
   return (
-    <div 
-    onMouseUp={handleMouseUpCard}
-    className="p-5 via-30% to-emerald-500 to-90% text-center" >
+    <div
+      onMouseUp={handleMouseUpCard}
+      className="p-10 via-30% bg-gradient-to-b to-cyan-500 from-cyan-400  text-center shadow-t-lg rounded-b-full"
+    >
       <label htmlFor="answerSubmission">Answer:</label>
       <input
         type="text"
@@ -113,6 +119,7 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
           setAttempt(event.currentTarget.value);
         }}
         className="
+        rounded
         text-box
         ml-2
         ring-1 ring-inset ring-gray-300
@@ -130,7 +137,7 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
           <textarea
             placeholder="Enter correct answer here"
             ref={newAnswerTextboxRef}
-            className="px-3 py-2.5 text-box resize-none w-10/12 rounded mt-5 whitespace-pre-line indent-em-2"
+            className="px-3 py-2.5 text-box resize-none w-full rounded mt-5 whitespace-pre-line"
             value={newAnswer}
             onChange={handleAnswerChange}
             onKeyDown={handleKeyPress}
@@ -153,7 +160,7 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
           >
             <div className="text-white text-center">Click to hide answer</div>
           </div>
-          <p onDoubleClick={handleEditAnswer} className="mt-2">
+          <p onDoubleClick={handleEditAnswer} className="mt-2 font-bold text-xl">
             {newAnswer}
           </p>
           <div
@@ -166,13 +173,13 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
       )}
       {!isAnswerRevealed && (
         <div
-          className="mt-2 bg-black bg-opacity-50 flex items-center justify-center cursor-pointer max-w-xs"
+          className="mt-2 rounded bg-black bg-opacity-50 flex items-center justify-center cursor-pointer max-w-xs"
           onClick={(event) => handleShowAnswer(attempt)}
         >
-          <div className="text-white text-center">Click to reveal answer</div>
+          <div className="text-white text-center ">Click to reveal answer</div>
         </div>
       )}
-      <div>
+      <div className="my-5">
         <p>Number of tries left: {remainingTries}</p>
       </div>
     </div>

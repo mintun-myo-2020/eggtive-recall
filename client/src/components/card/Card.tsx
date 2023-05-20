@@ -10,7 +10,7 @@ import {
   IAnswer,
   IQuestion,
 } from "../../interfaces/interfaces";
-import { createCard, deleteCard } from "../../api/apiUtils";
+import { createOneCard, deleteCard } from "../../api/apiUtils";
 
 type CardProps = {
   id?: string;
@@ -78,7 +78,7 @@ const Card: React.FC<CardProps> = ({
       return;
     } else {
       const currentCard = cards.find((card) => card._id === id) as ICardData;
-      createCard([currentCard]);
+      createOneCard([currentCard]);
     }
   };
 
@@ -86,7 +86,7 @@ const Card: React.FC<CardProps> = ({
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     const currentCard = cards.find((card) => card._id === id) as ICardData;
-    createCard([currentCard]);
+    createOneCard([currentCard]);
 
     return;
   };
@@ -95,14 +95,14 @@ const Card: React.FC<CardProps> = ({
     <Draggable
       key={id}
       bounds="parent"
-      cancel=".text-box"
+      cancel=".text-box" 
       position={{ x: position.x, y: position.y }}
       onDrag={(e, data) => trackPos(data)}
     >
       <div
         onDoubleClick={handleDoubleClick}
         onMouseUp={handleMouseUpCard}
-        className="max-w-sm absolute bg-green-200 m-2 rounded shadow-md border font-roboto hover:cursor-move"
+        className="max-w-sm hover:opacity-90 absolute bg-transparent m-2 rounded font-roboto hover:cursor-move"
       >
         <Cross
           onMouseDown={handleMouseDownCross}

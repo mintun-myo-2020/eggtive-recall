@@ -6,7 +6,7 @@ import {
   IPositionData,
   IQuestion,
 } from "../interfaces/interfaces";
-import { createCard } from "../api/apiUtils";
+import { createOneCard } from "../api/apiUtils";
 
 type CardContainerProps = {
   cards: ICardData[];
@@ -20,6 +20,11 @@ const CardContainer: React.FC<CardContainerProps> = ({
   isEmpty,
 }) => {
   const CardContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    updateContainerSize();
+    console.log(CardContainerRef.current?.clientHeight);
+  }, [cards]);
 
   const handleDoubleClick: MouseEventHandler<HTMLDivElement> = async (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -37,7 +42,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
         },
       },
     ];
-    const createdCard: ICardData = await createCard(newCard);
+    const createdCard: ICardData = await createOneCard(newCard);
     setCards((prevCards) => [...prevCards, createdCard]);
   };
 
@@ -49,16 +54,20 @@ const CardContainer: React.FC<CardContainerProps> = ({
       card._id === id ? { ...card, question: question } : card
     );
     setCards(updatedCards);
-    const currentCard = updatedCards.find((card) => card._id === id) as ICardData;
-    createCard([currentCard]);
+    const currentCard = updatedCards.find(
+      (card) => card._id === id
+    ) as ICardData;
+    createOneCard([currentCard]);
   };
   const handleUpdateAnswer = (id: string | undefined, answer: IAnswer) => {
     const updatedCards = cards.map((card) =>
       card._id === id ? { ...card, answer: answer } : card
     );
     setCards(updatedCards);
-    const currentCard = updatedCards.find((card) => card._id === id) as ICardData;
-    createCard([currentCard]);
+    const currentCard = updatedCards.find(
+      (card) => card._id === id
+    ) as ICardData;
+    createOneCard([currentCard]);
   };
 
   const handleUpdatePosition = (
@@ -69,6 +78,31 @@ const CardContainer: React.FC<CardContainerProps> = ({
       card._id === id ? { ...card, position: position } : card
     );
     setCards(updatedCards);
+  };
+
+  const updateContainerSize = () => {
+    let maxWidth = screen.width;
+    let maxHeight = screen.height;
+
+    for (let i = 0; i < cards.length; i++) {
+      const card = cards[i];
+      const { position } = card;
+      const { x, y } = position;
+      console.log(position)
+
+      if (x + 500> maxWidth) {
+        maxWidth = x + 500;
+        console.log(maxWidth);
+      }
+      if (y + 850> maxHeight) {
+        maxHeight = y + 850;
+        console.log(maxHeight);
+      }
+    }
+    if (CardContainerRef.current) {
+      CardContainerRef.current.style.width = `${maxWidth}px`;
+      CardContainerRef.current.style.height = `${maxHeight}px`;
+    }
   };
 
   if (isEmpty) {

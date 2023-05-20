@@ -49,7 +49,7 @@ function App() {
   if (isLoading) {
     return (
       <div className="App">
-        <Navbar cards={cards} cardURL={cardURL} />
+        <Navbar cards={cards}/>
         <div className="flex justify-center items-center h-screen bg-gray-100">
           <p className="text-lg text-gray-500 ">Loading...</p>
         </div>
@@ -58,9 +58,12 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <Navbar cards={cards} cardURL={cardURL} />
+    <div className="App ">
+      <Navbar cards={cards}/>
+      <div className="overflow-x-auto">
       <CardContainer cards={cards} setCards={setCards} isEmpty={isEmpty} />
+
+      </div>
     </div>
   );
 }

@@ -2,13 +2,16 @@ import { useState } from "react";
 import Card from "./card/Card";
 import { ICardData } from "../interfaces/interfaces";
 import axios from "axios";
+import { API_BASE_URL, API_ENDPOINTS } from "../api/endpoints";
 
 type NavbarProps = {
   cards: ICardData[];
-  cardURL: string;
 };
 
-const Navbar: React.FC<NavbarProps> = ({ cards, cardURL }) => {
+const cardURL = API_BASE_URL + API_ENDPOINTS.CARDS;
+
+
+const Navbar: React.FC<NavbarProps> = ({ cards}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSave = (event: React.MouseEvent<HTMLDivElement>): void => {
@@ -23,8 +26,8 @@ const Navbar: React.FC<NavbarProps> = ({ cards, cardURL }) => {
   };
 
   return (
-    <nav className="bg-gray-800 sticky top-0 z-50">
-      <div className="max-w-full mx-auto px-2 sm:px-6 lg:px-8">
+    <nav className="overflow-x-auto bg-gray-800 sticky top-0 z-5">
+      <div className=" mx-auto px-2 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <button
