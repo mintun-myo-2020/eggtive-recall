@@ -1,0 +1,144 @@
+package services
+
+import (
+	"context"
+	"errors"
+	"log"
+
+	"github.com/myo-mintun-2020/active-recall-BE/models"
+	"github.com/myo-mintun-2020/active-recall-BE/storage"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
+)
+
+func UpsertCard(card *models.Card) error {
+	logger := log.Default()
+	collection := storage.GetCollection("cards")
+	if collection == nil {
+		return errors.New("failed to get the cards collection")
+	}
+
+	if card.ID.Hex() == "000000000000000000000000" {
+		card.ID = primitive.NewObjectID()
+	}
+
+	filter := bson.M{"_id": card.ID}
+	update := bson.M{"$set": card}
+	options := options.Update().SetUpsert(true)
+
+	_, err := collection.UpdateOne(context.Background(), filter, update, options)
+	if err != nil {
+		return err
+	}
+
+	logger.Println(card)
+
+	return nil
+}
+
+func GetCard(id string) (models.Card, error) {
+
+	card := models.Card{}
+
+	objID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return models.Card{}, err
+	}
+	collection := storage.GetCollection("cards")
+	if collection == nil {
+		return models.Card{}, errors.New("failed to get the cards collection")
+	}
+
+	err = collection.FindOne(context.Background(), bson.M{"_id": objID}).Decode(&card)
+
+	if err != nil {
+		return models.Card{}, err
+	}
+
+	return card, nil
+}
+
+func GetAllCards() ([]models.Card, error) {
+	var cards []models.Card
+
+	collection := storage.GetCollection("cards")
+	if collection == nil {
+		return nil, errors.New("failed to get the cards collection")
+	}
+
+	cursor, err := collection.Find(context.Background(), bson.M{})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(context.Background())
+
+	// iterate through the cursor and decode each document into a card
+	for cursor.Next(context.Background()) {
+		var card models.Card
+		if err := cursor.Decode(&card); err != nil {
+			return nil, err
+		}
+		cards = append(cards, card)
+	}
+	if err := cursor.Err(); err != nil {
+		return nil, err
+	}
+
+	return cards, nil
+}
+
+func UpdateCard(id string, updatedCard *models.Card) error {
+	collection := storage.GetCollection("cards")
+	if collection == nil {
+		return errors.New("failed to get the cards collection")
+	}
+
+	objID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+	filter := bson.D{{Key: "_id", Value: objID}}
+	log.Default().Println(filter)
+	update := bson.M{"$set": bson.M{
+		"question": updatedCard.Question,
+		"answer":   updatedCard.Answer,
+		"position": updatedCard.Position,
+	}}
+	result, err := collection.UpdateOne(context.Background(), filter, update)
+	log.Default().Println(result)
+
+	if err != nil {
+		return err
+	}
+	if result.ModifiedCount == 0 {
+		message := "Card with id " + id + " not found"
+		return errors.New(message)
+	}
+
+	return nil
+}
+
+func DeleteCard(id string) error {
+	collection := storage.GetCollection("cards")
+	if collection == nil {
+		return errors.New("failed to get the cards collection")
+	}
+
+	objID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+
+	result, err := collection.DeleteOne(context.Background(), bson.M{"_id": objID})
+	if err != nil {
+		return err
+	}
+
+	if result.DeletedCount == 0 {
+		message := "Card with id " + id + " not found"
+		return errors.New(message)
+	}
+
+	return nil
+}
