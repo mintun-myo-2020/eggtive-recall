@@ -12,19 +12,24 @@ type QuestionBoxProps = {
   id?: string;
   question: IQuestion;
   updateQuestion: (id: string|undefined, newQuestion: IQuestion) => void;
+  handleMouseUpCard: MouseEventHandler<HTMLDivElement>;
 };
 const MIN_TEXTAREA_HEIGHT = 32;
-const cardURL: string = "http://localhost:8080/card/";
-
 
 const QuestionBox: React.FC<QuestionBoxProps> = ({
   id,
   question,
   updateQuestion,
+  handleMouseUpCard
 }) => {
   const newQuestionTextboxRef = useRef<HTMLTextAreaElement>(null);
   const [isEditingQuestion, setIsEditingQuestion] = useState(false);
   const [newQuestion, setNewQuestion] = useState(question.question);
+
+  useEffect(() => {
+    if (question.question.trim() == "") setIsEditingQuestion(true);
+    else setIsEditingQuestion(false);
+  }, []);
 
   useEffect(() => {
     updateQuestion(id, { question: newQuestion });
@@ -54,27 +59,29 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({
   };
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" || event.key === "Escape") {
-      setIsEditingQuestion(false);
+      if (newQuestion.trim() != "") setIsEditingQuestion(false);
     }
   };
   const handleBlur = () => {
-    setIsEditingQuestion(false);
+    if (newQuestion.trim() !== "") setIsEditingQuestion(false);
   };
 
   return (
     <div
-      className="p-5 bg-gradient-to-b from-sky-500"
+      className="p-5 bg-gradient-to-b from-sky-500 text-center"
       onDoubleClick={handleDoubleClick}
+      onMouseUp={handleMouseUpCard}
     >
-      <h1 className="text-xl font-bold  hover:cursor-pointer">Question: </h1>
+      <h1 className="text-xl font-bold hover:cursor-pointer">Question: </h1>
       {isEditingQuestion ? (
         <textarea
           ref={newQuestionTextboxRef}
-          className="text-box resize-none w-4/5 ml-5 mt-2 indent-2"
+          className="text-box resize-none rounded w-4/5 ml-5 mt-2 indent-2"
           value={newQuestion}
           onChange={handleQuestionChange}
           onBlur={handleBlur}
           onKeyDown={handleKeyPress}
+          placeholder="Enter your question here"
           autoFocus
         />
       ) : (

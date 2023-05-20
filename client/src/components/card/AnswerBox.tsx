@@ -1,10 +1,12 @@
-import { useState, useEffect, useRef, useLayoutEffect } from "react";
+import { useState, useEffect, useRef, useLayoutEffect, MouseEventHandler } from "react";
 import { IAnswer } from "../../interfaces/interfaces";
 
 type AnswerBoxProps = {
   answer: IAnswer;
   id?: string;
   updateAnswer: (id: string|undefined, answer: IAnswer) => void;
+  handleMouseUpCard: MouseEventHandler<HTMLDivElement>;
+
 };
 const MIN_TEXTAREA_HEIGHT = 32;
 
@@ -12,6 +14,7 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
   answer: answer,
   id: id,
   updateAnswer: updateAnswer,
+  handleMouseUpCard: handleMouseUpCard,
 }) => {
   const newAnswerTextboxRef = useRef<HTMLTextAreaElement>(null);
 
@@ -80,12 +83,14 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
     if (event.key === "Enter" || event.key === "Escape") {
       if (newAnswer !== "") {
         setIsEditingAnswer(false);
+        
       }
     }
   };
   const handleBlur = () => {
     if (newAnswer !== "") {
       setIsEditingAnswer(false);
+      
     }
   };
   useEffect(() => {
@@ -95,7 +100,9 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
   }, [remainingTries]);
 
   return (
-    <div className="p-5 via-30% to-emerald-500 to-90% ">
+    <div 
+    onMouseUp={handleMouseUpCard}
+    className="p-5 via-30% to-emerald-500 to-90% text-center" >
       <label htmlFor="answerSubmission">Answer:</label>
       <input
         type="text"
@@ -123,7 +130,7 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
           <textarea
             placeholder="Enter correct answer here"
             ref={newAnswerTextboxRef}
-            className="px-3 py-2.5 text-box resize-none w-10/12 ml-5 mt-5 whitespace-pre-line indent-em-2"
+            className="px-3 py-2.5 text-box resize-none w-10/12 rounded mt-5 whitespace-pre-line indent-em-2"
             value={newAnswer}
             onChange={handleAnswerChange}
             onKeyDown={handleKeyPress}

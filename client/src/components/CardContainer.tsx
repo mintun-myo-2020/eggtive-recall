@@ -6,15 +6,7 @@ import {
   IPositionData,
   IQuestion,
 } from "../interfaces/interfaces";
-import axios from "axios";
-
-const cardURL: string = "http://localhost:8080/card/";
-
-const createCard = async (newCard: ICardData[]): Promise<ICardData> => {
-  const response: any = await axios.post(cardURL, newCard);
-  const createdCard: ICardData = response.data.cards[0];
-  return createdCard;
-};
+import { createCard } from "../api/apiUtils";
 
 type CardContainerProps = {
   cards: ICardData[];
@@ -37,7 +29,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
 
     const newCard: ICardData[] = [
       {
-        question: { question: "Enter question here" },
+        question: { question: "" },
         answer: { answer: "" },
         position: {
           x: x,
@@ -57,12 +49,16 @@ const CardContainer: React.FC<CardContainerProps> = ({
       card._id === id ? { ...card, question: question } : card
     );
     setCards(updatedCards);
+    const currentCard = updatedCards.find((card) => card._id === id) as ICardData;
+    createCard([currentCard]);
   };
   const handleUpdateAnswer = (id: string | undefined, answer: IAnswer) => {
     const updatedCards = cards.map((card) =>
       card._id === id ? { ...card, answer: answer } : card
     );
     setCards(updatedCards);
+    const currentCard = updatedCards.find((card) => card._id === id) as ICardData;
+    createCard([currentCard]);
   };
 
   const handleUpdatePosition = (

@@ -10,13 +10,7 @@ import {
   IAnswer,
   IQuestion,
 } from "../../interfaces/interfaces";
-import axios from "axios";
-
-const cardURL: string = "http://localhost:8080/card/";
-
-const deleteCard = (id: string | undefined): void => {
-  axios.delete(cardURL + id);
-};
+import { createCard, deleteCard } from "../../api/apiUtils";
 
 type CardProps = {
   id?: string;
@@ -61,6 +55,7 @@ const Card: React.FC<CardProps> = ({
   const handleDoubleClick: MouseEventHandler<HTMLDivElement> = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
+    console.log("doubleclick");
     event.stopPropagation();
   };
 
@@ -79,10 +74,21 @@ const Card: React.FC<CardProps> = ({
       // TODO: delete the card
       setCards(cards.filter((card) => card._id != id));
       deleteCard(id);
-      console.log(`Clicked cross with id ${id}`);
 
       return;
+    } else {
+      const currentCard = cards.find((card) => card._id === id) as ICardData;
+      createCard([currentCard]);
     }
+  };
+
+  const handleMouseUpCard: MouseEventHandler<HTMLDivElement> = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    const currentCard = cards.find((card) => card._id === id) as ICardData;
+    createCard([currentCard]);
+
+    return;
   };
 
   return (
@@ -95,6 +101,7 @@ const Card: React.FC<CardProps> = ({
     >
       <div
         onDoubleClick={handleDoubleClick}
+        onMouseUp={handleMouseUpCard}
         className="max-w-sm absolute bg-green-200 m-2 rounded shadow-md border font-roboto hover:cursor-move"
       >
         <Cross
@@ -105,8 +112,14 @@ const Card: React.FC<CardProps> = ({
           id={id}
           question={question}
           updateQuestion={updateQuestion}
+          handleMouseUpCard={handleMouseUpCard}
         />
-        <AnswerBox answer={answer} updateAnswer={updateAnswer} id={id} />
+        <AnswerBox
+          answer={answer}
+          updateAnswer={updateAnswer}
+          id={id}
+          handleMouseUpCard={handleMouseUpCard}
+        />
       </div>
     </Draggable>
   );

@@ -55,42 +55,42 @@ const Navbar: React.FC<NavbarProps> = ({ cards, cardURL }) => {
           </div>
           <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
             {/* Logo */}
-            <div className="flex-shrink-0 flex items-center">
+            <div className="hidden sm:block flex-shrink-0 flex items-center">
               <img
-                className="block lg:hidden h-8 w-auto"
-                src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
-                alt="Workflow"
+                className="block lg:hidden h-10 w-auto"
+                src="/justEggLogo.png"
+                alt="Eggtive Logo"
               />
               <img
-                className="hidden lg:block h-8 w-auto"
-                src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
-                alt="Workflow"
+                className="hidden lg:block h-10 w-auto hover:bg-gray-700 cursor-pointer"
+                src="/whiteText.png"
+                alt="Eggtive Logo"
               />
             </div>
-            <div className="hidden sm:block sm:ml-6">
+            <div className="hidden sm:block sm:ml-6 flex items-center h-full">
               <div className="flex space-x-4">
                 {/* Navigation Links */}
                 <a
                   href="#"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  className="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium h-full"
                 >
                   Home
                 </a>
                 <a
                   href="#"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  className="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium h-full"
                 >
                   About
                 </a>
                 <a
                   href="#"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  className="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium h-full"
                 >
                   Contact
                 </a>
               </div>
             </div>
-            <div className="flex saveBtn" onClick={handleSave}>
+            <div className="flex items-center saveBtn" onClick={handleSave}>
               <h2>save</h2>
             </div>
           </div>
