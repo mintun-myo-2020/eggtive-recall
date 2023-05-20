@@ -26,7 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({ cards}) => {
   };
 
   return (
-    <nav className="overflow-x-auto bg-gray-800 sticky top-0 z-5">
+    <nav className="overflow-x-auto bg-gray-800 sticky top-0 z-50">
       <div className=" mx-auto px-2 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">

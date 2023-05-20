@@ -21,11 +21,6 @@ const CardContainer: React.FC<CardContainerProps> = ({
 }) => {
   const CardContainerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    updateContainerSize();
-    console.log(CardContainerRef.current?.clientHeight);
-  }, [cards]);
-
   const handleDoubleClick: MouseEventHandler<HTMLDivElement> = async (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
@@ -80,6 +75,8 @@ const CardContainer: React.FC<CardContainerProps> = ({
     setCards(updatedCards);
   };
 
+  // FUTURE IMPLEMENTATION OF UPDATING CONTAINER SIZE
+
   const updateContainerSize = () => {
     let maxWidth = screen.width;
     let maxHeight = screen.height;
@@ -88,15 +85,12 @@ const CardContainer: React.FC<CardContainerProps> = ({
       const card = cards[i];
       const { position } = card;
       const { x, y } = position;
-      console.log(position)
 
       if (x + 500> maxWidth) {
         maxWidth = x + 500;
-        console.log(maxWidth);
       }
       if (y + 850> maxHeight) {
         maxHeight = y + 850;
-        console.log(maxHeight);
       }
     }
     if (CardContainerRef.current) {
@@ -104,6 +98,10 @@ const CardContainer: React.FC<CardContainerProps> = ({
       CardContainerRef.current.style.height = `${maxHeight}px`;
     }
   };
+
+  useEffect(() => {
+    updateContainerSize();
+  }, [cards]);
 
   if (isEmpty) {
     return (

@@ -1,7 +1,7 @@
 import QuestionBox from "./QuestionBox";
 import AnswerBox from "./AnswerBox";
 import Draggable from "react-draggable";
-import { useState, MouseEventHandler, useEffect } from "react";
+import { useState, MouseEventHandler, useEffect, useRef } from "react";
 import Cross from "./Cross";
 
 import {
@@ -35,6 +35,8 @@ const Card: React.FC<CardProps> = ({
   updateQuestion: updateQuestion,
   updateAnswer: updateAnswer,
 }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
   const [position, setPosition] = useState<IPositionData>({
     x: initialPosition.x,
     y: initialPosition.y,
@@ -47,6 +49,48 @@ const Card: React.FC<CardProps> = ({
     setPosition({ x: position.x, y: position.y });
   }, [position.x, position.y]);
 
+  // future implementation of dynamic container scrolling
+  // useEffect(() => {
+  //   const handleMouseMove = (event: MouseEvent) => {
+  //     console.log("X: ", event.clientX)
+  //     console.log("Y: ", event.clientY)
+  //     const container = cardRef.current?.parentElement;
+  //     if (container) {
+  //       const scrollDistance = 10;
+
+  //       // Scroll right if the mouse is near the right edge of the container
+  //       if (event.clientX > container.clientWidth) {
+  //         console.log(event.clientX);
+  //         container.parentElement?.scrollBy({
+  //           left: scrollDistance,
+  //           behavior: "smooth",
+  //         });
+  //       }
+
+  //       // Scroll bottom if the mouse is near the bottom edge of the container
+  //       if (event.clientY > 950) {
+  //         console.log(event.clientY);
+
+  //         container.parentElement?.scrollBy({
+  //           top: scrollDistance,
+  //           behavior: "smooth",
+  //         });
+  //       }
+  //     }
+  //   };
+
+  //   const cardElement = cardRef.current;
+  //   if (cardElement) {
+  //     cardElement.addEventListener("mousemove", handleMouseMove);
+  //   }
+
+  //   return () => {
+  //     if (cardElement) {
+  //       cardElement.removeEventListener("mousemove", handleMouseMove);
+  //     }
+  //   };
+  // }, [cards]);
+
   const trackPos = (data: IPositionData) => {
     setPosition({ x: data.x, y: data.y });
     updatePosition(id, { x: data.x, y: data.y });
@@ -55,7 +99,6 @@ const Card: React.FC<CardProps> = ({
   const handleDoubleClick: MouseEventHandler<HTMLDivElement> = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    console.log("doubleclick");
     event.stopPropagation();
   };
 
@@ -95,13 +138,14 @@ const Card: React.FC<CardProps> = ({
     <Draggable
       key={id}
       bounds="parent"
-      cancel=".text-box" 
+      cancel=".text-box"
       position={{ x: position.x, y: position.y }}
       onDrag={(e, data) => trackPos(data)}
     >
       <div
         onDoubleClick={handleDoubleClick}
         onMouseUp={handleMouseUpCard}
+        ref={cardRef}
         className="max-w-sm hover:opacity-90 absolute bg-transparent m-2 rounded font-roboto hover:cursor-move"
       >
         <Cross

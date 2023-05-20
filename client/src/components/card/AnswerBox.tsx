@@ -107,7 +107,7 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
   return (
     <div
       onMouseUp={handleMouseUpCard}
-      className="p-10 via-30% bg-gradient-to-b to-cyan-500 from-cyan-400  text-center shadow-t-lg rounded-b-full"
+      className="pb-10 px-10 via-30% bg-gradient-to-b to-cyan-500 from-cyan-400  text-center shadow-t-lg rounded-b-full"
     >
       <label htmlFor="answerSubmission">Answer:</label>
       <input
@@ -137,7 +137,7 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
           <textarea
             placeholder="Enter correct answer here"
             ref={newAnswerTextboxRef}
-            className="px-3 py-2.5 text-box resize-none w-full rounded mt-5 whitespace-pre-line"
+            className="px-3 py-2.5 text-box resize-none w-11/12 rounded mt-5 whitespace-pre-line"
             value={newAnswer}
             onChange={handleAnswerChange}
             onKeyDown={handleKeyPress}

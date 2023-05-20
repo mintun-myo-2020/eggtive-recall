@@ -22,7 +22,6 @@ function App() {
     axios
       .get(cardURL)
       .then((res) => {
-        console.log(res.data);
         if (res.data === null) {
           setIsEmpty(true);
           setCards(new Array<ICardData>());
@@ -60,7 +59,7 @@ function App() {
   return (
     <div className="App ">
       <Navbar cards={cards}/>
-      <div className="overflow-x-auto">
+      <div className="overflow-auto">
       <CardContainer cards={cards} setCards={setCards} isEmpty={isEmpty} />
 
       </div>

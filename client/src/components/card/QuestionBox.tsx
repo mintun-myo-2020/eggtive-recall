@@ -68,14 +68,14 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({
 
   return (
     <div
-      className="max-w-full px-10 pt-10 bg-gradient-to-b to-cyan-400 from-cyan-500 text-center shadow-t-lg rounded-t-full"
+      className="max-w-full pt-10 px-10 bg-gradient-to-b to-cyan-400 from-cyan-500 text-center shadow-t-lg rounded-t-full"
       onDoubleClick={handleDoubleClick}
       onMouseUp={handleMouseUpCard}
     >
       <div className="h-10 mt-3"></div>
       {isEditingQuestion ? (
         <div>
-          <h1 className="text-2xl font-bold"> Question: </h1>
+          <h1 className="text-2xl font-semibold"> Question: </h1>
           <textarea
             ref={newQuestionTextboxRef}
             className="text-box resize-none rounded w-full mt-5 px-3 py-2.5 h-4/5"
