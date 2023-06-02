@@ -13,6 +13,7 @@ export interface IAnswer {
 
 export interface ICardData  {
   _id?: string;
+  userId: string | undefined ;
   question: IQuestion;
   answer: IAnswer;
   position: IPositionData;

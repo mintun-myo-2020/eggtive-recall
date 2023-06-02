@@ -1,12 +1,14 @@
 import { MouseEventHandler, useEffect, useRef, useState } from "react";
-import Card from "./card/Card";
+import Card from "../card/Card";
 import {
   IAnswer,
   ICardData,
   IPositionData,
   IQuestion,
-} from "../interfaces/interfaces";
-import { createOneCard } from "../api/apiUtils";
+} from "../../interfaces/interfaces";
+import { createOneCard } from "../../api/apiUtils";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../utils/firebase";
 
 type CardContainerProps = {
   cards: ICardData[];
@@ -19,6 +21,8 @@ const CardContainer: React.FC<CardContainerProps> = ({
   setCards,
   isEmpty,
 }) => {
+  const [user, loading, error] = useAuthState(auth);
+
   const CardContainerRef = useRef<HTMLDivElement>(null);
 
   const handleDoubleClick: MouseEventHandler<HTMLDivElement> = async (
@@ -26,9 +30,11 @@ const CardContainer: React.FC<CardContainerProps> = ({
   ) => {
     const x = event.clientX - 150;
     const y = event.clientY - 85;
+    const userId = user?.uid;
 
     const newCard: ICardData[] = [
       {
+        userId: userId,
         question: { question: "" },
         answer: { answer: "" },
         position: {
@@ -37,6 +43,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
         },
       },
     ];
+    console.log(newCard);
     const createdCard: ICardData = await createOneCard(newCard);
     setCards((prevCards) => [...prevCards, createdCard]);
   };
@@ -86,10 +93,10 @@ const CardContainer: React.FC<CardContainerProps> = ({
       const { position } = card;
       const { x, y } = position;
 
-      if (x + 500> maxWidth) {
+      if (x + 500 > maxWidth) {
         maxWidth = x + 500;
       }
-      if (y + 850> maxHeight) {
+      if (y + 850 > maxHeight) {
         maxHeight = y + 850;
       }
     }

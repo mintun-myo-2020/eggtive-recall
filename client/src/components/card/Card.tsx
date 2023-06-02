@@ -49,7 +49,7 @@ const Card: React.FC<CardProps> = ({
     setPosition({ x: position.x, y: position.y });
   }, [position.x, position.y]);
 
-  // future implementation of dynamic container scrolling
+  //TODO: future implementation of dynamic container scrolling
   // useEffect(() => {
   //   const handleMouseMove = (event: MouseEvent) => {
   //     console.log("X: ", event.clientX)
@@ -146,7 +146,7 @@ const Card: React.FC<CardProps> = ({
         onDoubleClick={handleDoubleClick}
         onMouseUp={handleMouseUpCard}
         ref={cardRef}
-        className="max-w-sm hover:opacity-90 absolute bg-transparent m-2 rounded font-roboto hover:cursor-move"
+        className="max-w-sm hover:opacity-90 bg-transparent absolute rounded font-roboto hover:cursor-move"
       >
         <Cross
           onMouseDown={handleMouseDownCross}

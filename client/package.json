@@ -11,11 +11,15 @@
   "dependencies": {
     "@types/mongodb": "^4.0.7",
     "axios": "^1.4.0",
+    "dotenv": "^16.0.3",
+    "firebase": "^9.22.1",
     "mongodb": "^5.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.5",
     "react-dragscroll": "^2.0.1",
+    "react-firebase-hooks": "^5.1.1",
+    "react-router-dom": "^6.11.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

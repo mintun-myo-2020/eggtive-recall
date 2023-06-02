@@ -1,18 +1,21 @@
 import { useState } from "react";
-import Card from "./card/Card";
 import { ICardData } from "../interfaces/interfaces";
 import axios from "axios";
 import { API_BASE_URL, API_ENDPOINTS } from "../api/endpoints";
+import { Link } from "react-router-dom";
+import Login from "./users/Login";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, logout } from "../utils/firebase";
 
 type NavbarProps = {
-  cards: ICardData[];
+  cards?: ICardData[];
 };
 
 const cardURL = API_BASE_URL + API_ENDPOINTS.CARDS;
 
-
-const Navbar: React.FC<NavbarProps> = ({ cards}) => {
+const Navbar: React.FC<NavbarProps> = ({ cards }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, loading, error] = useAuthState(auth);
 
   const handleSave = (event: React.MouseEvent<HTMLDivElement>): void => {
     axios
@@ -70,31 +73,43 @@ const Navbar: React.FC<NavbarProps> = ({ cards}) => {
                 alt="Eggtive Logo"
               />
             </div>
-            <div className="hidden sm:block sm:ml-6 flex items-center h-full">
+            <div className="hidden sm:block sm:ml-6 flex items-center h-full items-start">
               <div className="flex space-x-4">
                 {/* Navigation Links */}
-                <a
-                  href="#"
+                <Link
+                  to="/"
                   className="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium h-full"
                 >
                   Home
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  to="/"
                   className="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium h-full"
                 >
                   About
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  to="board"
                   className="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium h-full"
                 >
-                  Contact
-                </a>
+                  Board
+                </Link>
               </div>
             </div>
-            <div className="flex items-center saveBtn" onClick={handleSave}>
-              <h2>save</h2>
+
+            <div className="flex items-center ml-auto">
+              {user ? (
+                <button
+                  className="flex items-center saveBtn"
+                  onClick={logout}
+                >
+                  <h2>Logout</h2>
+                </button>
+              ) : (
+                <Link to="/login" className="flex items-center saveBtn">
+                  <h2>Login</h2>
+                </Link>
+              )}
             </div>
           </div>
         </div>

@@ -107,7 +107,7 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
   return (
     <div
       onMouseUp={handleMouseUpCard}
-      className="pb-10 px-10 via-30% bg-gradient-to-b to-cyan-500 from-cyan-400  text-center shadow-t-lg rounded-b-full"
+      className="pb-2 px-10 via-30% bg-gradient-to-b to-cyan-500 from-cyan-400 rounded-b-md text-center shadow-t-lg"
     >
       <label htmlFor="answerSubmission">Answer:</label>
       <input

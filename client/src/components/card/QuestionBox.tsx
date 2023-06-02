@@ -68,7 +68,7 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({
 
   return (
     <div
-      className="max-w-full pt-10 px-10 bg-gradient-to-b to-cyan-400 from-cyan-500 text-center shadow-t-lg rounded-t-full"
+      className="max-w-full px-10 bg-gradient-to-b to-cyan-400 from-cyan-500 text-center rounded-t-md shadow-t-lg"
       onDoubleClick={handleDoubleClick}
       onMouseUp={handleMouseUpCard}
     >
