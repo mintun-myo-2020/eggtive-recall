@@ -20,11 +20,16 @@ func SetupRouter() *gin.Engine {
 
 	cardGroup := r.Group("/card")
 	{
-		cardGroup.GET("/:id", controllers.GetCard)
+		cardGroup.GET("/:userId", controllers.GetCard)
 		cardGroup.GET("/", controllers.GetAllCards)
 		cardGroup.POST("/", controllers.UpsertCard)
 		cardGroup.PUT("/:id", controllers.UpdateCard)
 		cardGroup.DELETE("/:id", controllers.DeleteCard)
+	}
+
+	userGroup := r.Group("/user")
+	{
+		userGroup.POST("/", controllers.CreateUser)
 	}
 
 	return r

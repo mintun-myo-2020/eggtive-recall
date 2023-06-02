@@ -12,7 +12,7 @@ import (
 )
 
 func GetCard(c *gin.Context) {
-	card, err := services.GetCard(c.Param("id"))
+	card, err := services.GetCard(c.Param("userId"))
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -50,7 +50,6 @@ func UpsertCard(c *gin.Context) {
 
 	message := fmt.Sprintf("Successfully created %d cards", numCards)
 
-	log.Default().Println(cards)
 	c.JSON(http.StatusOK, gin.H{"message": message, "cards": cards})
 }
 

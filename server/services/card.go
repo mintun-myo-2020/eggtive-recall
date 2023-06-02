@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 	"errors"
-	"log"
 
 	"github.com/myo-mintun-2020/active-recall-BE/models"
 	"github.com/myo-mintun-2020/active-recall-BE/storage"
@@ -13,7 +12,6 @@ import (
 )
 
 func UpsertCard(card *models.Card) error {
-	logger := log.Default()
 	collection := storage.GetCollection("cards")
 	if collection == nil {
 		return errors.New("failed to get the cards collection")
@@ -31,32 +29,38 @@ func UpsertCard(card *models.Card) error {
 	if err != nil {
 		return err
 	}
-
-	logger.Println(card)
-
 	return nil
 }
 
-func GetCard(id string) (models.Card, error) {
+func GetCard(userId string) ([]models.Card, error) {
 
-	card := models.Card{}
+	filter := bson.M{"userId": userId}
+	var cards []models.Card
 
-	objID, err := primitive.ObjectIDFromHex(id)
-	if err != nil {
-		return models.Card{}, err
-	}
 	collection := storage.GetCollection("cards")
 	if collection == nil {
-		return models.Card{}, errors.New("failed to get the cards collection")
+		return nil, errors.New("failed to get the cards collection")
 	}
-
-	err = collection.FindOne(context.Background(), bson.M{"_id": objID}).Decode(&card)
-
+	// Execute the find operation and retrieve the result.
+	cursor, err := collection.Find(context.Background(), filter)
 	if err != nil {
-		return models.Card{}, err
+		return nil, err
+	}
+	defer cursor.Close(context.Background())
+
+	for cursor.Next(context.Background()) {
+		var card models.Card
+		if err := cursor.Decode(&card); err != nil {
+			return nil, err
+		}
+		cards = append(cards, card)
 	}
 
-	return card, nil
+	if err := cursor.Err(); err != nil {
+		return nil, err
+	}
+
+	return cards, nil
 }
 
 func GetAllCards() ([]models.Card, error) {
@@ -99,14 +103,12 @@ func UpdateCard(id string, updatedCard *models.Card) error {
 		return err
 	}
 	filter := bson.D{{Key: "_id", Value: objID}}
-	log.Default().Println(filter)
 	update := bson.M{"$set": bson.M{
 		"question": updatedCard.Question,
 		"answer":   updatedCard.Answer,
 		"position": updatedCard.Position,
 	}}
 	result, err := collection.UpdateOne(context.Background(), filter, update)
-	log.Default().Println(result)
 
 	if err != nil {
 		return err

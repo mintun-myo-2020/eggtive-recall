@@ -11,6 +11,7 @@ type Position struct {
 
 type Card struct {
 	ID       primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
+	UserID   string             `bson:"userId" json:"userId,omitempty"`
 	Question *Question          `json:"question"`
 	Answer   *Answer            `json:"answer"`
 	Position *Position          `json:"position"`

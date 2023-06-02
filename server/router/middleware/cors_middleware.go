@@ -14,7 +14,6 @@ func CorsMiddleware() gin.HandlerFunc {
 
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(200)
-			log.Default().Println("CORS preflight")
 			return
 		}
 
