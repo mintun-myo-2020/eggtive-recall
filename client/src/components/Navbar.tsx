@@ -61,18 +61,20 @@ const Navbar: React.FC<NavbarProps> = ({ cards }) => {
           </div>
           <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
             {/* Logo */}
-            <div className="hidden sm:block flex-shrink-0 flex items-center">
-              <img
-                className="block lg:hidden h-10 w-auto"
-                src="/justEggLogo.png"
-                alt="Eggtive Logo"
-              />
-              <img
-                className="hidden lg:block h-10 w-auto hover:bg-gray-700 cursor-pointer"
-                src="/whiteText.png"
-                alt="Eggtive Logo"
-              />
-            </div>
+            <Link to="/">
+              <div className="hidden sm:block flex-shrink-0 flex items-center">
+                <img
+                  className="block lg:hidden h-10 w-auto"
+                  src="/justEggLogo.png"
+                  alt="Eggtive Logo"
+                />
+                <img
+                  className="hidden lg:block h-10 w-auto hover:bg-gray-700 cursor-pointer"
+                  src="/whiteText.png"
+                  alt="Eggtive Logo"
+                />
+              </div>
+            </Link>
             <div className="hidden sm:block sm:ml-6 flex items-center h-full items-start">
               <div className="flex space-x-4">
                 {/* Navigation Links */}
@@ -83,7 +85,7 @@ const Navbar: React.FC<NavbarProps> = ({ cards }) => {
                   Home
                 </Link>
                 <Link
-                  to="/"
+                  to="about"
                   className="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium h-full"
                 >
                   About
@@ -99,15 +101,19 @@ const Navbar: React.FC<NavbarProps> = ({ cards }) => {
 
             <div className="flex items-center ml-auto">
               {user ? (
-                <button
-                  className="flex items-center saveBtn"
-                  onClick={logout}
-                >
-                  <h2>Logout</h2>
-                </button>
+                <Link to="/">
+                  <button
+                    className="flex items-center saveBtn"
+                    onClick={logout}
+                  >
+                    <h2>Logout</h2>
+                  </button>
+                </Link>
               ) : (
-                <Link to="/login" className="flex items-center saveBtn">
-                  <h2>Login</h2>
+                <Link to="/login">
+                  <button className="flex items-center saveBtn">
+                    <h2>Login</h2>
+                  </button>
                 </Link>
               )}
             </div>

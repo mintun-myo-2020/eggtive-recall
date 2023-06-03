@@ -72,7 +72,7 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({
       onDoubleClick={handleDoubleClick}
       onMouseUp={handleMouseUpCard}
     >
-      <div className="h-10 mt-3"></div>
+      <div className="h-5 my-2"></div>
       {isEditingQuestion ? (
         <div>
           <h1 className="text-2xl font-semibold"> Question: </h1>

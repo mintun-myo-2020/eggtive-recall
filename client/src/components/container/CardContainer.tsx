@@ -25,6 +25,8 @@ const CardContainer: React.FC<CardContainerProps> = ({
 
   const CardContainerRef = useRef<HTMLDivElement>(null);
 
+
+
   const handleDoubleClick: MouseEventHandler<HTMLDivElement> = async (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
@@ -43,7 +45,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
         },
       },
     ];
-    console.log(newCard);
+    
     const createdCard: ICardData = await createOneCard(newCard);
     setCards((prevCards) => [...prevCards, createdCard]);
   };

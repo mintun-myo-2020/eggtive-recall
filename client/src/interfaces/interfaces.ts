@@ -18,3 +18,10 @@ export interface ICardData  {
   answer: IAnswer;
   position: IPositionData;
 };
+
+export interface IGoUser {
+  _id: string;
+  name: string;
+  email: string;
+  cards: ICardData[];
+}

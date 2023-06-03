@@ -4,7 +4,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL, API_ENDPOINTS } from "../../api/endpoints";
 
-
 const Register = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -26,6 +25,7 @@ const Register = () => {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="max-w-sm mx-auto p-6 bg-white rounded shadow">
+        <h1 className="text-center font-roboto text-3xl mb-3">Register</h1>
         <input
           type="text"
           className="w-full px-4 py-2 mb-4 border border-gray-300 rounded focus:outline-none"
