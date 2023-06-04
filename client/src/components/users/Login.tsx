@@ -25,22 +25,32 @@ const Login = () => {
     await logInWithEmailAndPassword(email, password);
   };
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleLogin();
+    }
+  };
+
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="max-w-sm mx-auto p-6 bg-white rounded shadow">
-        <h1 className="text-center font-roboto text-3xl mb-3">Log in to Eggtive</h1>
+        <h1 className="text-center font-roboto text-3xl mb-3">
+          Log in to Eggtive
+        </h1>
         <input
           type="text"
           className="w-full px-4 py-2 mb-4 border border-gray-300 rounded focus:outline-none"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="E-mail Address"
+          onKeyDown={handleKeyPress}
         />
         <input
           type="password"
           className="w-full px-4 py-2 mb-4 border border-gray-300 rounded focus:outline-none"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={handleKeyPress}
           placeholder="Password"
         />
         <button
