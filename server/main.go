@@ -37,6 +37,6 @@ func main() {
 	}()
 
 	r := router.SetupRouter()
-	r.Run(":8080")
+	r.Run("0.0.0.0:8080")
 
 }
