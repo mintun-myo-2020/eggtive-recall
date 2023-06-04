@@ -13,9 +13,13 @@ import (
 
 func main() {
 
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
+	environment := os.Getenv("ENVIRONMENT")
+
+	if environment == "development" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
 	}
 	DB_PASSWORD := os.Getenv("MONGODB_PASSWORD")
 	DB_NAME := os.Getenv("MONGODB_NAME")
@@ -34,6 +38,5 @@ func main() {
 
 	r := router.SetupRouter()
 	r.Run(":8080")
-
 
 }
