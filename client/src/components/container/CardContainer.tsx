@@ -25,8 +25,6 @@ const CardContainer: React.FC<CardContainerProps> = ({
 
   const CardContainerRef = useRef<HTMLDivElement>(null);
 
-
-
   const handleDoubleClick: MouseEventHandler<HTMLDivElement> = async (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
@@ -45,7 +43,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
         },
       },
     ];
-    
+
     const createdCard: ICardData = await createOneCard(newCard);
     setCards((prevCards) => [...prevCards, createdCard]);
   };
@@ -116,7 +114,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
     return (
       <div onDoubleClick={handleDoubleClick}>
         <div className="flex justify-center items-center h-screen bg-gray-100">
-          <p className="text-lg text-gray-500 capitalize">
+          <p className="text-lg text-gray-500 capitalize select-none" >
             Double Click On Screen To Get Started
           </p>
         </div>

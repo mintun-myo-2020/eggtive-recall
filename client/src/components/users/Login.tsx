@@ -39,38 +39,38 @@ const Login = () => {
         </h1>
         <input
           type="text"
-          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded focus:outline-none"
+          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded focus:outline-slate-500"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="E-mail Address"
+          placeholder="Email Address"
           onKeyDown={handleKeyPress}
         />
         <input
           type="password"
-          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded focus:outline-none"
+          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded focus:outline-slate-500"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           onKeyDown={handleKeyPress}
           placeholder="Password"
         />
         <button
-          className="w-full px-4 py-2 mb-4 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none"
+          className="w-full px-4 py-2 mb-4 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-slate-500"
           onClick={handleLogin}
         >
           Login
         </button>
         <button
-          className="w-full px-4 py-2 mb-4 text-white bg-red-500 rounded hover:bg-red-600 focus:outline-none"
+          className="w-full px-4 py-2 mb-4 text-white bg-red-500 rounded hover:bg-red-600 focus:outline-slate-500"
           onClick={signInWithGoogle}
         >
           Login with Google
         </button>
-        <div className="text-center">
+        <div className="text-center text-gray-500 text-sm">
           <Link className="text-blue-500" to="/reset">
             Forgot Password
           </Link>
         </div>
-        <div className="text-center">
+        <div className="text-center text-gray-500 text-sm">
           Don't have an account?{" "}
           <Link className="text-blue-500" to="/register">
             Register

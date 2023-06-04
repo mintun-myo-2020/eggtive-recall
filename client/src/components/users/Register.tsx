@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { auth, registerWithEmailAndPassword } from "../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { API_BASE_URL, API_ENDPOINTS } from "../../api/endpoints";
 
 const Register = () => {
@@ -28,32 +28,39 @@ const Register = () => {
         <h1 className="text-center font-roboto text-3xl mb-3">Register</h1>
         <input
           type="text"
-          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded focus:outline-none"
+          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded focus:outline-slate-500"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Name"
         />
         <input
           type="text"
-          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded focus:outline-none"
+          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded focus:outline-slate-500"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email Address"
         />
         <input
           type="password"
-          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded focus:outline-none"
+          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded focus:outline-slate-500"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
         />
         <button
-          className="w-full px-4 py-2 mb-4 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none"
+          className="w-full px-4 py-2 mb-4 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-slate-500"
           onClick={handleRegister}
         >
           Register
         </button>
-        <div></div>
+        <div>
+          <p className="text-center text-gray-500 text-sm">
+            Already have an account? <span> </span>
+            <Link to="/login" className="text-blue-500">
+              Log in Here
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Register from "./components/users/Register";
 import About from "./components/about/About";
 import Home from "./components/home/Home";
+import Reset from "./components/users/Reset";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="login" element={<Login />}></Route>
           <Route path="register" element={<Register />}></Route>
           <Route path="about" element={<About />}></Route>
+          <Route path="reset" element={<Reset />}></Route>
           <Route index path="/" element={<Home />}></Route>
         </Routes>
       </Router>
