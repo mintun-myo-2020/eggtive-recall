@@ -102,19 +102,18 @@ const Card: React.FC<CardProps> = ({
     event.stopPropagation();
   };
 
-  const handleMouseDownCross: MouseEventHandler<SVGSVGElement> = (
-    e: React.MouseEvent<SVGSVGElement>
+  const handleMouseDownCross = (
+    event: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>
   ) => {
     clickDownX = initialPosition.x;
     clickDownY = initialPosition.y;
     return;
   };
 
-  const handleMouseUpCross: MouseEventHandler<SVGSVGElement> = (
-    e: React.MouseEvent<SVGSVGElement>
+  const handleMouseUpCross = (
+    event: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>
   ) => {
     if (position.x === clickDownX && position.y === clickDownY) {
-      // TODO: delete the card
       setCards(cards.filter((card) => card._id != id));
       deleteCard(id);
 
