@@ -113,7 +113,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
   if (isEmpty) {
     return (
       <div onDoubleClick={handleDoubleClick}>
-        <div className="flex justify-center items-center h-screen bg-gray-100">
+        <div className="flex justify-center items-center h-screen bg-offwhite">
           <p className="text-lg text-gray-500 capitalize select-none" >
             Double Click On Screen To Get Started
           </p>
@@ -125,7 +125,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
   return (
     <div
       ref={CardContainerRef}
-      className="relative w-full h-screen bg-gray-100"
+      className="relative w-full h-screen bg-offwhite"
       onDoubleClick={handleDoubleClick}
     >
       {cards.map((card) => (

@@ -68,24 +68,27 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({
 
   return (
     <div
-      className="max-w-full px-10 bg-gradient-to-b to-cyan-400 from-cyan-500 text-center rounded-t-md shadow-t-lg"
+      className="max-w-full px-3 pb-4 bg-inherit text-center rounded-t-md shadow-t-lg"
       onDoubleClick={handleDoubleClick}
       onMouseUp={handleMouseUpCard}
     >
-      <div className="h-5 my-2"></div>
+      <div className="h-2 my-2"></div>
       {isEditingQuestion ? (
-        <div>
-          <h1 className="text-2xl font-semibold"> Question: </h1>
-          <textarea
-            ref={newQuestionTextboxRef}
-            className="text-box resize-none rounded w-full mt-5 px-3 py-2.5 h-4/5"
-            value={newQuestion}
-            onChange={handleQuestionChange}
-            onBlur={handleBlur}
-            onKeyDown={handleKeyPress}
-            placeholder="Enter your question here"
-            autoFocus
-          />
+        <div className="text-xl font-semibold">
+          <h1 className="pb-2">New Question</h1>
+          <div className="flex justify-between">
+            <h1 className="text-xl mr-2 font-semibold my-auto"> Q: </h1>
+            <textarea
+              ref={newQuestionTextboxRef}
+              className="text-box resize-none rounded w-full py-2.5 px-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300whitespace-pre-line "
+              value={newQuestion}
+              onChange={handleQuestionChange}
+              onBlur={handleBlur}
+              onKeyDown={handleKeyPress}
+              placeholder="Enter your question here"
+              autoFocus
+            />
+          </div>
         </div>
       ) : (
         <p className="mt-2 font-bold text-2xl break-all hover:cursor-pointer">

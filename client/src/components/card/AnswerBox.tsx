@@ -22,6 +22,7 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
   handleMouseUpCard: handleMouseUpCard,
 }) => {
   const newAnswerTextboxRef = useRef<HTMLTextAreaElement>(null);
+  const attemptInputRef = useRef<HTMLInputElement>(null);
 
   const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
   const [attempt, setAttempt] = useState("");
@@ -75,6 +76,11 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
       } else {
         if (remainingTries > 0)
           setRemainingTries((oldRemainingTries) => oldRemainingTries - 1);
+        if (attemptInputRef.current != null) {
+          console.log(attemptInputRef.current)
+          attemptInputRef.current.classList.add("ring-2", "ring-rose-600", "focus:ring-rose-600", "border-2", "border-rose-600");
+          attemptInputRef.current.classList.remove("focus:ring-indigo-100");
+        }
       }
     }
   };
@@ -107,81 +113,75 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
   return (
     <div
       onMouseUp={handleMouseUpCard}
-      className="pb-1 px-10 via-30% bg-gradient-to-b to-cyan-500 from-cyan-400 rounded-b-md text-center shadow-t-lg"
+      className="pb-1 px-3 bg-inherit rounded-b-md text-center shadow-t-lg"
     >
-      <label htmlFor="answerSubmission">Answer:</label>
-      <input
-        type="text"
-        name="answerSubmission"
-        placeholder="Attempt"
-        onKeyDown={(event) => {
-          handleEnterAttempt(event, event.currentTarget.value);
-          setAttempt(event.currentTarget.value);
-        }}
-        className="
-        rounded
-        text-box
-        ml-2
-        ring-1 ring-inset ring-gray-300
-        placeholder:text-gray-400 placeholder:pl-1         
-        focus:ring-2 focus:ring-inset focus:ring-indigo-100
-        pl-2
-        py-1
-        "
-      />
       {isAnswerRevealed && isEditingAnswer && (
         <div>
-          <div className="opacity-50 mt-2 bg-black bg-opacity-50 flex items-center justify-center cursor-not-allowed">
-            <div className="text-white text-center">Click to hide answer</div>
-          </div>
-          <textarea
-            placeholder="Enter correct answer here"
-            ref={newAnswerTextboxRef}
-            className="px-3 py-2.5 text-box resize-none w-11/12 rounded mt-5 whitespace-pre-line"
-            value={newAnswer}
-            onChange={handleAnswerChange}
-            onKeyDown={handleKeyPress}
-            onBlur={handleBlur}
-          />
-
-          <div
-            onClick={handleEditAnswer}
-            className="w-2/4 my-1 mx-auto py-1 bg-black bg-opacity-50 flex items-center justify-center cursor-pointer "
-          >
-            <div className="text-white text-center">Edit answer</div>
+          <div className="flex justify-between">
+            <h1 className="text-xl mr-2 font-semibold my-auto"> A: </h1>
+            <textarea
+              placeholder="Enter correct answer here"
+              ref={newAnswerTextboxRef}
+              className="px-3 py-2.5 text-box resize-none rounded my-5 w-full"
+              value={newAnswer}
+              onChange={handleAnswerChange}
+              onKeyDown={handleKeyPress}
+              onBlur={handleBlur}
+            />
           </div>
         </div>
       )}
       {isAnswerRevealed && !isEditingAnswer && (
-        <div>
-          <div
-            className="mt-2 bg-black bg-opacity-50 flex items-center justify-center cursor-pointer"
-            onClick={hideAnswer}
-          >
-            <div className="text-white text-center">Click to hide answer</div>
-          </div>
-          <p onDoubleClick={handleEditAnswer} className="mt-2 font-bold text-xl">
-            {newAnswer}
+        <div className="pt-3">
+          <p onDoubleClick={handleEditAnswer} className="font-bold text-3xl text-emerald-500">
+            A: {newAnswer}
           </p>
-          <div
+          <button
             onClick={handleEditAnswer}
-            className="w-2/4 my-1 mx-auto py-1 bg-black bg-opacity-50 flex items-center justify-center cursor-pointer "
+            className="w-full my-1 mx-auto py-1 bg-black bg-opacity-50 flex items-center justify-center cursor-pointer rounded"
           >
             <div className="text-white text-center">Edit answer</div>
-          </div>
+          </button>
+          <button
+            className="rounded p-1 mb-2 w-full bg-black bg-opacity-50 flex items-center justify-center cursor-pointer"
+            onClick={hideAnswer}
+          >
+            <div className="text-white text-center">Hide Answer</div>
+          </button>
         </div>
       )}
       {!isAnswerRevealed && (
-        <div
-          className="mt-2 rounded bg-black bg-opacity-50 flex items-center justify-center cursor-pointer max-w-xs"
-          onClick={(event) => handleShowAnswer(attempt)}
-        >
-          <div className="text-white text-center ">Click to reveal answer</div>
+        <div>
+          <div className="rounded bg-opacity-50 flex items-center justify-center cursor-pointer max-w-xs">
+            <label
+              htmlFor="answerSubmission"
+              className="text-xl mr-2 font-semibold my-auto"
+            >
+              A:
+            </label>
+            <input
+              type="text"
+              name="answerSubmission"
+              placeholder="Attempt"
+              onKeyDown={(event) => {
+                handleEnterAttempt(event, event.currentTarget.value);
+                setAttempt(event.currentTarget.value);
+              }}
+              ref={attemptInputRef}
+              className="rounded outline-none focus:outline-2 focus:outline-gray-600 text-box ml-2 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 placeholder:pl-1 focus:ring-2 focus:ring-inset focus:ring-indigo-100 pl-2 py-1 "
+            />
+          </div>
+          <button
+            onClick={(event) => handleShowAnswer(attempt)}
+            className="w-full rounded my-2 mx-auto p-1 bg-black bg-opacity-50 flex items-center justify-center cursor-pointer"
+          >
+            <div className="text-white text-center">Click to reveal answer</div>
+          </button>
         </div>
       )}
-      <div className="my-5">
+      {/* <div className="my-5">
         <p>Number of tries left: {remainingTries}</p>
-      </div>
+      </div> */}
     </div>
   );
 };

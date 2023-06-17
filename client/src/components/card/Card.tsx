@@ -145,7 +145,7 @@ const Card: React.FC<CardProps> = ({
         onDoubleClick={handleDoubleClick}
         onMouseUp={handleMouseUpCard}
         ref={cardRef}
-        className="max-w-sm hover:opacity-90 bg-transparent absolute rounded font-roboto hover:cursor-move"
+        className="min-w-[300px] max-w-sm hover:opacity-90 bg-cardLavender absolute rounded font-roboto hover:cursor-move"
       >
         <Cross
           onMouseDown={handleMouseDownCross}
