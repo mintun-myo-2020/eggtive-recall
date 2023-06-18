@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const About = () => {
   return (
     <div className="bg-offwhite min-h-screen flex flex-col justify-center items-center">
-      <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <div className="max-w-md mx-auto p-6 bg-gray-100 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold mb-4">About Our App</h1>
         <p className="text-lg text-gray-600 mb-8">
           Our app utilizes proven research techniques like spaced repetition and

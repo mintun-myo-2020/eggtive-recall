@@ -10,7 +10,7 @@ interface CrossProps {
 const Cross = ({ onMouseUp, onMouseDown }: CrossProps) => {
   return (
     <button
-      className="absolute top-0 right-0 m-2 p-2 text-gray-700 hover:text-gray-200 transition-colors duration-300 ease-in-out focus:outline-none"
+      className="absolute top-0 right-0 m-1 text-gray-700 hover:text-gray-200 transition-colors duration-300 ease-in-out focus:outline-none"
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
     >

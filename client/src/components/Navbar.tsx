@@ -69,7 +69,7 @@ const Navbar: React.FC<NavbarProps> = ({ cards }) => {
                   alt="Eggtive Logo"
                 />
                 <img
-                  className="hidden lg:block h-10 w-auto hover:bg-gray-700 cursor-pointer"
+                  className="hidden lg:block h-10 w-auto hover:scale-105 active:scale-95 cursor-pointer"
                   src="/whiteText.png"
                   alt="Eggtive Logo"
                 />
@@ -80,19 +80,19 @@ const Navbar: React.FC<NavbarProps> = ({ cards }) => {
                 {/* Navigation Links */}
                 <Link
                   to="/"
-                  className="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium h-full"
+                  className="navBtn"
                 >
                   Home
                 </Link>
                 <Link
                   to="about"
-                  className="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium h-full"
+                  className="navBtn" 
                 >
                   About
                 </Link>
                 <Link
                   to="board"
-                  className="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium h-full"
+                  className="navBtn"
                 >
                   Board
                 </Link>

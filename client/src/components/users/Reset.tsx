@@ -15,7 +15,7 @@ const Reset = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex bg-offwhite justify-center items-center h-screen">
       <div className="max-w-sm mx-auto p-6 bg-white rounded shadow">
         <h1 className="text-center font-roboto text-3xl mb-3">
           Reset password
