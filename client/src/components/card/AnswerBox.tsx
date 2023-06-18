@@ -113,16 +113,16 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
   return (
     <div
       onMouseUp={handleMouseUpCard}
-      className="pb-1 px-3 bg-inherit rounded-b-md text-center shadow-t-lg"
+      className="pb-1 pl-2 bg-inherit rounded-b-md text-center shadow-t-lg"
     >
       {isAnswerRevealed && isEditingAnswer && (
         <div>
-          <div className="flex justify-between">
+          <div className="flex pr-4 justify-between">
             <h1 className="text-xl mr-2 font-semibold my-auto"> A: </h1>
             <textarea
               placeholder="Enter correct answer here"
               ref={newAnswerTextboxRef}
-              className="px-3 py-2.5 text-box resize-none rounded my-5 w-full"
+              className="pl-3 pr-4 py-2.5 text-box resize-none rounded my-5 w-full"
               value={newAnswer}
               onChange={handleAnswerChange}
               onKeyDown={handleKeyPress}

@@ -68,7 +68,7 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({
 
   return (
     <div
-      className="max-w-full px-3 pb-4 bg-inherit text-center rounded-t-md shadow-t-lg"
+      className="max-w-full pl-2  pb-4 bg-inherit text-center rounded-t-md shadow-t-lg"
       onDoubleClick={handleDoubleClick}
       onMouseUp={handleMouseUpCard}
     >
@@ -76,7 +76,7 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({
       {isEditingQuestion ? (
         <div className="text-xl font-semibold">
           <h1 className="pb-2">New Question</h1>
-          <div className="flex justify-between">
+          <div className="flex pr-4 justify-between">
             <h1 className="text-xl mr-2 font-semibold my-auto"> Q: </h1>
             <textarea
               ref={newQuestionTextboxRef}
