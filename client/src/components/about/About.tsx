@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const About = () => {
   return (
-    <div className="bg-offwhite min-h-screen flex flex-col justify-center items-center">
+    <div className="bg-offwhite min-h-screen flex flex-col justify-center items-center font-oxygen">
       <div className="max-w-md mx-auto p-6 bg-gray-100 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold mb-4">About Our App</h1>
         <p className="text-lg text-gray-600 mb-8">
@@ -23,7 +23,7 @@ const About = () => {
           learning. Improve your knowledge retention and enhance your learning
           experience with our app today!
         </p>
-        <Link to={"/register"} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <Link to={"/register"} className="pageBtn">
           Get Started
         </Link>
       </div>

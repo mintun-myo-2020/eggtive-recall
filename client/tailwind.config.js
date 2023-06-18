@@ -10,6 +10,8 @@ export default {
     },
     fontFamily: {
       roboto: ["Roboto", "sans-serif"],
+      oxygen: ["OXYGEN", "sans-serif"],
+      viga: ["VIGA", "sans-serif"],
     },
   },
   plugins: [],
