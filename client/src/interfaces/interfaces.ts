@@ -25,3 +25,9 @@ export interface IGoUser {
   email: string;
   cards: ICardData[];
 }
+
+export interface IDeck {
+  _id?: string;
+  name: string;
+  cards: ICardData[];
+}

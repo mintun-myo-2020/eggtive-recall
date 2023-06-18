@@ -114,7 +114,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
     return (
       <div onDoubleClick={handleDoubleClick}>
         <div className="flex justify-center items-center h-screen bg-offwhite">
-          <p className="text-lg text-gray-500 capitalize select-none" >
+          <p className="text-lg text-gray-500 capitalize select-none font-oxygen" >
             Double Click On Screen To Get Started
           </p>
         </div>
