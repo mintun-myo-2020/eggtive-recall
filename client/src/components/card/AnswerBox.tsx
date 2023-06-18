@@ -113,7 +113,7 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
   return (
     <div
       onMouseUp={handleMouseUpCard}
-      className="pt-2 pb-1  bg-inherit rounded-b-md text-center shadow-t-lg"
+      className="pt-2 pb-1 bg-inherit rounded-b-md text-center shadow-t-lg"
     >
       {isAnswerRevealed && isEditingAnswer && (
         <div>
@@ -134,16 +134,16 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
       {isAnswerRevealed && !isEditingAnswer && (
         <div className="pt-3">
           <p onDoubleClick={handleEditAnswer} className="font-bold text-3xl text-emerald-500">
-            A: {newAnswer}
+            {newAnswer}
           </p>
           <button
             onClick={handleEditAnswer}
-            className="answerBtn"
+            className="answerCardBtn"
           >
             <div className="text-white text-center">Edit answer</div>
           </button>
           <button
-            className="answerBtn"
+            className="answerCardBtn"
             onClick={hideAnswer}
           >
             <div className="text-white text-center">Hide Answer</div>
@@ -173,7 +173,7 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
           </div>
           <button
             onClick={(event) => handleShowAnswer(attempt)}
-            className="answerBtn"
+            className="answerCardBtn"
           >
             <div className="text-white text-center">Click to reveal answer</div>
           </button>
