@@ -11,3 +11,7 @@
 .saveBtn {
   @apply active:scale-90 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] transition duration-150 ease-in-out lg:w-32 items-center justify-center align-middle ml-auto uppercase self-center bg-gradient-to-br from-purple-500 to-indigo-500 hover:cursor-pointer  hover:text-white px-3 py-2 rounded-md font-medium;
 }
+
+.answerBtn {
+  @apply w-3/4 rounded my-2 mx-auto p-1 bg-black bg-opacity-50 flex items-center justify-center cursor-pointer
+}

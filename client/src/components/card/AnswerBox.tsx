@@ -113,12 +113,12 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
   return (
     <div
       onMouseUp={handleMouseUpCard}
-      className="pb-1 pl-2 bg-inherit rounded-b-md text-center shadow-t-lg"
+      className="pt-2 pb-1  bg-inherit rounded-b-md text-center shadow-t-lg"
     >
       {isAnswerRevealed && isEditingAnswer && (
         <div>
           <div className="flex pr-4 justify-between">
-            <h1 className="text-xl mr-2 font-semibold my-auto"> A: </h1>
+            <h1 className="text-xl pl-2 mr-2 font-semibold my-auto"> A: </h1>
             <textarea
               placeholder="Enter correct answer here"
               ref={newAnswerTextboxRef}
@@ -138,12 +138,12 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
           </p>
           <button
             onClick={handleEditAnswer}
-            className="w-full my-1 mx-auto py-1 bg-black bg-opacity-50 flex items-center justify-center cursor-pointer rounded"
+            className="answerBtn"
           >
             <div className="text-white text-center">Edit answer</div>
           </button>
           <button
-            className="rounded p-1 mb-2 w-full bg-black bg-opacity-50 flex items-center justify-center cursor-pointer"
+            className="answerBtn"
             onClick={hideAnswer}
           >
             <div className="text-white text-center">Hide Answer</div>
@@ -173,7 +173,7 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
           </div>
           <button
             onClick={(event) => handleShowAnswer(attempt)}
-            className="w-full rounded my-2 mx-auto p-1 bg-black bg-opacity-50 flex items-center justify-center cursor-pointer"
+            className="answerBtn"
           >
             <div className="text-white text-center">Click to reveal answer</div>
           </button>
