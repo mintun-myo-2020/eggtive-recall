@@ -120,7 +120,7 @@ const Card: React.FC<CardProps> = ({
       return;
     } else {
       const currentCard = cards.find((card) => card._id === id) as ICardData;
-      createOneCard([currentCard]);
+      createOneCard(currentCard);
     }
   };
 
@@ -128,7 +128,7 @@ const Card: React.FC<CardProps> = ({
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     const currentCard = cards.find((card) => card._id === id) as ICardData;
-    createOneCard([currentCard]);
+    createOneCard(currentCard);
 
     return;
   };
@@ -145,7 +145,7 @@ const Card: React.FC<CardProps> = ({
         onDoubleClick={handleDoubleClick}
         onMouseUp={handleMouseUpCard}
         ref={cardRef}
-        className="min-w-[300px] max-w-sm hover:opacity-90 bg-cardLavender absolute rounded font-roboto hover:cursor-move border border-slate-500"
+        className="min-w-[250px] max-w-xs hover:opacity-95 hover:shadow-md hover:shadow-gray-300 active:shadow-gray-400 active:scale-110  bg-cardLavender absolute rounded font-roboto hover:cursor-move border border-slate-500"
       >
         <Cross
           onMouseDown={handleMouseDownCross}

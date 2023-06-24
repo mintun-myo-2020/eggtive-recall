@@ -3,8 +3,6 @@ import { IPositionData } from "../../interfaces/interfaces";
 interface CrossProps {
   onMouseUp?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onMouseDown?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  onTouchStart?: (event: React.TouchEvent<HTMLButtonElement>) => void;
-  onTouchEnd?: (event: React.TouchEvent<HTMLButtonElement>) => void;
 }
 
 const Cross = ({ onMouseUp, onMouseDown }: CrossProps) => {
@@ -13,6 +11,7 @@ const Cross = ({ onMouseUp, onMouseDown }: CrossProps) => {
       className="absolute top-0 right-0 m-1 text-gray-700 hover:text-gray-200 transition-colors duration-300 ease-in-out focus:outline-none"
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
+      onClick={() => console.log("asd")}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

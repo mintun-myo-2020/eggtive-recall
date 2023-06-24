@@ -77,8 +77,14 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
         if (remainingTries > 0)
           setRemainingTries((oldRemainingTries) => oldRemainingTries - 1);
         if (attemptInputRef.current != null) {
-          console.log(attemptInputRef.current)
-          attemptInputRef.current.classList.add("ring-2", "ring-rose-600", "focus:ring-rose-600", "border-2", "border-rose-600");
+          console.log(attemptInputRef.current);
+          attemptInputRef.current.classList.add(
+            "ring-1",
+            "ring-rose-600",
+            "focus:ring-rose-600",
+            "border-1",
+            "border-rose-600"
+          );
           attemptInputRef.current.classList.remove("focus:ring-indigo-100");
         }
       }
@@ -90,16 +96,20 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
     setNewAnswer(event.target.value);
   };
 
+  const isAnswerBlank = (answer: string) => {
+    return answer.trim() === "";
+  };
+
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" || event.key === "Escape") {
-      if (newAnswer !== "") {
+      if (!isAnswerBlank(newAnswer)) {
         setIsEditingAnswer(false);
         setIsAnswerRevealed(false);
       }
     }
   };
   const handleBlur = () => {
-    if (newAnswer !== "") {
+    if (!isAnswerBlank(newAnswer)) {
       setIsEditingAnswer(false);
       setIsAnswerRevealed(false);
     }
@@ -113,7 +123,7 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
   return (
     <div
       onMouseUp={handleMouseUpCard}
-      className="pt-2 pb-1 bg-inherit rounded-b-md text-center shadow-t-lg"
+      className="w-full pt-2 pb-1 bg-inherit rounded-b-md text-center shadow-t-lg"
     >
       {isAnswerRevealed && isEditingAnswer && (
         <div>
@@ -122,7 +132,7 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
             <textarea
               placeholder="Enter correct answer here"
               ref={newAnswerTextboxRef}
-              className="pl-3 pr-4 py-2.5 text-box resize-none rounded my-5 w-full"
+              className="pl-3 pr-4 py-1 text-box resize-none rounded mb-1 w-full"
               value={newAnswer}
               onChange={handleAnswerChange}
               onKeyDown={handleKeyPress}
@@ -133,19 +143,16 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
       )}
       {isAnswerRevealed && !isEditingAnswer && (
         <div className="pt-3">
-          <p onDoubleClick={handleEditAnswer} className="font-bold text-3xl text-emerald-500">
+          <p
+            onDoubleClick={handleEditAnswer}
+            className="font-bold text-3xl text-emerald-500"
+          >
             {newAnswer}
           </p>
-          <button
-            onClick={handleEditAnswer}
-            className="answerCardBtn"
-          >
+          <button onClick={handleEditAnswer} className="answerCardBtn">
             <div className="text-white text-center">Edit answer</div>
           </button>
-          <button
-            className="answerCardBtn"
-            onClick={hideAnswer}
-          >
+          <button className="answerCardBtn" onClick={hideAnswer}>
             <div className="text-white text-center">Hide Answer</div>
           </button>
         </div>
