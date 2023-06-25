@@ -68,7 +68,7 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({
 
   return (
     <div
-      className="max-w-full pl-2 pb-2 bg-inherit text-center rounded-t-md shadow-t-lg border-b border-gray-500"
+      className="w-full pl-2 pb-2 bg-inherit text-center rounded-t-md shadow-t-lg border-b border-gray-500"
       onDoubleClick={handleDoubleClick}
       onMouseUp={handleMouseUpCard}
     >
@@ -80,7 +80,7 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({
             <h1 className="text-xl mr-2 font-semibold my-auto"> Q: </h1>
             <textarea
               ref={newQuestionTextboxRef}
-              className="text-box resize-none rounded w-full py-2.5 px-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300whitespace-pre-line "
+              className="text-box resize-none rounded w-full py-2.5 px-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 whitespace-pre-line "
               value={newQuestion}
               onChange={handleQuestionChange}
               onBlur={handleBlur}
@@ -91,7 +91,7 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({
           </div>
         </div>
       ) : (
-        <p className="mt-2 font-bold text-2xl break-all hover:cursor-pointer">
+        <p className="mt-2 pr-2 break-after-auto font-bold text-2xl hover:cursor-pointer">
           {newQuestion}
         </p>
       )}

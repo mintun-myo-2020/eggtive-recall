@@ -32,18 +32,15 @@ const CardContainer: React.FC<CardContainerProps> = ({
     const y = event.clientY - 85;
     const userId = user?.uid;
 
-    const newCard: ICardData[] = [
-      {
-        userId: userId,
-        question: { question: "" },
-        answer: { answer: "" },
-        position: {
-          x: x,
-          y: y,
-        },
+    const newCard: ICardData = {
+      userId: userId,
+      question: { question: "" },
+      answer: { answer: "" },
+      position: {
+        x: x,
+        y: y,
       },
-    ];
-
+    };
     const createdCard: ICardData = await createOneCard(newCard);
     setCards((prevCards) => [...prevCards, createdCard]);
   };
@@ -59,7 +56,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
     const currentCard = updatedCards.find(
       (card) => card._id === id
     ) as ICardData;
-    createOneCard([currentCard]);
+    createOneCard(currentCard);
   };
   const handleUpdateAnswer = (id: string | undefined, answer: IAnswer) => {
     const updatedCards = cards.map((card) =>
@@ -69,7 +66,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
     const currentCard = updatedCards.find(
       (card) => card._id === id
     ) as ICardData;
-    createOneCard([currentCard]);
+    createOneCard(currentCard);
   };
 
   const handleUpdatePosition = (
@@ -114,7 +111,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
     return (
       <div onDoubleClick={handleDoubleClick}>
         <div className="flex justify-center items-center h-screen bg-offwhite">
-          <p className="text-lg text-gray-500 capitalize select-none font-oxygen" >
+          <p className="text-lg text-gray-500 capitalize select-none font-oxygen">
             Double Click On Screen To Get Started
           </p>
         </div>

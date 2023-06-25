@@ -10,11 +10,13 @@ const associateCardToUser = (
 };
 
 export const createOneCard = async (
-  newCard: ICardData[]
+  newCard: ICardData
 ): Promise<ICardData> => {
   try {
+
+    const newCardReq = [newCard]
     const url = API_BASE_URL + API_ENDPOINTS.CARDS;
-    const response: any = await axios.post(url, newCard);
+    const response: any = await axios.post(url, newCardReq);
     const createdCard: ICardData = response.data.cards[0];
     // associateCardToUser(createdCard._id, userId);
     return createdCard;
