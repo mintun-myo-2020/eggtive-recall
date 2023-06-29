@@ -10,8 +10,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func GetCard(c *gin.Context) {
-	card, err := services.GetCard(c.Param("userId"))
+func GetCardsWithUserId(c *gin.Context) {
+	card, err := services.GetCardsWithUserId(c.Param("userId"))
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
