@@ -147,6 +147,12 @@ const Card: React.FC<CardProps> = ({
     return;
   };
 
+  async function handleTouchCross(event: React.TouchEvent<HTMLButtonElement>) {
+    const idToken = await user?.getIdToken(true);
+    setCards(cards.filter((card) => card._id != id));
+    deleteCard(id, idToken);
+  }
+
   return (
     <Draggable
       key={id}
@@ -159,11 +165,12 @@ const Card: React.FC<CardProps> = ({
         onDoubleClick={handleDoubleClick}
         onMouseUp={handleMouseUpCard}
         ref={cardRef}
-        className="min-w-[250px] max-w-xs hover:opacity-95 hover:shadow-md hover:shadow-gray-300 active:shadow-gray-400 active:scale-110  bg-cardLavender absolute rounded font-roboto hover:cursor-move border border-slate-500"
+        className="min-w-[250px] max-w-xs hover:opacity-95 hover:shadow-md hover:shadow-gray-300 active:shadow-gray-400 active:scale-110  bg-cardLavender absolute rounded font-roboto hover:cursor-grab active:cursor-grabbing border border-slate-500"
       >
         <Cross
           onMouseDown={handleMouseDownCross}
           onMouseUp={handleMouseUpCross}
+          onTouchEnd={handleTouchCross}
         />
         <QuestionBox
           id={id}

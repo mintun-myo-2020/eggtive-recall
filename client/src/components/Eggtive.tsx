@@ -5,6 +5,7 @@ import { ICardData } from "../interfaces/interfaces";
 import { API_BASE_URL, API_ENDPOINTS } from "../api/endpoints";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../utils/firebase";
+import { getUserCards } from "../api/apiUtils";
 
 const Eggtive = () => {
   const [user, loading, error] = useAuthState(auth);
@@ -15,22 +16,24 @@ const Eggtive = () => {
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
 
   useEffect(() => {
-    axios
-      .get(cardURL)
-      .then((res) => {
-        if (res.data === null) {
+    const fetchData = async () => {
+      try {
+        const idToken = await user?.getIdToken();
+        const cards = await getUserCards(user?.uid, idToken);
+        if (cards === undefined || cards === null) {
           setIsEmpty(true);
-          setCards(new Array<ICardData>());
+          setCards([]);
         } else {
-          setCards(res.data);
+          setCards(cards);
         }
         setIsLoading(false);
-
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error(err);
         setIsLoading(false);
-      });
+      }
+    };
+
+    fetchData();
   }, [loading, user]);
 
   useEffect(() => {
