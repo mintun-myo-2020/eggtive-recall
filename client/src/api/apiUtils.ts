@@ -49,5 +49,7 @@ export const deleteCard = (id: string | undefined, idToken: string | undefined):
   const headers = {
     "Authorization": idToken,
   } 
-  axios.delete(url + id);
+  axios.delete(url + id, {
+    headers: headers,
+  });
 };
