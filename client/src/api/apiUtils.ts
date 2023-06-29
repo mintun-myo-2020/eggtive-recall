@@ -20,7 +20,7 @@ export const createOneCard = async (
     const headers = {
       "Authorization": idToken,
     } 
-    const response: any = await axios.post(url, newCardReq, {
+    const response = await axios.post(url, newCardReq, {
       headers: headers,
     });
     const createdCard: ICardData = response.data.cards[0];
@@ -44,7 +44,12 @@ export const saveAllCards = (cards: ICardData[]): void => {
     });
 };
 
-export const deleteCard = (id: string | undefined): void => {
+export const deleteCard = (id: string | undefined, idToken: string | undefined): void => {
   const url = API_BASE_URL + API_ENDPOINTS.CARDS;
-  axios.delete(url + id);
+  const headers = {
+    "Authorization": idToken,
+  } 
+  axios.delete(url + id, {
+    headers: headers,
+  });
 };

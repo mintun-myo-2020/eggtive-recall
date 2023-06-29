@@ -123,8 +123,9 @@ const Card: React.FC<CardProps> = ({
       | React.TouchEvent<HTMLButtonElement>
   ) => {
     if (position.x === clickDownX && position.y === clickDownY) {
+      const idToken = await user?.getIdToken(true);
       setCards(cards.filter((card) => card._id != id));
-      deleteCard(id);
+      deleteCard(id, idToken);
 
       return;
     } else {
