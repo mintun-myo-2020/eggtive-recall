@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 	"net/http"
 	"os"
@@ -56,23 +57,28 @@ func initalizeFirebaseApp(serviceAccountKeyPath string) (*firebase.App, error) {
 func getCredentialsOptions(path string) option.ClientOption {
 	environment := os.Getenv("ENVIRONMENT")
 	var opt option.ClientOption
-	if environment != "production" {
+	if environment != "development" {
 		opt = option.WithCredentialsFile(path)
 	} else {
-		opt = option.WithCredentialsJSON([]byte(`
-			{
-				"type": "` + os.Getenv("TYPE") + `",
-				"project_id": "` + os.Getenv("PROJECT_ID") + `",
-				"private_key_id": "` + os.Getenv("PRIVATE_KEY_ID") + `",
-				"private_key": "` + os.Getenv("PRIVATE_KEY") + `",
-				"client_email": "` + os.Getenv("CLIENT_EMAIL") + `",
-				"client_id": "` + os.Getenv("CLIENT_ID") + `",
-				"auth_uri": "` + os.Getenv("AUTH_URI") + `",
-				"token_uri": "` + os.Getenv("TOKEN_URI") + `",
-				"auth_provider_x509_cert_url": "` + os.Getenv("AUTH_PROVIDER_X509_CERT_URL") + `",
-				"client_x509_cert_url": "` + os.Getenv("CLIENT_X509_CERT_URL") + `"
-			}
-		`))
+		credentials := map[string]interface{}{
+			"type":                        os.Getenv("TYPE"),
+			"project_id":                  os.Getenv("PROJECT_ID"),
+			"private_key_id":              os.Getenv("PRIVATE_KEY_ID"),
+			"private_key":                 os.Getenv("PRIVATE_KEY"),
+			"client_email":                os.Getenv("CLIENT_EMAIL"),
+			"client_id":                   os.Getenv("CLIENT_ID"),
+			"auth_uri":                    os.Getenv("AUTH_URI"),
+			"token_uri":                   os.Getenv("TOKEN_URI"),
+			"auth_provider_x509_cert_url": os.Getenv("AUTH_PROVIDER_X509_CERT_URL"),
+			"client_x509_cert_url":        os.Getenv("CLIENT_X509_CERT_URL"),
+		}
+
+		jsonData, err := json.Marshal(credentials)
+		if err != nil {
+			log.Println("Error:", err)
+		}
+
+		opt = option.WithCredentialsJSON(jsonData)
 
 	}
 
