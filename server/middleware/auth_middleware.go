@@ -57,7 +57,7 @@ func initalizeFirebaseApp(serviceAccountKeyPath string) (*firebase.App, error) {
 func getCredentialsOptions(path string) option.ClientOption {
 	environment := os.Getenv("ENVIRONMENT")
 	var opt option.ClientOption
-	if environment != "development" {
+	if environment != "production" {
 		opt = option.WithCredentialsFile(path)
 	} else {
 		credentials := map[string]interface{}{
