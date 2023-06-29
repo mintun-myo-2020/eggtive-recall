@@ -21,7 +21,6 @@ func main() {
 			log.Fatal("Error loading .env file")
 		}
 	}
-	fmt.Println(environment)
 	DB_PASSWORD := os.Getenv("MONGODB_PASSWORD")
 	DB_NAME := os.Getenv("MONGODB_NAME")
 	mongoURI := fmt.Sprintf("mongodb+srv://mintunxdd:%s@active-recall.qrbyadj.mongodb.net/?retryWrites=true&w=majority", DB_PASSWORD)

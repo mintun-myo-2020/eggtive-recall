@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        offwhite: "#FEF6E4",
+        bgGray: "#E8E9EB",
         cardLavender: '#B8C1EC',
       },
     },

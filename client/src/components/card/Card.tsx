@@ -11,6 +11,8 @@ import {
   IQuestion,
 } from "../../interfaces/interfaces";
 import { createOneCard, deleteCard } from "../../api/apiUtils";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../utils/firebase";
 
 type CardProps = {
   id?: string;
@@ -36,6 +38,9 @@ const Card: React.FC<CardProps> = ({
   updateAnswer: updateAnswer,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
+
+  const [user, loading, error] = useAuthState(auth);
+  const userId = user?.uid;
 
   const [position, setPosition] = useState<IPositionData>({
     x: initialPosition.x,
@@ -103,15 +108,19 @@ const Card: React.FC<CardProps> = ({
   };
 
   const handleMouseDownCross = (
-    event: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>
+    event:
+      | React.MouseEvent<HTMLButtonElement>
+      | React.TouchEvent<HTMLButtonElement>
   ) => {
     clickDownX = initialPosition.x;
     clickDownY = initialPosition.y;
     return;
   };
 
-  const handleMouseUpCross = (
-    event: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>
+  const handleMouseUpCross = async (
+    event:
+      | React.MouseEvent<HTMLButtonElement>
+      | React.TouchEvent<HTMLButtonElement>
   ) => {
     if (position.x === clickDownX && position.y === clickDownY) {
       setCards(cards.filter((card) => card._id != id));
@@ -120,15 +129,19 @@ const Card: React.FC<CardProps> = ({
       return;
     } else {
       const currentCard = cards.find((card) => card._id === id) as ICardData;
-      createOneCard(currentCard);
+      const idToken = await user?.getIdToken(true);
+
+      createOneCard(currentCard, idToken);
     }
   };
 
-  const handleMouseUpCard: MouseEventHandler<HTMLDivElement> = (
+  const handleMouseUpCard: MouseEventHandler<HTMLDivElement> = async (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     const currentCard = cards.find((card) => card._id === id) as ICardData;
-    createOneCard(currentCard);
+    const idToken = await user?.getIdToken(true);
+
+    createOneCard(currentCard, idToken);
 
     return;
   };

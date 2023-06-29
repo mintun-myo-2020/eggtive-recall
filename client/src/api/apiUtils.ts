@@ -10,15 +10,20 @@ const associateCardToUser = (
 };
 
 export const createOneCard = async (
-  newCard: ICardData
+  newCard: ICardData,
+  idToken: string | undefined
 ): Promise<ICardData> => {
   try {
 
     const newCardReq = [newCard]
     const url = API_BASE_URL + API_ENDPOINTS.CARDS;
-    const response: any = await axios.post(url, newCardReq);
+    const headers = {
+      "Authorization": idToken,
+    } 
+    const response: any = await axios.post(url, newCardReq, {
+      headers: headers,
+    });
     const createdCard: ICardData = response.data.cards[0];
-    // associateCardToUser(createdCard._id, userId);
     return createdCard;
   } catch (error) {
     console.error("Error fetching data:", error);

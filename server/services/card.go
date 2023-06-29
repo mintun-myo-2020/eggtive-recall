@@ -32,7 +32,7 @@ func UpsertCard(card *models.Card) error {
 	return nil
 }
 
-func GetCard(userId string) ([]models.Card, error) {
+func GetCardsWithUserId(userId string) ([]models.Card, error) {
 
 	filter := bson.M{"userId": userId}
 	var cards []models.Card

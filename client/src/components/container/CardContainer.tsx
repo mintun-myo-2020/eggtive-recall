@@ -22,6 +22,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
   isEmpty,
 }) => {
   const [user, loading, error] = useAuthState(auth);
+  const userId = user?.uid;
 
   const CardContainerRef = useRef<HTMLDivElement>(null);
 
@@ -30,7 +31,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
   ) => {
     const x = event.clientX - 150;
     const y = event.clientY - 85;
-    const userId = user?.uid;
+    const idToken = await user?.getIdToken(true);
 
     const newCard: ICardData = {
       userId: userId,
@@ -41,32 +42,36 @@ const CardContainer: React.FC<CardContainerProps> = ({
         y: y,
       },
     };
-    const createdCard: ICardData = await createOneCard(newCard);
+    const createdCard: ICardData = await createOneCard(newCard, idToken);
     setCards((prevCards) => [...prevCards, createdCard]);
   };
 
-  const handleUpdateQuestion = (
+  const handleUpdateQuestion = async (
     id: string | undefined,
     question: IQuestion
   ) => {
     const updatedCards = cards.map((card) =>
       card._id === id ? { ...card, question: question } : card
     );
+    const idToken = await user?.getIdToken(true);
+
     setCards(updatedCards);
     const currentCard = updatedCards.find(
       (card) => card._id === id
     ) as ICardData;
-    createOneCard(currentCard);
+    createOneCard(currentCard, idToken);
   };
-  const handleUpdateAnswer = (id: string | undefined, answer: IAnswer) => {
+  const handleUpdateAnswer = async (id: string | undefined, answer: IAnswer) => {
     const updatedCards = cards.map((card) =>
       card._id === id ? { ...card, answer: answer } : card
     );
+    const idToken = await user?.getIdToken(true);
+
     setCards(updatedCards);
     const currentCard = updatedCards.find(
       (card) => card._id === id
     ) as ICardData;
-    createOneCard(currentCard);
+    createOneCard(currentCard, idToken);
   };
 
   const handleUpdatePosition = (
@@ -110,7 +115,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
   if (isEmpty) {
     return (
       <div onDoubleClick={handleDoubleClick}>
-        <div className="flex justify-center items-center h-screen bg-offwhite">
+        <div className="flex justify-center items-center h-screen bg-bgGray">
           <p className="text-lg text-gray-500 capitalize select-none font-oxygen">
             Double Click On Screen To Get Started
           </p>
@@ -122,7 +127,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
   return (
     <div
       ref={CardContainerRef}
-      className="relative w-full h-screen bg-offwhite"
+      className="relative w-full h-screen bg-bgGray"
       onDoubleClick={handleDoubleClick}
     >
       {cards.map((card) => (
