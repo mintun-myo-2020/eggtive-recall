@@ -78,7 +78,7 @@ func getCredentialsOptions(path string) option.ClientOption {
 			log.Println("Error:", err)
 		}
 
-		opt = option.WithCredentialsJSON(jsonData)
+		opt = option.WithCredentialsJSON(json.RawMessage(jsonData))
 
 	}
 
