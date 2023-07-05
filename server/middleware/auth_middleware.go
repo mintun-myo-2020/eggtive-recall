@@ -21,6 +21,13 @@ func AuthMiddleware() gin.HandlerFunc {
 	}
 
 	return func(c *gin.Context) {
+
+		if c.Request.Method == http.MethodPost {
+			// Skip authentication for POST requests
+			c.Next()
+			return
+		}
+
 		authToken := c.GetHeader("Authorization")
 
 		authClient, err := app.Auth(context.Background())
