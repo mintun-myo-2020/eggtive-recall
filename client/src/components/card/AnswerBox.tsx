@@ -5,7 +5,7 @@ import {
   useLayoutEffect,
   MouseEventHandler,
 } from "react";
-import { IAnswer } from "../../interfaces/interfaces";
+import { IAnswer } from "../../types/types";
 
 type AnswerBoxProps = {
   answer: IAnswer;

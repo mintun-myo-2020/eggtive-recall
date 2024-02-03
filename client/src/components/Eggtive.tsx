@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CardContainer from "./container/CardContainer";
 import axios from "axios";
-import { ICardData } from "../interfaces/interfaces";
+import { ICardData } from "../types/types";
 import { API_BASE_URL, API_ENDPOINTS } from "../api/endpoints";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../utils/firebase";
