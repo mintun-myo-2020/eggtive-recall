@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/myo-mintun-2020/active-recall-BE/controllers"
-	"github.com/myo-mintun-2020/active-recall-BE/middleware"
+	"github.com/myo-mintun-2020/eggtive-recall/controllers"
+	"github.com/myo-mintun-2020/eggtive-recall/middleware"
 )
 
 func SetupRouter() *gin.Engine {

@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/myo-mintun-2020/active-recall-BE/models"
-	"github.com/myo-mintun-2020/active-recall-BE/services"
+	"github.com/myo-mintun-2020/eggtive-recall/models"
+	"github.com/myo-mintun-2020/eggtive-recall/services"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

@@ -1,4 +1,4 @@
-module github.com/myo-mintun-2020/active-recall-BE
+module github.com/myo-mintun-2020/eggtive-recall
 
 go 1.18
 

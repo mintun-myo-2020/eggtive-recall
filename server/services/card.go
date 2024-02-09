@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/myo-mintun-2020/active-recall-BE/models"
-	"github.com/myo-mintun-2020/active-recall-BE/storage"
+	"github.com/myo-mintun-2020/eggtive-recall/models"
+	"github.com/myo-mintun-2020/eggtive-recall/storage"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
