@@ -25,6 +25,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		if c.Request.Method == http.MethodPost {
 			// Skip authentication for POST requests
+
 			c.Next()
 			return
 		}

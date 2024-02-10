@@ -33,5 +33,10 @@ func SetupRouter() *gin.Engine {
 		userGroup.POST("/", controllers.CreateUser)
 	}
 
+	noteGroup := r.Group("/note")
+	{
+		noteGroup.POST("/", controllers.CreateNote)
+	}
+
 	return r
 }
