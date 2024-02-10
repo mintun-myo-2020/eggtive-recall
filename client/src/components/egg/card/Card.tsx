@@ -9,10 +9,10 @@ import {
   IPositionData,
   IAnswer,
   IQuestion,
-} from "../../types/types";
-import { createOneCard, deleteCard } from "../../api/apiUtils";
+} from "../../../types/types";
+import { createOneCard, deleteCard } from "../../../api/apiUtils";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../utils/firebase";
+import { auth } from "../../../utils/firebase";
 
 type CardProps = {
   id?: string;

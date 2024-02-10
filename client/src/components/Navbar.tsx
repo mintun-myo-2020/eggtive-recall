@@ -78,23 +78,17 @@ const Navbar: React.FC<NavbarProps> = ({ cards }) => {
             <div className="hidden sm:block sm:ml-6 flex items-center h-full items-start">
               <div className="flex space-x-4">
                 {/* Navigation Links */}
-                <Link
-                  to="/"
-                  className="navBtn"
-                >
+                <Link to="/" className="navBtn">
                   Home
                 </Link>
-                <Link
-                  to="about"
-                  className="navBtn" 
-                >
+                <Link to="about" className="navBtn">
                   About
                 </Link>
-                <Link
-                  to="board"
-                  className="navBtn"
-                >
+                <Link to="board" className="navBtn">
                   Board
+                </Link>
+                <Link to="notebook" className="navBtn">
+                  Notebook
                 </Link>
               </div>
             </div>

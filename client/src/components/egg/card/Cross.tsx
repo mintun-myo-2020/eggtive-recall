@@ -1,4 +1,4 @@
-import { IPositionData } from "../../types/types";
+import { IPositionData } from "../../../types/types";
 
 interface CrossProps {
   onMouseUp?: (event: React.MouseEvent<HTMLButtonElement>) => void;

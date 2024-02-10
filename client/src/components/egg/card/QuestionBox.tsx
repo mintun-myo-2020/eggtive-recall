@@ -6,7 +6,7 @@ import {
   LegacyRef,
   useEffect,
 } from "react";
-import { IQuestion } from "../../types/types";
+import { IQuestion } from "../../../types/types";
 
 type QuestionBoxProps = {
   id?: string;

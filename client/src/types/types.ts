@@ -31,3 +31,9 @@ export type IDeck = {
   name: string;
   cards: ICardData[];
 }
+
+export type INote = {
+  _id?: string;
+  title: string;
+  content: string
+}
