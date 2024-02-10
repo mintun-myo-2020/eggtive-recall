@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Eggtive from "./components/Eggtive";
+import Board from "./components/Board";
 import Login from "./components/users/Login";
 import Navbar from "./components/Navbar";
 import Register from "./components/users/Register";
@@ -14,7 +14,7 @@ const App = () => {
       <Router>
         <Navbar></Navbar>
         <Routes>
-          <Route path="board" element={<Eggtive />}></Route>
+          <Route path="board" element={<Board />}></Route>
           <Route path="login" element={<Login />}></Route>
           <Route path="register" element={<Register />}></Route>
           <Route path="about" element={<About />}></Route>

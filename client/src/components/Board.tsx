@@ -7,7 +7,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../utils/firebase";
 import { getUserCards } from "../api/apiUtils";
 
-const Eggtive = () => {
+const Board = () => {
   const [user, loading, error] = useAuthState(auth);
   const cardURL = API_BASE_URL + API_ENDPOINTS.CARDS + user?.uid;
 
@@ -63,4 +63,4 @@ const Eggtive = () => {
   );
 };
 
-export default Eggtive;
+export default Board;

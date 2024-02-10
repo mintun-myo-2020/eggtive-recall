@@ -9,12 +9,13 @@ import (
 
 	firebase "firebase.google.com/go"
 	"github.com/gin-gonic/gin"
+	"github.com/myo-mintun-2020/eggtive-recall/storage"
 	"google.golang.org/api/option"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
 
-	path := "middleware/eggtive-firebase-adminsdk.json"
+	path := storage.AuthPath
 	app, err := initalizeFirebaseApp(path)
 	if err != nil {
 		log.Fatal(err)

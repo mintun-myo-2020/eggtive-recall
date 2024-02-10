@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ICardData } from "../types/types";
 import { API_BASE_URL, API_ENDPOINTS } from "./endpoints";
+import { log } from "console";
 
 const associateCardToUser = (
   cardId: string | undefined,
@@ -33,6 +34,7 @@ export const createOneCard = async (
   try {
     const newCardReq = [newCard];
     const url = API_BASE_URL + API_ENDPOINTS.CARDS;
+    console.log(url);
     const headers = {
       Authorization: idToken,
     };
