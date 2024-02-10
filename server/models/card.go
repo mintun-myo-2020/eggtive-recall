@@ -16,15 +16,3 @@ type Card struct {
 	Answer   *Answer            `json:"answer"`
 	Position *Position          `json:"position"`
 }
-
-func (c *Card) UpdateQuestion(question *Question) {
-	c.Question = question
-}
-
-func (c *Card) UpdateAnswer(answer *Answer) {
-	c.Answer = answer
-}
-
-func (c *Card) UpdatePosition(position *Position) {
-	c.Position = position
-}
