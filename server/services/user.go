@@ -8,7 +8,16 @@ import (
 	"github.com/myo-mintun-2020/eggtive-recall/storage"
 )
 
-func CreateUser(user *models.User) error {
+type UserService struct {
+
+}
+
+func NewUserService() *UserService {
+	return &UserService{}
+}
+
+
+func (us UserService) CreateUser(user *models.User) error {
 	collection := storage.GetCollection("users")
 	if collection == nil {
 		return errors.New("failed to get the users collection")

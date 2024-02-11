@@ -5,21 +5,32 @@ import (
 
 	"github.com/myo-mintun-2020/eggtive-recall/models"
 	"github.com/myo-mintun-2020/eggtive-recall/storage"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func CreateNote(note *models.Note) error {
+type NoteService struct {
+	storage storage.NoteStorage
+}
 
-	collection := storage.GetCollection("notes")
+func NewNoteService(storage storage.NoteStorage) *NoteService {
+	return &NoteService{
+		storage: storage,
+	}
+}
 
-	if note.ID.Hex() == "000000000000000000000000" {
-		note.ID = primitive.NewObjectID()
+func (ns *NoteService) CreateNote(note *models.Note) error {
+
+	if note.ID == "" {
+		note.ID = ns.storage.GenerateID()
 	}
 
-	_, err := collection.InsertOne(context.Background(), note)
+	err := ns.storage.InsertNote(context.Background(), note)
 	if err == nil {
 		return err
 	}
 	return nil
 
+}
+
+func (ns *NoteService) GetAllNotes() ([]*models.Note, error) {
+	return ns.storage.GetAllNotes(context.Background())
 }

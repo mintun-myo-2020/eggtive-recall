@@ -3,7 +3,6 @@ import { ICardData } from "../types/types";
 import axios from "axios";
 import { API_BASE_URL, API_ENDPOINTS } from "../api/endpoints";
 import { Link } from "react-router-dom";
-import Login from "./users/Login";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, logout } from "../utils/firebase";
 

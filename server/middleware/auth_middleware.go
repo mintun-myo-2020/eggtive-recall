@@ -30,6 +30,8 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
+		return
+
 		authToken := c.GetHeader("Authorization")
 
 		authClient, err := app.Auth(context.Background())

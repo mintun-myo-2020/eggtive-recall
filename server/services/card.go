@@ -11,7 +11,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func UpsertCard(card *models.Card) error {
+type CardService struct {
+}
+
+func NewCardService() *CardService {
+	return &CardService{}
+}
+
+func (cs *CardService) UpsertCard(card *models.Card) error {
 	collection := storage.GetCollection("cards")
 	if collection == nil {
 		return errors.New("failed to get the cards collection")
@@ -32,7 +39,7 @@ func UpsertCard(card *models.Card) error {
 	return nil
 }
 
-func GetCardsWithUserId(userId string) ([]models.Card, error) {
+func (cs *CardService) GetCardsWithUserId(userId string) ([]models.Card, error) {
 
 	filter := bson.M{"userId": userId}
 	var cards []models.Card
@@ -63,7 +70,7 @@ func GetCardsWithUserId(userId string) ([]models.Card, error) {
 	return cards, nil
 }
 
-func GetAllCards() ([]models.Card, error) {
+func (cs *CardService) GetAllCards() ([]models.Card, error) {
 	var cards []models.Card
 
 	collection := storage.GetCollection("cards")
@@ -92,7 +99,7 @@ func GetAllCards() ([]models.Card, error) {
 	return cards, nil
 }
 
-func UpdateCard(id string, updatedCard *models.Card) error {
+func (cs *CardService) UpdateCard(id string, updatedCard *models.Card) error {
 	collection := storage.GetCollection("cards")
 	if collection == nil {
 		return errors.New("failed to get the cards collection")
@@ -121,7 +128,7 @@ func UpdateCard(id string, updatedCard *models.Card) error {
 	return nil
 }
 
-func DeleteCard(id string) error {
+func (cs *CardService) DeleteCard(id string) error {
 	collection := storage.GetCollection("cards")
 	if collection == nil {
 		return errors.New("failed to get the cards collection")
