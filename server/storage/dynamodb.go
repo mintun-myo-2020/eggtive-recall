@@ -27,10 +27,3 @@ func (d *DynamoDB) InsertOne(ctx context.Context, document interface{}) error {
 	// Implement DynamoDB-specific logic for inserting a document
 	return nil
 }
-
-// DynamoDBFactory is a factory for creating DynamoDB instances.
-type DynamoDBFactory struct{}
-
-func (f *DynamoDBFactory) GetDatabase() Database {
-	return NewDynamoDB()
-}

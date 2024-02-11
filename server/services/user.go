@@ -2,28 +2,24 @@ package services
 
 import (
 	"context"
-	"errors"
 
 	"github.com/myo-mintun-2020/eggtive-recall/models"
 	"github.com/myo-mintun-2020/eggtive-recall/storage"
 )
 
 type UserService struct {
-
+	storage storage.UserStorage
 }
 
-func NewUserService() *UserService {
-	return &UserService{}
+func NewUserService(storage storage.UserStorage) *UserService {
+	return &UserService{
+		storage: storage,
+	}
 }
-
 
 func (us UserService) CreateUser(user *models.User) error {
-	collection := storage.GetCollection("users")
-	if collection == nil {
-		return errors.New("failed to get the users collection")
-	}
 
-	_, err := collection.InsertOne(context.Background(), user)
+	err := us.storage.InsertUser(context.Background(), user)
 	if err != nil {
 		return err
 	}

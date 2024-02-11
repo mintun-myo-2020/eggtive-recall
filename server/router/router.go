@@ -32,15 +32,17 @@ func SetupRouter() *gin.Engine {
 		cardGroup.DELETE("/:id", cardController.DeleteCard)
 	}
 
-	userService := services.NewUserService()
-	userController := controllers.NewUserController(*userService)
+	mongoUserDBCollection := storage.GetCollection("user")
+	userStorage := storage.NewMongoDBUserStorage(mongoUserDBCollection)
+	userService := services.NewUserService(userStorage)
+	userController := controllers.NewUserController(userService)
 	userGroup := r.Group("/user")
 	{
 		userGroup.POST("/", userController.CreateUser)
 	}
 
-	mongoDBCollection := storage.GetCollection("notes")
-	noteStorage := storage.NewMongoDBNoteStorage(mongoDBCollection)
+	mongoNotesDBCollection := storage.GetCollection("notes")
+	noteStorage := storage.NewMongoDBNoteStorage(mongoNotesDBCollection)
 	noteService := services.NewNoteService(noteStorage)
 	noteController := controllers.NewNoteController(noteService)
 	noteGroup := r.Group("/note")
