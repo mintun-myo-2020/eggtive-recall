@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/myo-mintun-2020/eggtive-recall/models"
 	"github.com/myo-mintun-2020/eggtive-recall/services"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type CardController struct {
@@ -65,33 +64,10 @@ func (cc *CardController) UpsertCard(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": message, "cards": cards})
 }
 
-func (cc *CardController) UpdateCard(c *gin.Context) {
-	var newCard *models.Card
-
-	if err := c.ShouldBindJSON(&newCard); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	err := cc.cardService.UpdateCard(c.Param("id"), newCard)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	objID, err := primitive.ObjectIDFromHex(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	newCard.ID = objID
-	c.JSON(http.StatusOK, newCard)
-}
-
 func (cc *CardController) DeleteCard(c *gin.Context) {
 	err := cc.cardService.DeleteCard(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "err.Error()"})
 		return
 	}
 

@@ -21,14 +21,15 @@ func SetupRouter() *gin.Engine {
 		c.String(http.StatusOK, "pong")
 	})
 
-	cardService := services.NewCardService()
+	mongoCardsDBCollection := storage.GetCollection("cards")
+	cardStorage := storage.NewMongoDBCardStorage(mongoCardsDBCollection)
+	cardService := services.NewCardService(cardStorage)
 	cardController := controllers.NewCardController(*cardService)
 	cardGroup := r.Group("/card")
 	{
 		cardGroup.GET("/:userId", cardController.GetCardsWithUserId)
 		cardGroup.GET("/", cardController.GetAllCards)
 		cardGroup.POST("/", cardController.UpsertCard)
-		cardGroup.PUT("/:id", cardController.UpdateCard)
 		cardGroup.DELETE("/:id", cardController.DeleteCard)
 	}
 

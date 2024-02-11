@@ -10,7 +10,7 @@ import (
 )
 
 type NoteStorage interface {
-	GenerateID() string
+	generateID() string
 	InsertNote(ctx context.Context, note *models.Note) error
 	GetAllNotes(ctx context.Context) ([]*models.Note, error)
 }
@@ -25,11 +25,15 @@ func NewMongoDBNoteStorage(collection *mongo.Collection) *MongoDBNoteStorage {
 	}
 }
 
-func (ms *MongoDBNoteStorage) GenerateID() string {
+func (ms *MongoDBNoteStorage) generateID() string {
 	return primitive.NewObjectID().Hex()
 }
 
 func (ms *MongoDBNoteStorage) InsertNote(ctx context.Context, note *models.Note) error {
+	if note.ID == "" {
+		note.ID = ms.generateID()
+	}
+
 	_, err := ms.collection.InsertOne(ctx, note)
 	return err
 }

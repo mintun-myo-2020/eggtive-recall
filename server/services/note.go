@@ -19,9 +19,6 @@ func NewNoteService(storage storage.NoteStorage) *NoteService {
 
 func (ns *NoteService) CreateNote(note *models.Note) error {
 
-	if note.ID == "" {
-		note.ID = ns.storage.GenerateID()
-	}
 
 	err := ns.storage.InsertNote(context.Background(), note)
 	if err == nil {
