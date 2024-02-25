@@ -9,6 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tiptap/extension-bullet-list": "^2.2.3",
+    "@tiptap/extension-code": "^2.2.3",
+    "@tiptap/extension-code-block": "^2.2.3",
+    "@tiptap/extension-highlight": "^2.2.3",
+    "@tiptap/extension-link": "^2.2.3",
+    "@tiptap/extension-underline": "^2.2.3",
     "@tiptap/pm": "^2.2.2",
     "@tiptap/react": "^2.2.2",
     "@tiptap/starter-kit": "^2.2.2",
@@ -16,6 +22,7 @@
     "axios": "^1.4.0",
     "dotenv": "^16.0.3",
     "firebase": "^9.22.1",
+    "lucide-react": "^0.331.0",
     "mongodb": "^5.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -2,10 +2,10 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Board from "./components/egg/Board";
 import Login from "./components/users/Login";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar/Navbar";
 import Register from "./components/users/Register";
-import About from "./components/about/About";
-import Home from "./components/home/Home";
+import About from "./pages/about/About";
+import Home from "./pages/home/Home";
 import Reset from "./components/users/Reset";
 import Notebook from "./components/notebook/Notebook";
 

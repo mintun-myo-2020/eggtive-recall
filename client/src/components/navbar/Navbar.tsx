@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { ICardData } from "../types/types";
+import { ICardData } from "../../types/types";
 import axios from "axios";
-import { API_BASE_URL, API_ENDPOINTS } from "../api/endpoints";
+import { API_BASE_URL, API_ENDPOINTS } from "../../api/endpoints";
 import { Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, logout } from "../utils/firebase";
+import { auth, logout } from "../../utils/firebase";
 
 type NavbarProps = {
   cards?: ICardData[];
