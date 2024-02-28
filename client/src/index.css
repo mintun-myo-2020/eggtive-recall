@@ -23,7 +23,7 @@
 }
 
 .navBtn {
-  @apply hover:scale-105 active:scale-100 transition duration-75 ease-in-out flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium h-full 
+  @apply hover:scale-105 active:scale-100 transition duration-75 ease-in-out flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium h-full bg-gray-800
 }
 
 .answerCardBtn {
@@ -31,5 +31,5 @@
 }
 
 .pageBtn {
-  @apply bg-blue-500 hover:bg-blue-700 text-stone-800 font-bold py-2 px-4 rounded font-roboto text-base
+  @apply bg-gray-800 hover:bg-gray-700 text-stone-100 py-2 px-4 rounded font-roboto 
 }
