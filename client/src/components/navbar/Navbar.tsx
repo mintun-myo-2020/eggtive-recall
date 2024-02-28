@@ -61,7 +61,7 @@ const Navbar: React.FC<NavbarProps> = ({ cards }) => {
           <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
             {/* Logo */}
             <Link to="/">
-              <div className="hidden sm:block flex-shrink-0 flex items-center">
+              <div className="hidden sm:block flex-shrink-0 items-center">
                 <img
                   className="block lg:hidden h-10 w-auto"
                   src="/justEggLogo.png"
@@ -74,7 +74,7 @@ const Navbar: React.FC<NavbarProps> = ({ cards }) => {
                 />
               </div>
             </Link>
-            <div className="hidden sm:block sm:ml-6 flex items-center h-full items-start">
+            <div className="hidden sm:block sm:ml-6 items-center h-full">
               <div className="flex space-x-4">
                 {/* Navigation Links */}
                 <Link to="/" className="navBtn">
