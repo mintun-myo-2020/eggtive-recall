@@ -1,5 +1,5 @@
 type DotBackgroundProps = {
-  contents: JSX.Element;
+  contents?: JSX.Element;
 };
 
 export function DotBackground({

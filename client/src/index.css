@@ -31,5 +31,5 @@
 }
 
 .pageBtn {
-  @apply bg-gray-800 hover:bg-gray-700 text-stone-100 py-2 px-4 rounded font-roboto 
+  @apply bg-gray-800 hover:bg-gray-700 hover:scale-105 text-stone-100 py-2 px-4 rounded font-roboto active:scale-100 transition duration-75 ease-in-out
 }

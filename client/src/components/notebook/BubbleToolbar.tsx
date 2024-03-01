@@ -13,11 +13,11 @@ const buttonClass =
   "flex group items-center justify-center border text-sm font-semibold rounded-md disabled:opacity-50 whitespace-nowrap bg-transparent border-transparent text-neutral-500 dark:text-neutral-400 hover:bg-black/5 hover:text-neutral-700 active:bg-black/10 active:text-neutral-800 dark:hover:bg-white/10 dark:hover:text-neutral-300 dark:active:text-neutral-200 h-8 gap-1 min-w-[2rem] px-2 w-auto";
 
 const toolBarClass =
-  "mx-2 justify-center text-black inline-flex h-full leading-none gap-0.5 flex-row p-1 items-center bg-white rounded-lg dark:bg-black shadow-sm border border-neutral-200 dark:border-neutral-800";
+  "text-black inline-flex h-full leading-none gap-0.5 flex-row p-1 items-center bg-white rounded-lg dark:bg-black shadow-sm border border-neutral-200 dark:border-neutral-800";
 
 const isActiveClass = "bg-black/10 text-neutral-800";
 
-const HeadingToolbar: React.FC = () => {
+const BubbleToolbar: React.FC = () => {
   const { editor } = useCurrentEditor();
 
   if (!editor) {
@@ -84,4 +84,4 @@ const HeadingToolbar: React.FC = () => {
   );
 };
 
-export default HeadingToolbar;
+export default BubbleToolbar;

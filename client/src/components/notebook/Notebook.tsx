@@ -8,11 +8,10 @@ import {
 import StarterKit from "@tiptap/starter-kit";
 import HeadingToolbar from "./HeadingToolbar";
 import Underline from "@tiptap/extension-underline";
-import Code from "@tiptap/extension-code";
-import CodeBlock from "@tiptap/extension-code-block";
 import Link from "@tiptap/extension-link";
 import Highlight from "@tiptap/extension-highlight";
 import { EditorProps } from "@tiptap/pm/view";
+import BubbleToolbar from "./BubbleToolbar";
 
 const extensions = [
   StarterKit,
@@ -20,12 +19,10 @@ const extensions = [
     multicolor: true,
   }),
   Underline,
-  CodeBlock.configure({}),
   Link.configure({
     openOnClick: true,
     autolink: true,
   }),
-  Highlight,
 ];
 const content = "";
 
@@ -34,24 +31,33 @@ const editorClass: EditorProps = {
     class:
       "prose dark:prose-invert " +
       "prose-sm sm:prose-base lg:prose-lg " +
-      "xl:prose-2xl m-5 focus:outline-none " +
+      "xl:prose-2xl mx-2 focus:outline-none " +
       "border p-4 border-gray-400 min-h-[12rem] " +
-      "max-h-[12rem] overflow-y-auto max-w-none ",
+      "max-w-screen overflow-y-auto ",
   },
 };
 
+const handleSave = () => {
+  
+}
+
 const Notebook = () => {
   return (
-    <EditorProvider
-      extensions={extensions}
-      slotBefore={<HeadingToolbar />}
-      content={content}
-      autofocus={true}
-      editorProps={editorClass}
-    >
-      <FloatingMenu> </FloatingMenu>
-      {/* <BubbleMenu>BubbleMenu</BubbleMenu> */}
-    </EditorProvider>
+    <div className="grid">
+      <EditorProvider
+        extensions={extensions}
+        slotBefore={<HeadingToolbar />}
+        content={content}
+        autofocus={true}
+        editorProps={editorClass}
+      >
+        <BubbleMenu>
+          <BubbleToolbar />
+        </BubbleMenu>
+      </EditorProvider>
+
+      <button type="button" className="pageBtn m-2 w-1/12 justify-self-end  ">Save</button>
+    </div>
   );
 };
 

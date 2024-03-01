@@ -3,6 +3,12 @@ import { auth, registerWithEmailAndPassword } from "../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { API_BASE_URL, API_ENDPOINTS } from "../../api/endpoints";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Button from "@mui/material/Button";
 
 const Register = () => {
   const [name, setName] = useState<string>("");
@@ -26,41 +32,67 @@ const Register = () => {
     <div className="flex bg-bgGray justify-center items-center h-screen ">
       <div className="max-w-sm mx-auto p-6 bg-white rounded shadow">
         <h1 className="text-center font-roboto text-3xl mb-3">Register</h1>
-        <input
-          type="text"
-          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded focus:outline-slate-500"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Name"
-        />
-        <input
-          type="text"
-          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded focus:outline-slate-500"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email Address"
-        />
-        <input
-          type="password"
-          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded focus:outline-slate-500"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-        />
-        <button
-          className="w-full px-4 py-2 mb-4 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-slate-500"
-          onClick={handleRegister}
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleRegister}
+          sx={{ mt: 3 }}
         >
-          Register
-        </button>
-        <div>
-          <p className="text-center text-gray-500 text-sm">
-            Already have an account? <span> </span>
-            <Link to="/login" className="text-blue-500">
-              Login Here
-            </Link>
-          </p>
-        </div>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="given-name"
+                name="firstName"
+                required
+                fullWidth
+                id="firstName"
+                label="Name"
+                autoFocus
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="new-password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            onClick={handleRegister}
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign Up
+          </Button>
+          <div>
+            <p className="text-center text-gray-500 text-sm">
+              Already have an account? <span> </span>
+              <Link to="/login" className="text-blue-500">
+                Login Here
+              </Link>
+            </p>
+          </div>
+        </Box>
       </div>
     </div>
   );
