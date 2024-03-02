@@ -34,8 +34,8 @@ const Notebook = () => {
         <div className="hidden sm:flex flex-none max-w-32 mr-5 h-dvh">
           <Sidebar collapseBehavior="collapse" collapsed={false}>
             <Sidebar.Items>
-              {noteTitles.map((noteTitle) => (
-                <Sidebar.ItemGroup>{noteTitle.slice(10)}</Sidebar.ItemGroup>
+              {noteTitles.map((noteTitle, i) => (
+                <Sidebar.ItemGroup key={i}>{noteTitle.slice(10)}</Sidebar.ItemGroup>
               ))}
             </Sidebar.Items>
           </Sidebar>

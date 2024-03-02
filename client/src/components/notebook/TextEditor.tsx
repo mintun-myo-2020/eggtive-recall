@@ -14,9 +14,18 @@ import { EditorProps } from "@tiptap/pm/view";
 import BubbleToolbar from "./BubbleToolbar";
 import { EditorState } from "@tiptap/pm/state";
 import { useRef, useState } from "react";
+import Heading from "@tiptap/extension-heading";
+import Document from "@tiptap/extension-document";
+
+const CustomDocument = Document.extend({
+  content: "heading block*",
+});
 
 const extensions = [
-  StarterKit,
+  CustomDocument,
+  StarterKit.configure({
+    document: false,
+  }),
   Highlight.configure({
     multicolor: true,
   }),
@@ -25,8 +34,10 @@ const extensions = [
     openOnClick: true,
     autolink: true,
   }),
+  Heading.configure({
+    levels: [1, 2, 3],
+  }),
 ];
-const content = "";
 
 const editorClass: EditorProps = {
   attributes: {
@@ -40,7 +51,7 @@ const editorClass: EditorProps = {
 };
 
 type TextAreaProps = {
-  content: String;
+  content: string;
 };
 
 const TextEditor: React.FC<TextAreaProps> = ({ content }) => {
