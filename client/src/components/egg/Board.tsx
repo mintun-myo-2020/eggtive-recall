@@ -6,6 +6,7 @@ import { API_BASE_URL, API_ENDPOINTS } from "../../api/endpoints";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
 import { getUserCards } from "../../api/apiUtils";
+import { Spinner } from "flowbite-react/lib/esm/components/Spinner";
 
 const Board = () => {
   const [user, loading, error] = useAuthState(auth);
@@ -48,6 +49,7 @@ const Board = () => {
     return (
       <div className="Eggtive">
         <div className="flex justify-center items-center h-screen bg-gray-100">
+          <Spinner />
           <p className="text-lg text-gray-500 ">Loading...</p>
         </div>
       </div>

@@ -2,6 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { DotBackground } from "../../components/ui/dot-background";
 import { Accordion, AccordionContent, AccordionTitle } from "flowbite-react";
+import { TextGenerateEffect } from "../../components/ui/text-generate-effect";
+
+const eggtiveIntro = `Eggtive utilizes proven research techniques like spaced repetition and active recall to enhance learning and memory retention.`;
 
 const About = () => {
   const contents: JSX.Element = (
@@ -11,8 +14,10 @@ const About = () => {
           <AccordionTitle>What is Eggtive?</AccordionTitle>
           <AccordionContent>
             <p className="text-lg text-black mb-8">
-              Eggtive utilizes proven research techniques like spaced repetition
-              and active recall to enhance learning and memory retention.
+              <TextGenerateEffect
+                words={eggtiveIntro}
+                className="text-lg text-gray-600 "
+              />
             </p>
           </AccordionContent>
         </Accordion.Panel>

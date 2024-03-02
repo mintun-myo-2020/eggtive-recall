@@ -1,0 +1,16 @@
+.drawer {
+    @apply fixed top-0 h-full bg-white w-300px shadow-md transition-transform ease-in-out duration-300 transform -translate-x-full;
+  }
+  
+  .drawer.open {
+    @apply translate-x-0;
+  }
+  
+  .overlay {
+    @apply fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-10;
+  }
+  
+  .content {
+    @apply p-4;
+  }
+  
