@@ -7,7 +7,7 @@ import Register from "./components/users/Register";
 import About from "./pages/about/About";
 import Home from "./pages/home/Home";
 import Reset from "./components/users/Reset";
-import TextArea from "./components/notebook/TextArea";
+import TextEditor from "./components/notebook/TextEditor";
 import Notebook from "./pages/notebook/Notebook";
 
 const App = () => {

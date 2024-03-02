@@ -5,12 +5,11 @@ import { ICardData } from "../../types/types";
 import { API_BASE_URL, API_ENDPOINTS } from "../../api/endpoints";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
-import { getUserCards } from "../../api/apiUtils";
+import { getUserCards } from "../../api/noteApiUtils";
 import { Spinner } from "flowbite-react/lib/esm/components/Spinner";
 
 const Board = () => {
   const [user, loading, error] = useAuthState(auth);
-  const cardURL = API_BASE_URL + API_ENDPOINTS.CARDS + user?.uid;
 
   const [cards, setCards] = useState<ICardData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);

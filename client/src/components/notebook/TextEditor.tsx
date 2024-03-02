@@ -43,7 +43,7 @@ type TextAreaProps = {
   content: String;
 };
 
-const TextArea: React.FC<TextAreaProps> = ({ content }) => {
+const TextEditor: React.FC<TextAreaProps> = ({ content }) => {
   const [editorContent, setEditorContent] = useState(content);
 
   const handleSave = () => {
@@ -78,4 +78,4 @@ const TextArea: React.FC<TextAreaProps> = ({ content }) => {
   );
 };
 
-export default TextArea;
+export default TextEditor;

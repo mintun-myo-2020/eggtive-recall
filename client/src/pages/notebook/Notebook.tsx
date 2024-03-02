@@ -1,31 +1,42 @@
-import TextArea from "../../components/notebook/TextArea";
+import TextEditor from "../../components/notebook/TextEditor";
 
 import { useEffect, useState } from "react";
-import { InboxIcon, Mail, MailIcon } from "lucide-react";
+import { NotebookIcon } from "lucide-react";
 import { Sidebar } from "flowbite-react/lib/esm/components/Sidebar";
-import { useCurrentEditor } from "@tiptap/react";
-
-const drawerWidth = 240;
+import { API_BASE_URL, API_ENDPOINTS } from "../../api/endpoints";
+import { getNotes } from "../../api/cardApiUtils";
 
 const Notebook = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [noteTitles, setNoteTitles] = useState<String[]>([]);
 
-  const { editor } = useCurrentEditor();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const notes = await getNotes();
+        console.log(notes);
+        if (notes === undefined || notes === null) {
+          setNoteTitles([]);
+        } else {
+          const titles = notes.map((note) => note.title);
+          setNoteTitles(titles);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
 
-  const handleSave = () => {
-    console.log(editor?.getHTML);
-  };
+    fetchData();
+  }, []);
+
   return (
     <div>
       <div className="flex flex-row">
-        <div className="hidden sm:flex flex-none max-w-32 mr-5">
+        <div className="hidden sm:flex flex-none max-w-32 mr-5 h-dvh">
           <Sidebar collapseBehavior="collapse" collapsed={false}>
             <Sidebar.Items>
-              <Sidebar.ItemGroup>
-                <Sidebar.Item href="#" icon={Mail}>
-                  Dashboard
-                </Sidebar.Item>
-              </Sidebar.ItemGroup>
+              {noteTitles.map((noteTitle) => (
+                <Sidebar.ItemGroup>{noteTitle.slice(10)}</Sidebar.ItemGroup>
+              ))}
             </Sidebar.Items>
           </Sidebar>
         </div>
@@ -34,7 +45,7 @@ const Notebook = () => {
           <Sidebar collapseBehavior="collapse" collapsed={true}>
             <Sidebar.Items>
               <Sidebar.ItemGroup>
-                <Sidebar.Item href="#" icon={Mail}>
+                <Sidebar.Item href="#" icon={NotebookIcon}>
                   Dashboard
                 </Sidebar.Item>
               </Sidebar.ItemGroup>
@@ -42,11 +53,9 @@ const Notebook = () => {
           </Sidebar>
         </div>
         <div className="grow">
-          <TextArea content={"initial"} />
+          <TextEditor content={"initial"} />
         </div>
       </div>
-
-
     </div>
   );
 };
