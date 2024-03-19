@@ -9,8 +9,9 @@ import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
+import { Spinner } from "flowbite-react";
 
-const Register = () => {
+const SignUp = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -18,26 +19,36 @@ const Register = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (loading) {
-      return;
-    }
-    if (user) navigate("/board");
+    if (user) navigate("/notebook");
   }, [user, loading, navigate]);
 
   const handleRegister = async () => {
     await registerWithEmailAndPassword(name, email, password);
   };
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    if (event.key === "Enter") {
+      handleRegister();
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="Eggtive">
+        <div className="flex justify-center items-center h-screen bg-gray-100">
+          <Spinner />
+          <p className="text-lg text-gray-500 ">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex bg-bgGray justify-center items-center h-screen ">
       <div className="max-w-sm mx-auto p-6 bg-white rounded shadow">
-        <h1 className="text-center font-roboto text-3xl mb-3">Register</h1>
-        <Box
-          component="form"
-          noValidate
-          onSubmit={handleRegister}
-          sx={{ mt: 3 }}
-        >
+        <h1 className="text-center font-roboto text-3xl mb-3">Sign Up</h1>
+        <Box onSubmit={handleRegister} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -49,6 +60,7 @@ const Register = () => {
                 label="Name"
                 autoFocus
                 onChange={(e) => setName(e.target.value)}
+                onKeyUp={handleKeyPress}
               />
             </Grid>
             <Grid item xs={12}>
@@ -60,6 +72,7 @@ const Register = () => {
                 name="email"
                 autoComplete="email"
                 onChange={(e) => setEmail(e.target.value)}
+                onKeyUp={handleKeyPress}
               />
             </Grid>
             <Grid item xs={12}>
@@ -72,6 +85,7 @@ const Register = () => {
                 id="password"
                 autoComplete="new-password"
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyUp={handleKeyPress}
               />
             </Grid>
           </Grid>
@@ -98,4 +112,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default SignUp;

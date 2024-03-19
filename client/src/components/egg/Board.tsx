@@ -5,7 +5,7 @@ import { ICardData } from "../../types/types";
 import { API_BASE_URL, API_ENDPOINTS } from "../../api/endpoints";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
-import { getUserCards } from "../../api/noteApiUtils";
+import { getUserCards } from "../../api/cardApiUtils";
 import { Spinner } from "flowbite-react/lib/esm/components/Spinner";
 
 const Board = () => {

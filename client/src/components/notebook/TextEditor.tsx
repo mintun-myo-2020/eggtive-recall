@@ -4,6 +4,7 @@ import {
   EditorContentProps,
   EditorProvider,
   FloatingMenu,
+  mergeAttributes,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import HeadingToolbar from "./HeadingToolbar";
@@ -16,6 +17,9 @@ import { EditorState } from "@tiptap/pm/state";
 import { useRef, useState } from "react";
 import Heading from "@tiptap/extension-heading";
 import Document from "@tiptap/extension-document";
+import { saveNote } from "../../api/noteApiUtils";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../utils/firebase";
 
 const CustomDocument = Document.extend({
   content: "heading block*",
@@ -25,6 +29,7 @@ const extensions = [
   CustomDocument,
   StarterKit.configure({
     document: false,
+    heading: false,
   }),
   Highlight.configure({
     multicolor: true,
@@ -34,9 +39,26 @@ const extensions = [
     openOnClick: true,
     autolink: true,
   }),
-  Heading.configure({
+  Heading.extend({
     levels: [1, 2, 3],
-  }),
+    renderHTML({ node, HTMLAttributes }) {
+      const level = this.options.levels.includes(node.attrs.level)
+        ? node.attrs.level
+        : this.options.levels[0];
+      const classes: { [index: number]: string } = {
+        1: "text-3xl",
+        2: "text-2xl",
+        3: "text-xl",
+      };
+      return [
+        `h${level}`,
+        mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
+          class: `${classes[level]}`,
+        }),
+        0,
+      ];
+    },
+  }).configure({ levels: [1, 2, 3] }),
 ];
 
 const editorClass: EditorProps = {
@@ -55,10 +77,14 @@ type TextAreaProps = {
 };
 
 const TextEditor: React.FC<TextAreaProps> = ({ content }) => {
+  const [user, loading, error] = useAuthState(auth);
+
   const [editorContent, setEditorContent] = useState(content);
 
-  const handleSave = () => {
-    console.log(editorContent);
+  const handleSave = async () => {
+    const idToken = await user?.getIdToken();
+    console.log(editorContent, idToken);
+    saveNote(editorContent, idToken);
   };
 
   return (

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,6 +22,8 @@ func NewNoteController(noteService *services.NoteService) *NoteController {
 func (uc *NoteController) CreateNote(c *gin.Context) {
 
 	var newNote models.Note
+
+	log.Println(c.Request )
 
 	if err := c.ShouldBindJSON(&newNote); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

@@ -3,16 +3,25 @@ import TextEditor from "../../components/notebook/TextEditor";
 import { useEffect, useState } from "react";
 import { NotebookIcon } from "lucide-react";
 import { Sidebar } from "flowbite-react/lib/esm/components/Sidebar";
-import { API_BASE_URL, API_ENDPOINTS } from "../../api/endpoints";
-import { getNotes } from "../../api/cardApiUtils";
+
+import { getNotes } from "../../api/noteApiUtils";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../utils/firebase";
+import { getIdToken } from "firebase/auth";
 
 const Notebook = () => {
+  const [user, loading, error] = useAuthState(auth);
+
+
   const [noteTitles, setNoteTitles] = useState<String[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const notes = await getNotes();
+        const idToken = await user?.getIdToken();
+        const notes = await getNotes(user?.uid, idToken);
         console.log(notes);
         if (notes === undefined || notes === null) {
           setNoteTitles([]);
@@ -53,7 +62,7 @@ const Notebook = () => {
           </Sidebar>
         </div>
         <div className="grow">
-          <TextEditor content={"initial"} />
+          <TextEditor content={"initial"}/>
         </div>
       </div>
     </div>

@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Board from "./components/egg/Board";
-import Login from "./components/users/Login";
+import Login from "./pages/users/Login";
 import Navbar from "./components/navbar/Navbar";
-import Register from "./components/users/Register";
+import SignUp from "./pages/users/SignUp";
 import About from "./pages/about/About";
 import Home from "./pages/home/Home";
-import Reset from "./components/users/Reset";
+import Reset from "./pages/users/Reset";
 import TextEditor from "./components/notebook/TextEditor";
 import Notebook from "./pages/notebook/Notebook";
 
@@ -18,7 +18,7 @@ const App = () => {
         <Routes>
           <Route path="board" element={<Board />}></Route>
           <Route path="login" element={<Login />}></Route>
-          <Route path="register" element={<Register />}></Route>
+          <Route path="register" element={<SignUp />}></Route>
           <Route path="about" element={<About />}></Route>
           <Route path="reset" element={<Reset />}></Route>
           <Route path="notebook" element={<Notebook />}></Route>

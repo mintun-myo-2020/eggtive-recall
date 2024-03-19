@@ -1,75 +1,38 @@
 import axios from "axios";
-import { ICardData } from "../types/types";
+import { ICardData, INote } from "../types/types";
 import { API_BASE_URL, API_ENDPOINTS } from "./endpoints";
 
-const associateCardToUser = (
-  cardId: string | undefined,
-  userId: string | undefined
-) => {};
-
-export const getUserCards = async (
+export const getNotes = async (
   userId: string | undefined,
   idToken: string | undefined
-): Promise<ICardData[] | undefined> => {
+): Promise<INote[] | undefined> => {
   try {
     const headers = {
       Authorization: idToken,
     };
     const response = await axios.get(
-      API_BASE_URL + API_ENDPOINTS.CARDS + userId,
+      API_BASE_URL + API_ENDPOINTS.NOTES + userId,
       { headers }
     );
-    const cards: ICardData[] = response.data;
-    return cards;
-  } catch (error) {
-    console.log(error);
+    const notes: INote[] = response.data;
+    return notes;
+  } catch (err) {
+    console.log(err);
   }
 };
 
-export const createOneCard = async (
-  newCard: ICardData,
+export const saveNote = async (
+  editorContent: string,
   idToken: string | undefined
-): Promise<ICardData> => {
+): Promise<INote | undefined> => {
   try {
-    const newCardReq = [newCard];
-    const url = API_BASE_URL + API_ENDPOINTS.CARDS;
-    console.log(url);
+    const url = API_BASE_URL + API_ENDPOINTS.NOTES;
     const headers = {
       Authorization: idToken,
     };
-    const response = await axios.post(url, newCardReq, {
-      headers: headers,
-    });
-    const createdCard: ICardData = response.data.cards[0];
-    return createdCard;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
+    const response = await axios.post(url, editorContent, { headers: headers });
+    return response.data.note;
+  } catch (err) {
+    console.log(err);
   }
-};
-
-export const saveAllCards = (cards: ICardData[]): void => {
-  const url = API_BASE_URL + API_ENDPOINTS.CARDS;
-
-  axios
-    .post(url, cards)
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-};
-
-export const deleteCard = (
-  id: string | undefined,
-  idToken: string | undefined
-): void => {
-  const url = API_BASE_URL + API_ENDPOINTS.CARDS;
-  const headers = {
-    Authorization: idToken,
-  };
-  axios.delete(url + id, {
-    headers: headers,
-  });
 };

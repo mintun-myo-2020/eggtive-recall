@@ -10,7 +10,7 @@ import {
   IAnswer,
   IQuestion,
 } from "../../../types/types";
-import { createOneCard, deleteCard } from "../../../api/noteApiUtils";
+import { createOneCard, deleteCard } from "../../../api/cardApiUtils";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../utils/firebase";
 
