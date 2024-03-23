@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"log"
 	"net/http"
+	"regexp"
 
 	"github.com/gin-gonic/gin"
 	"github.com/myo-mintun-2020/eggtive-recall/models"
@@ -19,18 +19,29 @@ func NewNoteController(noteService *services.NoteService) *NoteController {
 	}
 }
 
-func (uc *NoteController) CreateNote(c *gin.Context) {
+func (nc *NoteController) CreateNote(c *gin.Context) {
 
-	var newNote models.Note
+	var jsonInput struct {
+		HtmlContent string `json:"htmlContent"`
+		UserID      string `json:"userID"`
+	}
 
-	log.Println(c.Request )
-
-	if err := c.ShouldBindJSON(&newNote); err != nil {
+	if err := c.ShouldBindJSON(&jsonInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	err := uc.noteService.CreateNote(&newNote)
+	contentRegex := regexp.MustCompile(`<.*?>(.*?)</.*?>`)
+	contentMatches := contentRegex.FindStringSubmatch(jsonInput.HtmlContent)
+	title := contentMatches[1] // Content inside the first tag
+
+	newNote := models.Note{
+		Title:  title,
+		Body:   jsonInput.HtmlContent,
+		UserID: jsonInput.UserID,
+	}
+
+	err := nc.noteService.CreateNote(&newNote)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -40,8 +51,10 @@ func (uc *NoteController) CreateNote(c *gin.Context) {
 
 }
 
-func (uc *NoteController) GetAllNotes(c *gin.Context) {
-	notes, err := uc.noteService.GetAllNotes()
+func (nc *NoteController) GetAllNotes(c *gin.Context) {
+	userID := c.Param("userId")
+
+	notes, err := nc.noteService.GetNotesWithUserID(userID)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

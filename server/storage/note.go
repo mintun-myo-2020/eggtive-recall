@@ -13,6 +13,7 @@ type NoteStorage interface {
 	generateID() string
 	InsertNote(ctx context.Context, note *models.Note) error
 	GetAllNotes(ctx context.Context) ([]*models.Note, error)
+	GetNotesWithUserID(ctx context.Context, userID string) ([]*models.Note, error)
 }
 
 type MongoDBNoteStorage struct {
@@ -36,6 +37,28 @@ func (ms *MongoDBNoteStorage) InsertNote(ctx context.Context, note *models.Note)
 
 	_, err := ms.collection.InsertOne(ctx, note)
 	return err
+}
+
+func (ms *MongoDBNoteStorage) GetNotesWithUserID(ctx context.Context, userID string) ([]*models.Note, error) {
+	cursor, err := ms.collection.Find(ctx, bson.M{"userID": userID})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+	var notes []*models.Note
+	for cursor.Next(ctx) {
+		var note models.Note
+		if err := cursor.Decode(&note); err != nil {
+			return nil, err
+		}
+		notes = append(notes, &note)
+
+	}
+
+	if err := cursor.Err(); err != nil {
+		return nil, err
+	}
+	return notes, nil
 }
 
 func (ms *MongoDBNoteStorage) GetAllNotes(ctx context.Context) ([]*models.Note, error) {

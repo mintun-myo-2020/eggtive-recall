@@ -16,17 +16,6 @@ const Navbar: React.FC<NavbarProps> = ({ cards }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, loading, error] = useAuthState(auth);
 
-  const handleSave = (event: React.MouseEvent<HTMLDivElement>): void => {
-    axios
-      .post(cardURL, cards)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
   return (
     <nav className="overflow-x-auto bg-gray-800 sticky top-0 z-50">
       <div className=" mx-auto px-2 sm:px-6 lg:px-8">

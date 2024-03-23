@@ -83,8 +83,10 @@ const TextEditor: React.FC<TextAreaProps> = ({ content }) => {
 
   const handleSave = async () => {
     const idToken = await user?.getIdToken();
-    console.log(editorContent, idToken);
-    saveNote(editorContent, idToken);
+    const userId = user?.uid;
+
+    console.log(editorContent);
+    saveNote(editorContent,userId, idToken);
   };
 
   return (

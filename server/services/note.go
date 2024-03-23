@@ -19,7 +19,6 @@ func NewNoteService(storage storage.NoteStorage) *NoteService {
 
 func (ns *NoteService) CreateNote(note *models.Note) error {
 
-
 	err := ns.storage.InsertNote(context.Background(), note)
 	if err == nil {
 		return err
@@ -28,6 +27,11 @@ func (ns *NoteService) CreateNote(note *models.Note) error {
 
 }
 
-func (ns *NoteService) GetAllNotes() ([]*models.Note, error) {
-	return ns.storage.GetAllNotes(context.Background())
+func (ns *NoteService) GetNotesWithUserID(userID string) ([]*models.Note, error) {
+
+	notes, err := ns.storage.GetNotesWithUserID(context.Background(), userID)
+	if err != nil {
+		return nil, err
+	}
+	return notes, nil
 }

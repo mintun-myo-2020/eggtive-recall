@@ -23,6 +23,7 @@ export const getNotes = async (
 
 export const saveNote = async (
   editorContent: string,
+  userId: string | undefined,
   idToken: string | undefined
 ): Promise<INote | undefined> => {
   try {
@@ -30,7 +31,8 @@ export const saveNote = async (
     const headers = {
       Authorization: idToken,
     };
-    const response = await axios.post(url, editorContent, { headers: headers });
+    const reqBody = { htmlContent: editorContent, userId: userId };
+    const response = await axios.post(url, reqBody, { headers: headers });
     return response.data.note;
   } catch (err) {
     console.log(err);

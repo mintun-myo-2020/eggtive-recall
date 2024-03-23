@@ -12,12 +12,16 @@ import { getIdToken } from "firebase/auth";
 const Notebook = () => {
   const [user, loading, error] = useAuthState(auth);
 
-
   const [noteTitles, setNoteTitles] = useState<String[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   
 
   useEffect(() => {
+
+    if (loading) {
+      return;
+    }
+
     const fetchData = async () => {
       try {
         const idToken = await user?.getIdToken();
@@ -35,7 +39,7 @@ const Notebook = () => {
     };
 
     fetchData();
-  }, []);
+  }, [loading]);
 
   return (
     <div>
@@ -62,7 +66,7 @@ const Notebook = () => {
           </Sidebar>
         </div>
         <div className="grow">
-          <TextEditor content={"initial"}/>
+          <TextEditor content={"<h1>initial</h1>"}/>
         </div>
       </div>
     </div>
