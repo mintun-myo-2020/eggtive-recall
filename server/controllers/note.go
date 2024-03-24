@@ -51,10 +51,12 @@ func (nc *NoteController) CreateNote(c *gin.Context) {
 
 }
 
-func (nc *NoteController) GetAllNotes(c *gin.Context) {
-	userID := c.Param("userId")
+func (nc *NoteController) GetNotesWithUserID(c *gin.Context) {
+	userId := c.Param("userId")
 
-	notes, err := nc.noteService.GetNotesWithUserID(userID)
+	notes, err := nc.noteService.GetNotesWithUserID(userId)
+
+	println(notes)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

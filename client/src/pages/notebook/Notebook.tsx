@@ -8,13 +8,16 @@ import { getNotes } from "../../api/noteApiUtils";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
 import { getIdToken } from "firebase/auth";
+import { Spinner } from "flowbite-react";
+import { INote } from "../../types/types";
 
 const Notebook = () => {
   const [user, loading, error] = useAuthState(auth);
 
+
+  const [notes, setNotes] = useState<INote[] | undefined>([]);
   const [noteTitles, setNoteTitles] = useState<String[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  
+  const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
 
   useEffect(() => {
 
@@ -22,51 +25,67 @@ const Notebook = () => {
       return;
     }
 
-    const fetchData = async () => {
+    const getNoteTitles = async () => {
       try {
         const idToken = await user?.getIdToken();
-        const notes = await getNotes(user?.uid, idToken);
-        console.log(notes);
-        if (notes === undefined || notes === null) {
+        const userId = await user?.uid;
+        const fetchedNotes = await getNotes(userId, idToken);
+        setNotes(fetchedNotes);
+        const titles = fetchedNotes?.map((note) => note.title);
+        if (titles === undefined) {
           setNoteTitles([]);
         } else {
-          const titles = notes.map((note) => note.title);
+          console.log(titles);
           setNoteTitles(titles);
+          setIsPageLoading(false);
         }
       } catch (err) {
         console.error(err);
+        setIsPageLoading(false);
       }
     };
 
-    fetchData();
-  }, [loading]);
+    getNoteTitles();
+  }, [loading, user]);
+
+
 
   return (
     <div>
       <div className="flex flex-row">
-        <div className="hidden sm:flex flex-none max-w-32 mr-5 h-dvh">
-          <Sidebar collapseBehavior="collapse" collapsed={false}>
-            <Sidebar.Items>
-              {noteTitles.map((noteTitle, i) => (
-                <Sidebar.ItemGroup key={i}>{noteTitle.slice(10)}</Sidebar.ItemGroup>
-              ))}
-            </Sidebar.Items>
-          </Sidebar>
-        </div>
 
-        <div className="sm:hidden flex-none">
-          <Sidebar collapseBehavior="collapse" collapsed={true}>
-            <Sidebar.Items>
-              <Sidebar.ItemGroup>
-                <Sidebar.Item href="#" icon={NotebookIcon}>
-                  Dashboard
-                </Sidebar.Item>
-              </Sidebar.ItemGroup>
-            </Sidebar.Items>
-          </Sidebar>
-        </div>
+        {isPageLoading ?
+          <div className="flex justify-center items-center">
+            <Spinner />
+          </div>
+          :
+          <div className="hid</div>den sm:flex flex-none max-w-32 mr-5 h-dvh">
+            <Sidebar collapseBehavior="collapse" collapsed={false}>
+              <Sidebar.Items>
+                {noteTitles.map((noteTitle, i) => (
+                  <Sidebar.ItemGroup key={i}>{noteTitle.slice(0, 10)}</Sidebar.ItemGroup>
+                ))}
+              </Sidebar.Items>
+            </Sidebar>
+          </div>}
+
+        {isPageLoading ?
+          <div className="flex justify-center items-center"> <Spinner className="sm:hidden my-auto" /> </div>
+          :
+          <div className="sm:hidden flex-none">
+            <Sidebar collapseBehavior="collapse" collapsed={true}>
+              <Sidebar.Items>
+                <Sidebar.ItemGroup>
+                  <Sidebar.Item href="#" icon={NotebookIcon}>
+                    Dashboard
+                  </Sidebar.Item>
+                </Sidebar.ItemGroup>
+              </Sidebar.Items>
+            </Sidebar>
+          </div>}
+
         <div className="grow">
-          <TextEditor content={"<h1>initial</h1>"}/>
+          <TextEditor content={notes?.[0]?.content || ""} />
         </div>
       </div>
     </div>

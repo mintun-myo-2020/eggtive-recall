@@ -27,9 +27,9 @@ func (ns *NoteService) CreateNote(note *models.Note) error {
 
 }
 
-func (ns *NoteService) GetNotesWithUserID(userID string) ([]*models.Note, error) {
+func (ns *NoteService) GetNotesWithUserID(userId string) ([]models.Note, error) {
 
-	notes, err := ns.storage.GetNotesWithUserID(context.Background(), userID)
+	notes, err := ns.storage.GetNotesWithUserID(context.Background(), userId)
 	if err != nil {
 		return nil, err
 	}

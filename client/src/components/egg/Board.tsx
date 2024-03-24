@@ -12,24 +12,25 @@ const Board = () => {
   const [user, loading, error] = useAuthState(auth);
 
   const [cards, setCards] = useState<ICardData[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const idToken = await user?.getIdToken();
-        const cards = await getUserCards(user?.uid, idToken);
+        const userId = await user?.uid;
+        const cards = await getUserCards(userId, idToken);
         if (cards === undefined || cards === null) {
           setIsEmpty(true);
           setCards([]);
         } else {
           setCards(cards);
         }
-        setIsLoading(false);
+        setIsPageLoading(false);
       } catch (err) {
         console.error(err);
-        setIsLoading(false);
+        setIsPageLoading(false);
       }
     };
 
@@ -44,7 +45,7 @@ const Board = () => {
     }
   }, [cards]);
 
-  if (isLoading) {
+  if (isPageLoading) {
     return (
       <div className="Eggtive">
         <div className="flex justify-center items-center h-screen bg-gray-100">
