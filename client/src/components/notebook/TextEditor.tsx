@@ -67,8 +67,8 @@ const editorClass: EditorProps = {
     class:
       "prose dark:prose-invert " +
       "prose-sm sm:prose-base lg:prose-lg " +
-      "xl:prose-2xl mx-2 mt-1 focus:outline-none " +
-      "border p-4 border-gray-400 min-h-[12rem] " +
+      "xl:prose-2xl ml-2 mt-1 md:mr-2 focus:outline-none " +
+      "border p-4 pr-0 md:pr-2 border-gray-400 min-h-[12rem] " +
       "max-w-screen overflow-y-auto rounded-md ",
   },
 };
@@ -112,7 +112,7 @@ const TextEditor: React.FC<TextAreaProps> = ({ initialContent }) => {
   }
 
   return (
-    <div className="grid p-5 ">
+    <div className="grid p-5 pr-0 ">
       <HeadingToolbar editor={editor} />
       <EditorContent editor={editor}  />
 

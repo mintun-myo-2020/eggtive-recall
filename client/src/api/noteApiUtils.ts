@@ -26,6 +26,9 @@ export const getNoteContentWithNoteId = async (
   idToken: string | undefined,
   currentNoteId: string | undefined
 ): Promise<string | undefined> => {
+  if (currentNoteId === undefined) {
+    return;
+  }
   try {
     const headers = {
       Authorization: idToken,

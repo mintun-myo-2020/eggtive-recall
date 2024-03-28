@@ -17,6 +17,7 @@ const NotebookSidebar: React.FC<SidebarProps> = ({
   onNoteClick,
 }) => {
   const navigate = useNavigate();
+
   const handleClick = (currentNoteId: string | undefined) => {
     if (currentNoteId) {
       navigate(`/notebook/${currentNoteId}`);
@@ -39,32 +40,42 @@ const NotebookSidebar: React.FC<SidebarProps> = ({
             </Sidebar.Item>
           ))}
         </Sidebar.ItemGroup>
+        <Sidebar.ItemGroup>
+          <Sidebar.Item
+            onClick={() => navigate("/notebook")}
+            icon={NotebookIcon}
+          >
+            New Note
+          </Sidebar.Item>
+        </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>
   );
 
   return (
-    <div>
-      {isPageLoading ? (
-        <div className="flex justify-center items-center">
-          <Spinner />
-        </div>
-      ) : (
-        <div className="hidden sm:flex flex-none max-w-32 mr-5 h-dvh">
-          <SidebarSection collapsed={false} />
-        </div>
-      )}
+    <>
+      <div>
+        {isPageLoading ? (
+          <div className="flex justify-center items-center">
+            <Spinner />
+          </div>
+        ) : (
+          <div className="hidden sm:flex flex-none max-w-32 mr-5 h-dvh">
+            <SidebarSection collapsed={false} />
+          </div>
+        )}
 
-      {isPageLoading ? (
-        <div className="flex justify-center items-center">
-          <Spinner className="sm:hidden my-auto" />
-        </div>
-      ) : (
-        <div className="sm:hidden flex-none h-dvh">
-          <SidebarSection collapsed={true} />
-        </div>
-      )}
-    </div>
+        {isPageLoading ? (
+          <div className="flex justify-center items-center">
+            <Spinner className="sm:hidden my-auto" />
+          </div>
+        ) : (
+          <div className="sm:hidden flex-none h-dvh">
+            <SidebarSection collapsed={true} />
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

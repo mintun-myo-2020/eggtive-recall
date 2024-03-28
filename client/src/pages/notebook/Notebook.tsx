@@ -86,7 +86,7 @@ const Notebook = () => {
           isPageLoading={isPageLoading}
           currentNoteId={currentNoteId}
         />
-        <div className="grow">
+        <div className="grow ">
           <TextEditor initialContent={currentNoteContent || ""} />
         </div>
       </div>
