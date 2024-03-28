@@ -19,7 +19,7 @@ func NewNoteController(noteService *services.NoteService) *NoteController {
 	}
 }
 
-func (nc *NoteController) CreateNote(c *gin.Context) {
+func (nc *NoteController) UpsertNote(c *gin.Context) {
 
 	var jsonInput struct {
 		HtmlContent string `json:"htmlContent"`
@@ -41,7 +41,7 @@ func (nc *NoteController) CreateNote(c *gin.Context) {
 		UserId: jsonInput.UserID,
 	}
 
-	err := nc.noteService.CreateNote(&newNote)
+	err := nc.noteService.UpsertNote(&newNote)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

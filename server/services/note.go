@@ -17,9 +17,9 @@ func NewNoteService(storage storage.NoteStorage) *NoteService {
 	}
 }
 
-func (ns *NoteService) CreateNote(note *models.Note) error {
+func (ns *NoteService) UpsertNote(note *models.Note) error {
 
-	err := ns.storage.InsertNote(context.Background(), note)
+	err := ns.storage.UpsertNote(context.Background(), note)
 	if err == nil {
 		return err
 	}

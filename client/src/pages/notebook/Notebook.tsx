@@ -1,4 +1,4 @@
-import TextEditor from "../../components/notebook/TextEditor";
+import TextEditor from "../../components/notebook/textEditor/TextEditor";
 
 import { useEffect, useState } from "react";
 
@@ -7,7 +7,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
 import { getIdToken } from "firebase/auth";
 import { INote } from "../../types/types";
-import NotebookSidebar from "../../components/notebook/NotebookSidebar";
+import NotebookSidebar from "../../components/notebook/sidebar/NotebookSidebar";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Notebook = () => {

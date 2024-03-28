@@ -8,19 +8,19 @@ import {
   useEditor,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import HeadingToolbar from "./HeadingToolbar";
+import HeadingToolbar from "../toolbars/HeadingToolbar";
 import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
 import Highlight from "@tiptap/extension-highlight";
 import { EditorProps } from "@tiptap/pm/view";
-import BubbleToolbar from "./BubbleToolbar";
+import BubbleToolbar from "../toolbars/BubbleToolbar";
 import { EditorState } from "@tiptap/pm/state";
 import { useEffect, useRef, useState } from "react";
 import Heading from "@tiptap/extension-heading";
 import Document from "@tiptap/extension-document";
-import { saveNote } from "../../api/noteApiUtils";
+import { saveNote } from "../../../api/noteApiUtils";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../utils/firebase";
+import { auth } from "../../../utils/firebase";
 
 const CustomDocument = Document.extend({
   content: "heading block*",

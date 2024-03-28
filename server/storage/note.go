@@ -7,11 +7,12 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type NoteStorage interface {
 	generateID() string
-	InsertNote(ctx context.Context, note *models.Note) error
+	UpsertNote(ctx context.Context, note *models.Note) error
 	GetAllNotes(ctx context.Context) ([]models.Note, error)
 	GetNotesWithUserID(ctx context.Context, userId string) ([]models.Note, error)
 	GetNoteWithUserIDAndNoteID(ctx context.Context, userId string, noteId string) (models.Note, error)
@@ -31,12 +32,16 @@ func (ms *MongoDBNoteStorage) generateID() string {
 	return primitive.NewObjectID().Hex()
 }
 
-func (ms *MongoDBNoteStorage) InsertNote(ctx context.Context, note *models.Note) error {
+func (ms *MongoDBNoteStorage) UpsertNote(ctx context.Context, note *models.Note) error {
 	if note.NoteId == "" {
 		note.NoteId = ms.generateID()
 	}
 
-	_, err := ms.collection.InsertOne(ctx, note)
+	filter := bson.M{"_id": note.NoteId}
+	update := bson.M{"$set": note}
+	options := options.Update().SetUpsert(true)
+
+	_, err := ms.collection.UpdateOne(ctx, filter, update, options)
 	return err
 }
 
