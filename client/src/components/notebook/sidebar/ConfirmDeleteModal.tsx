@@ -7,13 +7,11 @@ type ConfirmDeleteModalProps = {
   setConfirmDelete: React.Dispatch<React.SetStateAction<boolean>>;
   setNoteToDelete: React.Dispatch<React.SetStateAction<string | undefined>>;
   noteIdToDelete: string | undefined;
-  handleDelete: (noteIdToDelete: string | undefined) => void;
 };
 
 const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
   setConfirmDelete,
   noteIdToDelete,
-  handleDelete,
   setNoteToDelete,
 }) => {
   setNoteToDelete(noteIdToDelete);
@@ -21,7 +19,6 @@ const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
 
   const handleClickYes = () => {
     setConfirmDelete(true);
-    handleDelete(noteIdToDelete);
     setOpenModal(false);
   };
   const handleClickNo = () => {
@@ -39,6 +36,7 @@ const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
         Toggle modal
       </TrashIcon>
       <Modal
+        dismissible
         show={openModal}
         size="md"
         onClose={() => setOpenModal(false)}

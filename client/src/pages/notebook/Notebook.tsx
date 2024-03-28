@@ -7,9 +7,11 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
 
 import NotebookSidebar from "../../components/notebook/sidebar/NotebookSidebar";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Notebook = () => {
+  const navigate = useNavigate();
+
   const [user, loading, error] = useAuthState(auth);
   const { currentNoteId } = useParams<{ currentNoteId: string | undefined }>();
   const [currentNoteContent, setCurrentNoteContent] = useState<
@@ -78,10 +80,21 @@ const Notebook = () => {
     id: string | undefined;
     title: string;
   }) => {
-    const updatedNoteTitles = noteTitles.map((note) =>
-      note.id === updatedNote.id ? { ...note, title: updatedNote.title } : note
-    );
-    setNoteTitles(updatedNoteTitles);
+    const existingNote = noteTitles.find((note) => note.id === updatedNote.id);
+
+    if (existingNote) {
+      // If the note already exists, update its title
+      const updatedNoteTitles = noteTitles.map((note) =>
+        note.id === updatedNote.id
+          ? { ...note, title: updatedNote.title }
+          : note
+      );
+      setNoteTitles(updatedNoteTitles);
+    } else {
+      // If the note doesn't exist, add it to the list of note titles
+      setNoteTitles([...noteTitles, updatedNote]);
+      navigate(`/notebook/${updatedNote.id}`);
+    }
   };
 
   return (

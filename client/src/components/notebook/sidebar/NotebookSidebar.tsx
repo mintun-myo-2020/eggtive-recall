@@ -3,7 +3,7 @@ import { NotebookIcon, TrashIcon } from "lucide-react";
 import { Spinner } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import { deleteNote } from "../../../api/noteApiUtils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
 type SidebarProps = {
@@ -30,11 +30,6 @@ const NotebookSidebar: React.FC<SidebarProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  const [noteIdToDelete, setNoteToDelete] = useState<string | undefined>(
-    undefined
-  );
-
   const handleSelectNote = (currentNoteId: string | undefined) => {
     if (currentNoteId) {
       navigate(`/notebook/${currentNoteId}`);
@@ -42,8 +37,11 @@ const NotebookSidebar: React.FC<SidebarProps> = ({
   };
 
   const handleDelete = async (noteIdToDelete: string | undefined) => {
-    if (confirmDelete) {
-      console.log("Deleting note with id: ", noteIdToDelete)
+    const userConfirmation = window.confirm(
+      "Are you sure you want to delete this note?"
+    );
+    if (userConfirmation) {
+      console.log("Deleting note with id: ", noteIdToDelete);
       const resolvedIdToken = await idToken;
       await deleteNote(noteIdToDelete, resolvedIdToken);
 
@@ -61,7 +59,7 @@ const NotebookSidebar: React.FC<SidebarProps> = ({
           {noteTitles.map(({ id, title }) => (
             <div className="flex items-center justify-end">
               <Sidebar.Item
-                key={id}
+                key={"item_" + id}
                 onClick={() => handleSelectNote(id)}
                 className={`cursor-pointer rounded-sm min-h-5 h-full py-0.5 ${
                   id === currentNoteId ? "bg-gray-300" : ""
@@ -69,12 +67,13 @@ const NotebookSidebar: React.FC<SidebarProps> = ({
               >
                 {title.slice(0, 10)}
               </Sidebar.Item>
-              <ConfirmDeleteModal
-                setConfirmDelete={setConfirmDelete}
-                noteIdToDelete={id}
-                setNoteToDelete={setNoteToDelete}
-                handleDelete={handleDelete}
-              />
+              <div
+                key={"trash_" + id}
+                className="cursor-pointer"
+                onClick={() => handleDelete(id)}
+              >
+                <TrashIcon size={16} />
+              </div>
             </div>
           ))}
         </Sidebar.ItemGroup>

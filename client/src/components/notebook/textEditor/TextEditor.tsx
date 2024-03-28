@@ -114,7 +114,9 @@ const TextEditor: React.FC<TextAreaProps> = ({
     if (res === undefined) {
       return;
     }
-    updateNoteTitle({ id: noteId || "", title: res.title });
+    const newNoteId = res.id; // get the id of the new note from the response
+    const newNote = { id: newNoteId, title: res.title };
+    updateNoteTitle(newNote);
   };
 
   if (isLoading) {
@@ -125,10 +127,6 @@ const TextEditor: React.FC<TextAreaProps> = ({
     <div className="grid p-5 pr-0 ">
       <HeadingToolbar editor={editor} />
       <EditorContent editor={editor} />
-
-      <BubbleMenu>
-        <BubbleToolbar />
-      </BubbleMenu>
 
       <button
         type="button"
