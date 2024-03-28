@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { ICardData } from "../interfaces/interfaces";
+import { ICardData } from "../../types/types";
 import axios from "axios";
-import { API_BASE_URL, API_ENDPOINTS } from "../api/endpoints";
+import { API_BASE_URL, API_ENDPOINTS } from "../../api/endpoints";
 import { Link } from "react-router-dom";
-import Login from "./users/Login";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, logout } from "../utils/firebase";
+import { auth, logout } from "../../utils/firebase";
 
 type NavbarProps = {
   cards?: ICardData[];
@@ -16,17 +15,6 @@ const cardURL = API_BASE_URL + API_ENDPOINTS.CARDS;
 const Navbar: React.FC<NavbarProps> = ({ cards }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, loading, error] = useAuthState(auth);
-
-  const handleSave = (event: React.MouseEvent<HTMLDivElement>): void => {
-    axios
-      .post(cardURL, cards)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
 
   return (
     <nav className="overflow-x-auto bg-gray-800 sticky top-0 z-50">
@@ -62,7 +50,7 @@ const Navbar: React.FC<NavbarProps> = ({ cards }) => {
           <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
             {/* Logo */}
             <Link to="/">
-              <div className="hidden sm:block flex-shrink-0 flex items-center">
+              <div className="hidden sm:block flex-shrink-0 items-center">
                 <img
                   className="block lg:hidden h-10 w-auto"
                   src="/justEggLogo.png"
@@ -75,26 +63,20 @@ const Navbar: React.FC<NavbarProps> = ({ cards }) => {
                 />
               </div>
             </Link>
-            <div className="hidden sm:block sm:ml-6 flex items-center h-full items-start">
+            <div className="hidden sm:block sm:ml-6 items-center h-full">
               <div className="flex space-x-4">
                 {/* Navigation Links */}
-                <Link
-                  to="/"
-                  className="navBtn"
-                >
+                <Link to="/" className="navBtn">
                   Home
                 </Link>
-                <Link
-                  to="about"
-                  className="navBtn" 
-                >
+                <Link to="about" className="navBtn">
                   About
                 </Link>
-                <Link
-                  to="board"
-                  className="navBtn"
-                >
+                <Link to="board" className="navBtn">
                   Board
+                </Link>
+                <Link to="notebook" className="navBtn">
+                  Notebook
                 </Link>
               </div>
             </div>

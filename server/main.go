@@ -7,8 +7,8 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/myo-mintun-2020/active-recall-BE/router"
-	"github.com/myo-mintun-2020/active-recall-BE/storage"
+	"github.com/myo-mintun-2020/eggtive-recall/router"
+	"github.com/myo-mintun-2020/eggtive-recall/storage"
 )
 
 func main() {

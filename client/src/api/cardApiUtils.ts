@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ICardData } from "../interfaces/interfaces";
+import { ICardData } from "../types/types";
 import { API_BASE_URL, API_ENDPOINTS } from "./endpoints";
 
 const associateCardToUser = (
@@ -22,14 +22,14 @@ export const getUserCards = async (
     const cards: ICardData[] = response.data;
     return cards;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
 export const createOneCard = async (
   newCard: ICardData,
   idToken: string | undefined
-): Promise<ICardData> => {
+): Promise<ICardData > => {
   try {
     const newCardReq = [newCard];
     const url = API_BASE_URL + API_ENDPOINTS.CARDS;
@@ -43,7 +43,7 @@ export const createOneCard = async (
     return createdCard;
   } catch (error) {
     console.error("Error fetching data:", error);
-    throw error;
+    throw error
   }
 };
 

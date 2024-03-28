@@ -1,17 +1,17 @@
-export interface IPositionData {
+export type IPositionData = {
   x: number;
   y: number;
 }
 
-export interface IQuestion {
+export type IQuestion = {
   question: string;
 }
 
-export interface IAnswer {
+export type IAnswer = {
   answer: string;
 }
 
-export interface ICardData  {
+export type ICardData  = {
   _id?: string;
   userId: string | undefined ;
   question: IQuestion;
@@ -19,15 +19,21 @@ export interface ICardData  {
   position: IPositionData;
 };
 
-export interface IGoUser {
+export type IGoUser = {
   _id: string;
   name: string;
   email: string;
   cards: ICardData[];
 }
 
-export interface IDeck {
+export type IDeck = {
   _id?: string;
   name: string;
   cards: ICardData[];
+}
+
+export type INote = {
+  id?: string;
+  title: string;
+  content: string
 }

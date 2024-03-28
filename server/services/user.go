@@ -2,19 +2,24 @@ package services
 
 import (
 	"context"
-	"errors"
 
-	"github.com/myo-mintun-2020/active-recall-BE/models"
-	"github.com/myo-mintun-2020/active-recall-BE/storage"
+	"github.com/myo-mintun-2020/eggtive-recall/models"
+	"github.com/myo-mintun-2020/eggtive-recall/storage"
 )
 
-func CreateUser(user *models.User) error {
-	collection := storage.GetCollection("users")
-	if collection == nil {
-		return errors.New("failed to get the users collection")
-	}
+type UserService struct {
+	storage storage.UserStorage
+}
 
-	_, err := collection.InsertOne(context.Background(), user)
+func NewUserService(storage storage.UserStorage) *UserService {
+	return &UserService{
+		storage: storage,
+	}
+}
+
+func (us UserService) CreateUser(user *models.User) error {
+
+	err := us.storage.InsertUser(context.Background(), user)
 	if err != nil {
 		return err
 	}

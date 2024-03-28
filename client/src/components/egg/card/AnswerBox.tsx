@@ -5,7 +5,7 @@ import {
   useLayoutEffect,
   MouseEventHandler,
 } from "react";
-import { IAnswer } from "../../interfaces/interfaces";
+import { IAnswer } from "../../../types/types";
 
 type AnswerBoxProps = {
   answer: IAnswer;
@@ -77,7 +77,6 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
         if (remainingTries > 0)
           setRemainingTries((oldRemainingTries) => oldRemainingTries - 1);
         if (attemptInputRef.current != null) {
-          console.log(attemptInputRef.current);
           attemptInputRef.current.classList.add(
             "ring-1",
             "ring-rose-600",

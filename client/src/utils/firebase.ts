@@ -94,11 +94,6 @@ const registerWithEmailAndPassword = async (
       name,
       email,
     });
-    console.log({
-      _id: user.uid,
-      name,
-      email,
-    });
 
   } catch (err) {
     if (err instanceof Error) {
