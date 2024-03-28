@@ -33,7 +33,7 @@ export type IDeck = {
 }
 
 export type INote = {
-  _id?: string;
+  id?: string;
   title: string;
   content: string
 }
