@@ -1,26 +1,56 @@
 import { Sidebar } from "flowbite-react/lib/esm/components/Sidebar";
-import { NotebookIcon } from "lucide-react";
+import { NotebookIcon, TrashIcon } from "lucide-react";
 import { Spinner } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
+import { deleteNote } from "../../../api/noteApiUtils";
+import { useState } from "react";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
 type SidebarProps = {
   noteTitles: Array<{ id: string | undefined; title: string }>;
   isPageLoading: boolean;
   currentNoteId?: string;
-  onNoteClick?: (currentNoteId: string | undefined) => void;
+  idToken: Promise<string> | undefined;
+  setNoteTitles: React.Dispatch<
+    React.SetStateAction<
+      {
+        id: string | undefined;
+        title: string;
+      }[]
+    >
+  >;
 };
 
 const NotebookSidebar: React.FC<SidebarProps> = ({
   noteTitles,
   isPageLoading,
   currentNoteId,
-  onNoteClick,
+  idToken,
+  setNoteTitles,
 }) => {
   const navigate = useNavigate();
 
-  const handleClick = (currentNoteId: string | undefined) => {
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [noteIdToDelete, setNoteToDelete] = useState<string | undefined>(
+    undefined
+  );
+
+  const handleSelectNote = (currentNoteId: string | undefined) => {
     if (currentNoteId) {
       navigate(`/notebook/${currentNoteId}`);
+    }
+  };
+
+  const handleDelete = async (noteIdToDelete: string | undefined) => {
+    if (confirmDelete) {
+      console.log("Deleting note with id: ", noteIdToDelete)
+      const resolvedIdToken = await idToken;
+      await deleteNote(noteIdToDelete, resolvedIdToken);
+
+      const updatedNotes = noteTitles.filter(
+        (note) => note.id !== noteIdToDelete
+      );
+      setNoteTitles(updatedNotes);
     }
   };
 
@@ -29,15 +59,23 @@ const NotebookSidebar: React.FC<SidebarProps> = ({
       <Sidebar.Items>
         <Sidebar.ItemGroup>
           {noteTitles.map(({ id, title }) => (
-            <Sidebar.Item
-              key={id}
-              onClick={() => handleClick(id)}
-              className={`cursor-pointer rounded-sm min-h-5 h-full py-0.5 ${
-                id === currentNoteId ? "bg-gray-300" : ""
-              }`}
-            >
-              {title.slice(0, 10)}
-            </Sidebar.Item>
+            <div className="flex items-center justify-end">
+              <Sidebar.Item
+                key={id}
+                onClick={() => handleSelectNote(id)}
+                className={`cursor-pointer rounded-sm min-h-5 h-full py-0.5 ${
+                  id === currentNoteId ? "bg-gray-300" : ""
+                }`}
+              >
+                {title.slice(0, 10)}
+              </Sidebar.Item>
+              <ConfirmDeleteModal
+                setConfirmDelete={setConfirmDelete}
+                noteIdToDelete={id}
+                setNoteToDelete={setNoteToDelete}
+                handleDelete={handleDelete}
+              />
+            </div>
           ))}
         </Sidebar.ItemGroup>
         <Sidebar.ItemGroup>

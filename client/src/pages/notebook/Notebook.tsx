@@ -60,6 +60,7 @@ const Notebook = () => {
         }));
         if (titles === undefined) {
           setNoteTitles([]);
+          setIsPageLoading(false);
         } else {
           setNoteTitles(titles);
           setIsPageLoading(false);
@@ -90,6 +91,8 @@ const Notebook = () => {
           noteTitles={noteTitles}
           isPageLoading={isPageLoading}
           currentNoteId={currentNoteId}
+          idToken={user?.getIdToken()}
+          setNoteTitles={setNoteTitles}
         />
         <div className="grow ">
           <TextEditor
