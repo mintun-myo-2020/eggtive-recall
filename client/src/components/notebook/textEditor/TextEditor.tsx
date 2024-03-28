@@ -1,7 +1,6 @@
 import {
   BubbleMenu,
   EditorContent,
-
   mergeAttributes,
   useEditor,
 } from "@tiptap/react";
@@ -18,6 +17,7 @@ import Document from "@tiptap/extension-document";
 import { saveNote } from "../../../api/noteApiUtils";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../utils/firebase";
+import { Spinner } from "flowbite-react";
 
 const CustomDocument = Document.extend({
   content: "heading block*",
@@ -73,9 +73,17 @@ const editorClass: EditorProps = {
 type TextAreaProps = {
   initialContent: string;
   noteId: string | undefined;
+  updateNoteTitle: (updatedNote: {
+    id: string | undefined;
+    title: string;
+  }) => void;
 };
 
-const TextEditor: React.FC<TextAreaProps> = ({ initialContent, noteId }) => {
+const TextEditor: React.FC<TextAreaProps> = ({
+  initialContent,
+  noteId,
+  updateNoteTitle,
+}) => {
   const [user, loading, error] = useAuthState(auth);
 
   const [editorContent, setEditorContent] = useState(initialContent);
@@ -102,17 +110,21 @@ const TextEditor: React.FC<TextAreaProps> = ({ initialContent, noteId }) => {
     const idToken = await user?.getIdToken();
     const userId = user?.uid;
 
-    saveNote(editorContent, userId, idToken, noteId);
+    const res = await saveNote(editorContent, userId, idToken, noteId);
+    if (res === undefined) {
+      return;
+    }
+    updateNoteTitle({ id: noteId || "", title: res.title });
   };
 
   if (isLoading) {
-    return <div>Loading...</div>; // Replace with your loading spinner component
+    return <Spinner />;
   }
 
   return (
     <div className="grid p-5 pr-0 ">
       <HeadingToolbar editor={editor} />
-      <EditorContent editor={editor}  />
+      <EditorContent editor={editor} />
 
       <BubbleMenu>
         <BubbleToolbar />

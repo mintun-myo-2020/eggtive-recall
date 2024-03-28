@@ -5,10 +5,9 @@ import { useEffect, useState } from "react";
 import { getNoteContentWithNoteId, getNotes } from "../../api/noteApiUtils";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
-import { getIdToken } from "firebase/auth";
-import { INote } from "../../types/types";
+
 import NotebookSidebar from "../../components/notebook/sidebar/NotebookSidebar";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const Notebook = () => {
   const [user, loading, error] = useAuthState(auth);
@@ -17,13 +16,10 @@ const Notebook = () => {
     string | undefined
   >();
 
-  const [notes, setNotes] = useState<INote[] | undefined>([]);
   const [noteTitles, setNoteTitles] = useState<
     { id: string | undefined; title: string }[]
   >([]);
   const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (loading) {
@@ -58,7 +54,6 @@ const Notebook = () => {
         const idToken = await user?.getIdToken();
         const userId = await user?.uid;
         const fetchedNotes = await getNotes(userId, idToken);
-        setNotes(fetchedNotes);
         const titles = fetchedNotes?.map((note) => ({
           id: note.id,
           title: note.title,
@@ -78,6 +73,16 @@ const Notebook = () => {
     getNoteTitles();
   }, [loading, user]);
 
+  const updateNoteTitle = (updatedNote: {
+    id: string | undefined;
+    title: string;
+  }) => {
+    const updatedNoteTitles = noteTitles.map((note) =>
+      note.id === updatedNote.id ? { ...note, title: updatedNote.title } : note
+    );
+    setNoteTitles(updatedNoteTitles);
+  };
+
   return (
     <div>
       <div className="flex flex-row">
@@ -87,7 +92,11 @@ const Notebook = () => {
           currentNoteId={currentNoteId}
         />
         <div className="grow ">
-          <TextEditor initialContent={currentNoteContent || ""} noteId={currentNoteId}/>
+          <TextEditor
+            initialContent={currentNoteContent || ""}
+            noteId={currentNoteId}
+            updateNoteTitle={updateNoteTitle}
+          />
         </div>
       </div>
     </div>

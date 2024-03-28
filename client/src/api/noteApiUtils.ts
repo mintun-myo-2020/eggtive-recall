@@ -61,7 +61,22 @@ export const saveNote = async (
       reqBody.noteId = noteId;
     }
     const response = await axios.post(url, reqBody, { headers: headers });
-    return response.data.note;
+    return response.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const deleteNote = async (
+  noteId: string | undefined,
+  idToken: string | undefined
+): Promise<void> => {
+  try {
+    const url = API_BASE_URL + API_ENDPOINTS.NOTES + noteId;
+    const headers = {
+      Authorization: idToken,
+    };
+    await axios.delete(url, { headers });
   } catch (err) {
     console.error(err);
   }
