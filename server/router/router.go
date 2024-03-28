@@ -51,6 +51,7 @@ func SetupRouter() *gin.Engine {
 		noteGroup.POST("/", noteController.UpsertNote)
 		noteGroup.GET("/:userId", noteController.GetNotesWithUserID)
 		noteGroup.GET("/", noteController.GetNoteWithUserIDAndNoteID)
+		noteGroup.DELETE("/:noteId", noteController.DeleteNoteWithNoteID)
 	}
 
 	return r

@@ -20,10 +20,7 @@ func NewNoteService(storage storage.NoteStorage) *NoteService {
 func (ns *NoteService) UpsertNote(note *models.Note) error {
 
 	err := ns.storage.UpsertNote(context.Background(), note)
-	if err == nil {
-		return err
-	}
-	return nil
+	return err
 
 }
 
@@ -43,4 +40,9 @@ func (ns *NoteService) GetNoteWithUserIDAndNoteID(userId string, noteId string) 
 		return models.Note{}, err
 	}
 	return note, nil
+}
+
+func (ns NoteService) DeleteNoteWithNoteID(noteId string) error {
+	err := ns.storage.DeleteNoteWithNoteID(context.Background(), noteId)
+	return err
 }

@@ -80,3 +80,15 @@ func (nc *NoteController) GetNoteWithUserIDAndNoteID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, note)
 }
+
+func (nc *NoteController) DeleteNoteWithNoteID(c *gin.Context) {
+	noteId := c.Param("noteId")
+
+	err := nc.noteService.DeleteNoteWithNoteID(noteId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Successfully deleted note with id " + noteId})
+}

@@ -16,6 +16,7 @@ type NoteStorage interface {
 	GetAllNotes(ctx context.Context) ([]models.Note, error)
 	GetNotesWithUserID(ctx context.Context, userId string) ([]models.Note, error)
 	GetNoteWithUserIDAndNoteID(ctx context.Context, userId string, noteId string) (models.Note, error)
+	DeleteNoteWithNoteID(ctx context.Context, noteId string) error
 }
 
 type MongoDBNoteStorage struct {
@@ -104,4 +105,10 @@ func (ms *MongoDBNoteStorage) GetAllNotes(ctx context.Context) ([]models.Note, e
 	}
 
 	return notes, nil
+}
+
+func (ms *MongoDBNoteStorage) DeleteNoteWithNoteID(ctx context.Context, noteId string) error {
+	filter := bson.M{"_id": noteId}
+	_, err := ms.collection.DeleteOne(ctx, filter)
+	return err
 }
