@@ -32,7 +32,7 @@ const NotebookSidebar: React.FC<SidebarProps> = ({
             <Sidebar.Item
               key={id}
               onClick={() => handleClick(id)}
-              className={`cursor-pointer hover:bg-gray-200 rounded-sm min-h-3 h-full py-0.5 ${
+              className={`cursor-pointer rounded-sm min-h-5 h-full py-0.5 ${
                 id === currentNoteId ? "bg-gray-300" : ""
               }`}
             >
@@ -44,6 +44,7 @@ const NotebookSidebar: React.FC<SidebarProps> = ({
           <Sidebar.Item
             onClick={() => navigate("/notebook")}
             icon={NotebookIcon}
+            className="cursor-pointer"
           >
             New Note
           </Sidebar.Item>
