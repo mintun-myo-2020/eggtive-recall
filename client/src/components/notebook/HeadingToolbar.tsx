@@ -24,8 +24,6 @@ const toolBarClass =
 
 const isActiveClass = "bg-black/10 text-neutral-800";
 
-// fc props editor
-
 type HeadingToolbarProps = {
   editor: Editor | null;
 };
@@ -37,25 +35,29 @@ const HeadingToolbar: React.FC<HeadingToolbarProps> = ({ editor }) => {
 
   const [currentHeader, setCurrentHeader] = useState("");
 
-  const handleChangeHeader = (event: SelectChangeEvent) => {
-    if (editor.isActive("heading", { level: 1 })) {
-      setCurrentHeader("Header 1");
-    } else if (editor.isActive("heading", { level: 2 })) {
-      setCurrentHeader("Header 2");
-    } else if (editor.isActive("heading", { level: 3 })) {
-      setCurrentHeader("Header 3");
-    } else {
-      setCurrentHeader("");
-    }
-  };
-
   useEffect(() => {
-    handleChangeHeader;
+    const handleHeaderChange = () => {
+      if (editor.isActive("heading", { level: 1 })) {
+        setCurrentHeader("Title");
+      } else if (editor.isActive("heading", { level: 2 })) {
+        setCurrentHeader("Header");
+      } else if (editor.isActive("heading", { level: 3 })) {
+        setCurrentHeader("Subheader");
+      } else {
+        setCurrentHeader("Paragraph");
+      }
+    };
+    handleHeaderChange();
+    editor.on("transaction", handleHeaderChange);
+    return () => {
+      editor.off("transaction", handleHeaderChange);
+    };
   }, [editor]);
 
   const handleH1 = () => editor.chain().focus().setHeading({ level: 1 }).run();
   const handleH2 = () => editor.chain().focus().setHeading({ level: 2 }).run();
   const handleH3 = () => editor.chain().focus().setHeading({ level: 3 }).run();
+  const handleParagraph = () => editor.chain().focus().setParagraph().run();
   const handleBold = () => editor.chain().focus().toggleBold().run();
   const handleItalic = () => editor.chain().focus().toggleItalic().run();
   const handleUnderline = () => editor.chain().focus().toggleUnderline().run();
@@ -66,40 +68,41 @@ const HeadingToolbar: React.FC<HeadingToolbarProps> = ({ editor }) => {
     <div className={toolBarClass}>
       <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }} size="small">
         <Select value={currentHeader}>
-          <MenuItem value={"Header 1"}>
+          <MenuItem value={"Title"}>
             <span
               onClick={handleH1}
               className={`${buttonClass} ${
-                editor.isActive("heading", { level: 1 }) ? isActiveClass : ""
+                currentHeader === "Title" ? isActiveClass : ""
               }`}
             >
-              Header 1
+              Title
             </span>
           </MenuItem>
-          <MenuItem value={"Header 2"}>
+          <MenuItem value={"Header"}>
             <span
               onClick={handleH2}
               className={`${buttonClass} ${
-                editor.isActive("heading", { level: 2 }) ? isActiveClass : ""
+                currentHeader === "Header" ? isActiveClass : ""
               }`}
             >
-              Header 2
+              Header
             </span>
           </MenuItem>
-          <MenuItem value={"Header 3"}>
+          <MenuItem value={"Subheader"}>
             <span
               onClick={handleH3}
               className={`${buttonClass} ${
-                editor.isActive("heading", { level: 3 }) ? isActiveClass : ""
+                currentHeader === "Subheader" ? isActiveClass : ""
               }`}
             >
-              Header 3
+              Subheader
             </span>
           </MenuItem>
-          <MenuItem value={""}>
+          <MenuItem value={"Paragraph"}>
             <span
+              onClick={handleParagraph}
               className={`${buttonClass} ${
-                editor.isActive("heading", { level: 4 }) ? isActiveClass : ""
+                currentHeader === "Paragraph" ? isActiveClass : ""
               }`}
             >
               Paragraph
