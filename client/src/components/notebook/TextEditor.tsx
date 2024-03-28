@@ -5,6 +5,7 @@ import {
   EditorProvider,
   FloatingMenu,
   mergeAttributes,
+  useEditor,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import HeadingToolbar from "./HeadingToolbar";
@@ -14,7 +15,7 @@ import Highlight from "@tiptap/extension-highlight";
 import { EditorProps } from "@tiptap/pm/view";
 import BubbleToolbar from "./BubbleToolbar";
 import { EditorState } from "@tiptap/pm/state";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Heading from "@tiptap/extension-heading";
 import Document from "@tiptap/extension-document";
 import { saveNote } from "../../api/noteApiUtils";
@@ -42,7 +43,7 @@ const extensions = [
   Heading.extend({
     levels: [1, 2, 3],
     renderHTML({ node, HTMLAttributes }) {
-      const level = this.options.levels.includes(node.attrs.level)
+      const level: number = this.options.levels.includes(node.attrs.level)
         ? node.attrs.level
         : this.options.levels[0];
       const classes: { [index: number]: string } = {
@@ -73,38 +74,51 @@ const editorClass: EditorProps = {
 };
 
 type TextAreaProps = {
-  content: string;
+  initialContent: string;
 };
 
-const TextEditor: React.FC<TextAreaProps> = ({ content }) => {
+const TextEditor: React.FC<TextAreaProps> = ({ initialContent }) => {
   const [user, loading, error] = useAuthState(auth);
 
-  const [editorContent, setEditorContent] = useState(content);
+  const [editorContent, setEditorContent] = useState(initialContent);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const editor = useEditor({
+    extensions,
+    autofocus: true,
+    content: editorContent,
+    editorProps: editorClass,
+    onUpdate: ({ editor }) => {
+      setEditorContent(editor.getHTML());
+    },
+  });
+
+  useEffect(() => {
+    if (initialContent !== undefined) {
+      editor?.commands.setContent(initialContent);
+      setIsLoading(false);
+    }
+  }, [initialContent]);
 
   const handleSave = async () => {
     const idToken = await user?.getIdToken();
     const userId = user?.uid;
 
-    console.log(editorContent);
-    saveNote(editorContent,userId, idToken);
+    saveNote(editorContent, userId, idToken);
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Replace with your loading spinner component
+  }
 
   return (
     <div className="grid p-5 ">
-      <EditorProvider
-        extensions={extensions}
-        slotBefore={<HeadingToolbar />}
-        content={editorContent}
-        autofocus={true}
-        editorProps={editorClass}
-        onUpdate={({ editor }) => {
-          setEditorContent(editor.getHTML());
-        }}
-      >
-        <BubbleMenu>
-          <BubbleToolbar />
-        </BubbleMenu>
-      </EditorProvider>
+      <HeadingToolbar editor={editor} />
+      <EditorContent editor={editor}  />
+
+      <BubbleMenu>
+        <BubbleToolbar />
+      </BubbleMenu>
 
       <button
         type="button"

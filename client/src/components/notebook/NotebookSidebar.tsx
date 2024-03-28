@@ -7,7 +7,7 @@ type SidebarProps = {
   noteTitles: Array<{ id: string | undefined; title: string }>;
   isPageLoading: boolean;
   currentNoteId?: string;
-  onNoteClick?: (id: string | undefined) => void;
+  onNoteClick?: (currentNoteId: string | undefined) => void;
 };
 
 const NotebookSidebar: React.FC<SidebarProps> = ({
@@ -17,10 +17,9 @@ const NotebookSidebar: React.FC<SidebarProps> = ({
   onNoteClick,
 }) => {
   const navigate = useNavigate();
-  const handleClick = (id: string | undefined) => {
-    if (id) {
-      console.log(currentNoteId);
-      navigate(`/notebook/${id}`);
+  const handleClick = (currentNoteId: string | undefined) => {
+    if (currentNoteId) {
+      navigate(`/notebook/${currentNoteId}`);
     }
   };
 

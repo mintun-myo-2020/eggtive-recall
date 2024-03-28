@@ -38,7 +38,7 @@ func (nc *NoteController) CreateNote(c *gin.Context) {
 	newNote := models.Note{
 		Title:  title,
 		Body:   jsonInput.HtmlContent,
-		UserID: jsonInput.UserID,
+		UserId: jsonInput.UserID,
 	}
 
 	err := nc.noteService.CreateNote(&newNote)
@@ -64,4 +64,20 @@ func (nc *NoteController) GetNotesWithUserID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, notes)
+}
+
+func (nc *NoteController) GetNoteWithUserIDAndNoteID(c *gin.Context) {
+	userId := c.Query("userId")
+	noteId := c.Query("noteId")
+
+	println(userId, noteId)
+	note, err := nc.noteService.GetNoteWithUserIDAndNoteID(userId, noteId)
+	println(note.Body)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, note)
 }

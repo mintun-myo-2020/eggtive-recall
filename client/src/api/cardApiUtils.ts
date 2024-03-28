@@ -22,7 +22,7 @@ export const getUserCards = async (
     const cards: ICardData[] = response.data;
     return cards;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -33,7 +33,6 @@ export const createOneCard = async (
   try {
     const newCardReq = [newCard];
     const url = API_BASE_URL + API_ENDPOINTS.CARDS;
-    console.log(url);
     const headers = {
       Authorization: idToken,
     };

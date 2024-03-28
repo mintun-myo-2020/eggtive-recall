@@ -13,7 +13,7 @@ const Cross = ({ onMouseUp, onMouseDown, onTouchEnd }: CrossProps) => {
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onTouchEnd={onTouchEnd}
-      onClick={() => console.log("asd")}
+      onClick={() => {}}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

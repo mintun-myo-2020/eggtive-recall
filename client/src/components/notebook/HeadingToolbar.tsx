@@ -24,9 +24,13 @@ const toolBarClass =
 
 const isActiveClass = "bg-black/10 text-neutral-800";
 
-const HeadingToolbar: React.FC = () => {
-  const { editor } = useCurrentEditor();
+// fc props editor
 
+type HeadingToolbarProps = {
+  editor: Editor | null;
+};
+
+const HeadingToolbar: React.FC<HeadingToolbarProps> = ({ editor }) => {
   if (!editor) {
     return null;
   }

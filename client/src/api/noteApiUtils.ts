@@ -17,7 +17,24 @@ export const getNotes = async (
     const notes: INote[] = response.data;
     return notes;
   } catch (err) {
-    console.log(err);
+    console.error(err);
+  }
+};
+
+export const getNoteContentWithNoteId = async (
+  userId: string | undefined,
+  idToken: string | undefined,
+  currentNoteId: string | undefined
+): Promise<string | undefined> => {
+  try {
+    const headers = {
+      Authorization: idToken,
+    };
+    const url = `${API_BASE_URL}${API_ENDPOINTS.NOTES}?userId=${userId}&noteId=${currentNoteId}`;
+    const response = await axios.get(url, { headers });
+    return response.data.body;
+  } catch (err) {
+    console.error(err);
   }
 };
 
@@ -35,6 +52,6 @@ export const saveNote = async (
     const response = await axios.post(url, reqBody, { headers: headers });
     return response.data.note;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };

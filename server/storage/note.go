@@ -13,7 +13,8 @@ type NoteStorage interface {
 	generateID() string
 	InsertNote(ctx context.Context, note *models.Note) error
 	GetAllNotes(ctx context.Context) ([]models.Note, error)
-	GetNotesWithUserID(ctx context.Context, userID string) ([]models.Note, error)
+	GetNotesWithUserID(ctx context.Context, userId string) ([]models.Note, error)
+	GetNoteWithUserIDAndNoteID(ctx context.Context, userId string, noteId string) (models.Note, error)
 }
 
 type MongoDBNoteStorage struct {
@@ -31,8 +32,8 @@ func (ms *MongoDBNoteStorage) generateID() string {
 }
 
 func (ms *MongoDBNoteStorage) InsertNote(ctx context.Context, note *models.Note) error {
-	if note.ID == "" {
-		note.ID = ms.generateID()
+	if note.NoteId == "" {
+		note.NoteId = ms.generateID()
 	}
 
 	_, err := ms.collection.InsertOne(ctx, note)
@@ -43,8 +44,7 @@ func (ms *MongoDBNoteStorage) GetNotesWithUserID(ctx context.Context, userId str
 	filter := bson.M{"userId": userId}
 
 	var notes []models.Note
-	
-	
+
 	cursor, err := ms.collection.Find(ctx, filter)
 	if err != nil {
 		return nil, err
@@ -63,6 +63,18 @@ func (ms *MongoDBNoteStorage) GetNotesWithUserID(ctx context.Context, userId str
 		return nil, err
 	}
 	return notes, nil
+}
+
+func (ms *MongoDBNoteStorage) GetNoteWithUserIDAndNoteID(ctx context.Context, userId string, noteId string) (models.Note, error) {
+	filter := bson.M{"_id": noteId}
+
+	var note models.Note
+	err := ms.collection.FindOne(ctx, filter).Decode(&note)
+	if err != nil {
+		return models.Note{}, err
+	}
+	return note, nil
+
 }
 
 func (ms *MongoDBNoteStorage) GetAllNotes(ctx context.Context) ([]models.Note, error) {

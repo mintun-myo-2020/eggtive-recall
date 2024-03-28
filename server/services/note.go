@@ -35,3 +35,12 @@ func (ns *NoteService) GetNotesWithUserID(userId string) ([]models.Note, error) 
 	}
 	return notes, nil
 }
+
+func (ns *NoteService) GetNoteWithUserIDAndNoteID(userId string, noteId string) (models.Note, error) {
+
+	note, err := ns.storage.GetNoteWithUserIDAndNoteID(context.Background(), userId, noteId)
+	if err != nil {
+		return models.Note{}, err
+	}
+	return note, nil
+}

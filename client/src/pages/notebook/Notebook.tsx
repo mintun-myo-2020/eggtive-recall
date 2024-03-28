@@ -2,7 +2,7 @@ import TextEditor from "../../components/notebook/TextEditor";
 
 import { useEffect, useState } from "react";
 
-import { getNotes } from "../../api/noteApiUtils";
+import { getNoteContentWithNoteId, getNotes } from "../../api/noteApiUtils";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
 import { getIdToken } from "firebase/auth";
@@ -12,7 +12,10 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const Notebook = () => {
   const [user, loading, error] = useAuthState(auth);
-  const { noteId } = useParams<{ noteId: string | undefined }>();
+  const { currentNoteId } = useParams<{ currentNoteId: string | undefined }>();
+  const [currentNoteContent, setCurrentNoteContent] = useState<
+    string | undefined
+  >();
 
   const [notes, setNotes] = useState<INote[] | undefined>([]);
   const [noteTitles, setNoteTitles] = useState<
@@ -21,6 +24,29 @@ const Notebook = () => {
   const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
+
+    const getNote = async () => {
+      try {
+        const idToken = await user?.getIdToken();
+        const userId = await user?.uid;
+        const fetchedNote = await getNoteContentWithNoteId(
+          userId,
+          idToken,
+          currentNoteId
+        );
+        setCurrentNoteContent(fetchedNote);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    getNote();
+  }, [user, currentNoteId]);
 
   useEffect(() => {
     if (loading) {
@@ -40,7 +66,6 @@ const Notebook = () => {
         if (titles === undefined) {
           setNoteTitles([]);
         } else {
-          console.log(titles);
           setNoteTitles(titles);
           setIsPageLoading(false);
         }
@@ -59,10 +84,10 @@ const Notebook = () => {
         <NotebookSidebar
           noteTitles={noteTitles}
           isPageLoading={isPageLoading}
-          currentNoteId={noteId}
+          currentNoteId={currentNoteId}
         />
         <div className="grow">
-          <TextEditor content={notes?.[0]?.content || ""} />
+          <TextEditor initialContent={currentNoteContent || ""} />
         </div>
       </div>
     </div>
