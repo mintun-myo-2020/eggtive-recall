@@ -1,29 +1,27 @@
-import TextEditor from "../../components/notebook/TextEditor";
+import TextEditor from "../../components/notebook/textEditor/TextEditor";
 
 import { useEffect, useState } from "react";
 
 import { getNoteContentWithNoteId, getNotes } from "../../api/noteApiUtils";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
-import { getIdToken } from "firebase/auth";
-import { INote } from "../../types/types";
-import NotebookSidebar from "../../components/notebook/NotebookSidebar";
+
+import NotebookSidebar from "../../components/notebook/sidebar/NotebookSidebar";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Notebook = () => {
+  const navigate = useNavigate();
+
   const [user, loading, error] = useAuthState(auth);
   const { currentNoteId } = useParams<{ currentNoteId: string | undefined }>();
   const [currentNoteContent, setCurrentNoteContent] = useState<
     string | undefined
   >();
 
-  const [notes, setNotes] = useState<INote[] | undefined>([]);
   const [noteTitles, setNoteTitles] = useState<
     { id: string | undefined; title: string }[]
   >([]);
   const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (loading) {
@@ -58,13 +56,13 @@ const Notebook = () => {
         const idToken = await user?.getIdToken();
         const userId = await user?.uid;
         const fetchedNotes = await getNotes(userId, idToken);
-        setNotes(fetchedNotes);
         const titles = fetchedNotes?.map((note) => ({
           id: note.id,
           title: note.title,
         }));
         if (titles === undefined) {
           setNoteTitles([]);
+          setIsPageLoading(false);
         } else {
           setNoteTitles(titles);
           setIsPageLoading(false);
@@ -78,6 +76,27 @@ const Notebook = () => {
     getNoteTitles();
   }, [loading, user]);
 
+  const updateNoteTitle = (updatedNote: {
+    id: string | undefined;
+    title: string;
+  }) => {
+    const existingNote = noteTitles.find((note) => note.id === updatedNote.id);
+
+    if (existingNote) {
+      // If the note already exists, update its title
+      const updatedNoteTitles = noteTitles.map((note) =>
+        note.id === updatedNote.id
+          ? { ...note, title: updatedNote.title }
+          : note
+      );
+      setNoteTitles(updatedNoteTitles);
+    } else {
+      // If the note doesn't exist, add it to the list of note titles
+      setNoteTitles([...noteTitles, updatedNote]);
+      navigate(`/notebook/${updatedNote.id}`);
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-row">
@@ -85,9 +104,15 @@ const Notebook = () => {
           noteTitles={noteTitles}
           isPageLoading={isPageLoading}
           currentNoteId={currentNoteId}
+          idToken={user?.getIdToken()}
+          setNoteTitles={setNoteTitles}
         />
         <div className="grow ">
-          <TextEditor initialContent={currentNoteContent || ""} />
+          <TextEditor
+            initialContent={currentNoteContent || ""}
+            noteId={currentNoteId}
+            updateNoteTitle={updateNoteTitle}
+          />
         </div>
       </div>
     </div>

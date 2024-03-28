@@ -19,11 +19,12 @@ func NewNoteController(noteService *services.NoteService) *NoteController {
 	}
 }
 
-func (nc *NoteController) CreateNote(c *gin.Context) {
+func (nc *NoteController) UpsertNote(c *gin.Context) {
 
 	var jsonInput struct {
 		HtmlContent string `json:"htmlContent"`
-		UserID      string `json:"userID"`
+		UserId      string `json:"userId"`
+		NoteId      string `json:"noteId,omitempty"`
 	}
 
 	if err := c.ShouldBindJSON(&jsonInput); err != nil {
@@ -38,10 +39,11 @@ func (nc *NoteController) CreateNote(c *gin.Context) {
 	newNote := models.Note{
 		Title:  title,
 		Body:   jsonInput.HtmlContent,
-		UserId: jsonInput.UserID,
+		UserId: jsonInput.UserId,
+		NoteId: jsonInput.NoteId,
 	}
 
-	err := nc.noteService.CreateNote(&newNote)
+	err := nc.noteService.UpsertNote(&newNote)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -55,9 +57,6 @@ func (nc *NoteController) GetNotesWithUserID(c *gin.Context) {
 	userId := c.Param("userId")
 
 	notes, err := nc.noteService.GetNotesWithUserID(userId)
-
-	println(notes)
-
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -80,4 +79,16 @@ func (nc *NoteController) GetNoteWithUserIDAndNoteID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, note)
+}
+
+func (nc *NoteController) DeleteNoteWithNoteID(c *gin.Context) {
+	noteId := c.Param("noteId")
+
+	err := nc.noteService.DeleteNoteWithNoteID(noteId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Successfully deleted note with id " + noteId})
 }

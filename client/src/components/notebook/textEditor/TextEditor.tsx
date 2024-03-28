@@ -1,26 +1,23 @@
 import {
   BubbleMenu,
   EditorContent,
-  EditorContentProps,
-  EditorProvider,
-  FloatingMenu,
   mergeAttributes,
   useEditor,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import HeadingToolbar from "./HeadingToolbar";
+import HeadingToolbar from "../toolbars/HeadingToolbar";
 import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
 import Highlight from "@tiptap/extension-highlight";
 import { EditorProps } from "@tiptap/pm/view";
-import BubbleToolbar from "./BubbleToolbar";
-import { EditorState } from "@tiptap/pm/state";
+import BubbleToolbar from "../toolbars/BubbleToolbar";
 import { useEffect, useRef, useState } from "react";
 import Heading from "@tiptap/extension-heading";
 import Document from "@tiptap/extension-document";
-import { saveNote } from "../../api/noteApiUtils";
+import { saveNote } from "../../../api/noteApiUtils";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../utils/firebase";
+import { auth } from "../../../utils/firebase";
+import { Spinner } from "flowbite-react";
 
 const CustomDocument = Document.extend({
   content: "heading block*",
@@ -75,9 +72,18 @@ const editorClass: EditorProps = {
 
 type TextAreaProps = {
   initialContent: string;
+  noteId: string | undefined;
+  updateNoteTitle: (updatedNote: {
+    id: string | undefined;
+    title: string;
+  }) => void;
 };
 
-const TextEditor: React.FC<TextAreaProps> = ({ initialContent }) => {
+const TextEditor: React.FC<TextAreaProps> = ({
+  initialContent,
+  noteId,
+  updateNoteTitle,
+}) => {
   const [user, loading, error] = useAuthState(auth);
 
   const [editorContent, setEditorContent] = useState(initialContent);
@@ -104,21 +110,23 @@ const TextEditor: React.FC<TextAreaProps> = ({ initialContent }) => {
     const idToken = await user?.getIdToken();
     const userId = user?.uid;
 
-    saveNote(editorContent, userId, idToken);
+    const res = await saveNote(editorContent, userId, idToken, noteId);
+    if (res === undefined) {
+      return;
+    }
+    const newNoteId = res.id; // get the id of the new note from the response
+    const newNote = { id: newNoteId, title: res.title };
+    updateNoteTitle(newNote);
   };
 
   if (isLoading) {
-    return <div>Loading...</div>; // Replace with your loading spinner component
+    return <Spinner />;
   }
 
   return (
     <div className="grid p-5 pr-0 ">
       <HeadingToolbar editor={editor} />
-      <EditorContent editor={editor}  />
-
-      <BubbleMenu>
-        <BubbleToolbar />
-      </BubbleMenu>
+      <EditorContent editor={editor} />
 
       <button
         type="button"
