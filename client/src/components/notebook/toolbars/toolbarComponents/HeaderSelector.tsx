@@ -20,7 +20,6 @@ const HeaderSelector: React.FC<HeaderSelectorProps> = ({ editor }) => {
   const handleParagraph = () => editor.chain().focus().setParagraph().run();
 
   useEffect(() => {
-    console.log(currentHeader);
     const handleHeaderChange = () => {
       if (editor.isActive("heading", { level: 1 })) {
         setCurrentHeader("Title");

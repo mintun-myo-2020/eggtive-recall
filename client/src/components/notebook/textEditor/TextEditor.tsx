@@ -1,9 +1,7 @@
 import {
   BubbleMenu,
   EditorContent,
-  EditorContentProps,
-  EditorProvider,
-  FloatingMenu,
+
   mergeAttributes,
   useEditor,
 } from "@tiptap/react";
@@ -14,7 +12,6 @@ import Link from "@tiptap/extension-link";
 import Highlight from "@tiptap/extension-highlight";
 import { EditorProps } from "@tiptap/pm/view";
 import BubbleToolbar from "../toolbars/BubbleToolbar";
-import { EditorState } from "@tiptap/pm/state";
 import { useEffect, useRef, useState } from "react";
 import Heading from "@tiptap/extension-heading";
 import Document from "@tiptap/extension-document";
@@ -75,9 +72,10 @@ const editorClass: EditorProps = {
 
 type TextAreaProps = {
   initialContent: string;
+  noteId: string | undefined;
 };
 
-const TextEditor: React.FC<TextAreaProps> = ({ initialContent }) => {
+const TextEditor: React.FC<TextAreaProps> = ({ initialContent, noteId }) => {
   const [user, loading, error] = useAuthState(auth);
 
   const [editorContent, setEditorContent] = useState(initialContent);
@@ -104,7 +102,7 @@ const TextEditor: React.FC<TextAreaProps> = ({ initialContent }) => {
     const idToken = await user?.getIdToken();
     const userId = user?.uid;
 
-    saveNote(editorContent, userId, idToken);
+    saveNote(editorContent, userId, idToken, noteId);
   };
 
   if (isLoading) {

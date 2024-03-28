@@ -44,14 +44,22 @@ export const getNoteContentWithNoteId = async (
 export const saveNote = async (
   editorContent: string,
   userId: string | undefined,
-  idToken: string | undefined
+  idToken: string | undefined,
+  noteId: string | undefined
 ): Promise<INote | undefined> => {
   try {
     const url = API_BASE_URL + API_ENDPOINTS.NOTES;
     const headers = {
       Authorization: idToken,
     };
-    const reqBody = { htmlContent: editorContent, userId: userId };
+    const reqBody: {
+      htmlContent: string;
+      userId: string | undefined;
+      noteId?: string | undefined;
+    } = { htmlContent: editorContent, userId: userId };
+    if (noteId) {
+      reqBody.noteId = noteId;
+    }
     const response = await axios.post(url, reqBody, { headers: headers });
     return response.data.note;
   } catch (err) {

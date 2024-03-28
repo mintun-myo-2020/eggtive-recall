@@ -87,7 +87,7 @@ const Notebook = () => {
           currentNoteId={currentNoteId}
         />
         <div className="grow ">
-          <TextEditor initialContent={currentNoteContent || ""} />
+          <TextEditor initialContent={currentNoteContent || ""} noteId={currentNoteId}/>
         </div>
       </div>
     </div>
