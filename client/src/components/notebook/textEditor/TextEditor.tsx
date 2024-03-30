@@ -64,7 +64,7 @@ const editorClass: EditorProps = {
     class:
       "prose dark:prose-invert " +
       "prose-sm sm:prose-base lg:prose-lg " +
-      "xl:prose-2xl ml-2 mt-1 md:mr-2 focus:outline-none " +
+      "xl:prose-2xl md:ml-2 mt-1 md:mr-2 focus:outline-none " +
       "border p-4 pr-0 md:pr-2 border-gray-400 min-h-[12rem] " +
       "max-w-screen overflow-y-auto rounded-md ",
   },

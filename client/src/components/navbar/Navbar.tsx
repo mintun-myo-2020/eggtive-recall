@@ -7,12 +7,11 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, logout } from "../../utils/firebase";
 
 type NavbarProps = {
-  cards?: ICardData[];
 };
 
 const cardURL = API_BASE_URL + API_ENDPOINTS.CARDS;
 
-const Navbar: React.FC<NavbarProps> = ({ cards }) => {
+const Navbar: React.FC<NavbarProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, loading, error] = useAuthState(auth);
 
