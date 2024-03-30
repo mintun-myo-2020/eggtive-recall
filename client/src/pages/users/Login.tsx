@@ -21,13 +21,15 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) navigate("/notebook");
+    if (user?.emailVerified) {
+      setIsLoggingIn(true);
+      navigate("/notebook");
+    }
   }, [user, loading, navigate]);
 
   const handleLogin = async (
   ) => {
     await logInWithEmailAndPassword(email, password);
-    setIsLoggingIn(true);
   };
 
   const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {

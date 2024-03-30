@@ -7,12 +7,11 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, logout } from "../../utils/firebase";
 
 type NavbarProps = {
-  cards?: ICardData[];
 };
 
 const cardURL = API_BASE_URL + API_ENDPOINTS.CARDS;
 
-const Navbar: React.FC<NavbarProps> = ({ cards }) => {
+const Navbar: React.FC<NavbarProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, loading, error] = useAuthState(auth);
 
@@ -82,7 +81,7 @@ const Navbar: React.FC<NavbarProps> = ({ cards }) => {
             </div>
 
             <div className="flex items-center ml-auto">
-              {user ? (
+              {user?.emailVerified ? (
                 <Link to="/">
                   <button
                     className="flex items-center saveBtn"
@@ -110,21 +109,25 @@ const Navbar: React.FC<NavbarProps> = ({ cards }) => {
         <div className="px-2 pt-2 pb-3 space-y-1">
           <Link
             to="/"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            className="miniNavBtn"
           >
             Home
           </Link>
           <Link
             to="about"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            className="miniNavBtn"
           >
             About
           </Link>
           <Link
             to="board"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            className="miniNavBtn"
           >
             Board
+          </Link>
+          <Link to="notebook" className="miniNavBtn"
+          >
+            Notebook
           </Link>
         </div>
       </div>

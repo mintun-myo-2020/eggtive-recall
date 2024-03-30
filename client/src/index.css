@@ -26,6 +26,10 @@
   @apply hover:scale-105 active:scale-100 transition duration-75 ease-in-out flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium h-full bg-gray-800
 }
 
+.miniNavBtn {
+  @apply text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium
+}
+
 .answerCardBtn {
   @apply w-3/4 rounded my-2 mx-auto p-1 bg-black bg-opacity-50 flex items-center justify-center cursor-pointer hover:bg-opacity-40 active:scale-95 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] transition duration-75 ease-in-out
 }
