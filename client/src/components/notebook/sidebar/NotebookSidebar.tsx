@@ -57,7 +57,7 @@ const NotebookSidebar: React.FC<SidebarProps> = ({
       <Sidebar.Items>
         <Sidebar.ItemGroup>
           {noteTitles.map(({ id, title }) => (
-            <div className="flex items-center justify-end">
+            <div key={id} className="flex items-center justify-end">
               <Sidebar.Item
                 key={"item_" + id}
                 onClick={() => handleSelectNote(id)}
