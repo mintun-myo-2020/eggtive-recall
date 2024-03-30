@@ -82,7 +82,7 @@ const Navbar: React.FC<NavbarProps> = ({ cards }) => {
             </div>
 
             <div className="flex items-center ml-auto">
-              {user ? (
+              {user?.emailVerified ? (
                 <Link to="/">
                   <button
                     className="flex items-center saveBtn"

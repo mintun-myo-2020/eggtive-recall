@@ -11,6 +11,7 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
+  sendEmailVerification,
 } from "firebase/auth";
 
 import {
@@ -70,7 +71,13 @@ const signInWithGoogle = async () => {
 
 const logInWithEmailAndPassword = async (email: string, password: string) => {
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    const res = await signInWithEmailAndPassword(auth, email, password);
+    const user = res.user
+    console.log(user.emailVerified)
+    if (!user.emailVerified) {
+      logout();
+      throw new Error('Please verify your email before logging in.');
+    }
   } catch (err) {
     console.error(err);
     if (err instanceof Error) {
@@ -87,14 +94,14 @@ const registerWithEmailAndPassword = async (
   password: string
 ) => {
   try {
+
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
-    await axios.post(userURL, {
-      _id: user.uid,
-      name,
-      email,
+    sendEmailVerification(user).then(() => {
+      alert('Verification email sent!');
+    }).catch((error) => {
+      alert(`Failed to send verification email: ${error}`);
     });
-
   } catch (err) {
     if (err instanceof Error) {
       alert(err.message);

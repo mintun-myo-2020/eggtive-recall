@@ -19,7 +19,7 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) navigate("/notebook");
+    if (user?.emailVerified) navigate("/notebook");
   }, [user, loading, navigate]);
 
   const handleRegister = async () => {

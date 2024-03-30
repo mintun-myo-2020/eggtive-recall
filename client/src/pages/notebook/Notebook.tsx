@@ -107,7 +107,7 @@ const Notebook = () => {
           idToken={user?.getIdToken()}
           setNoteTitles={setNoteTitles}
         />
-        <div className="grow ">
+        <div className="grow">
           <TextEditor
             initialContent={currentNoteContent || ""}
             noteId={currentNoteId}

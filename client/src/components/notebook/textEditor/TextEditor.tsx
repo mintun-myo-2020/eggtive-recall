@@ -124,7 +124,7 @@ const TextEditor: React.FC<TextAreaProps> = ({
   }
 
   return (
-    <div className="grid p-5 pr-0 ">
+    <div className="grid md:p-5 ">
       <HeadingToolbar editor={editor} />
       <EditorContent editor={editor} />
 
