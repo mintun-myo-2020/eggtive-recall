@@ -2,6 +2,9 @@ service: eggtive-recall-api
 
 plugins:
   - serverless-esbuild 
+
+package: 
+  individually: true
   
 provider:
   name: aws
@@ -23,3 +26,6 @@ functions:
           cors: true
     environment:
       OPENAI_API_KEY: ${env:OPENAI_API_KEY}
+    package:
+      include:
+        - src/generate_quiz/**
