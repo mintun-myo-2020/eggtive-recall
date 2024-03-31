@@ -1,0 +1,25 @@
+service: eggtive-recall-api
+
+plugins:
+  - serverless-esbuild 
+  
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-southeast-1
+  stage: ${opt:stage, "dev"}
+  architecture: x86_64
+  timeout: 30
+  environment:
+    STAGE: ${self:provider.stage}
+
+functions:
+  GenerateQuiz:
+    handler: ./src/generate_quiz/handler.handler
+    events:
+      - http:
+          path: generate-quiz
+          method: post
+          cors: true
+    environment:
+      OPENAI_API_KEY: ${env:OPENAI_API_KEY}
