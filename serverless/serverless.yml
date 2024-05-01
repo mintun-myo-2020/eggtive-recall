@@ -1,7 +1,11 @@
 service: eggtive-recall-api
 
+frameworkVersion: '3'
+
 plugins:
   - serverless-esbuild 
+  - serverless-plugin-typescript
+  - serverless-offline
 
 package: 
   individually: true
@@ -17,8 +21,18 @@ provider:
     STAGE: ${self:provider.stage}
 
 functions:
+  Hello:
+    handler: ./src/hello.handler
+    events:
+      - http:
+          path: hello
+          method: post
+          cors: true
+    package: 
+      include:
+        - src/hello/**
   GenerateQuiz:
-    handler: ./src/generate_quiz/handler.handler
+    handler: ./src/generateQuiz/handler.handler
     events:
       - http:
           path: generate-quiz
@@ -28,4 +42,15 @@ functions:
       OPENAI_API_KEY: ${env:OPENAI_API_KEY}
     package:
       include:
-        - src/generate_quiz/**
+        - src/generateQuiz/**
+
+  SaveQuiz:
+    handler: ./src/saveQuiz/handler.handler
+    events:
+      - http:
+          path: save-quiz
+          method: post
+          cors: true
+    package:
+      include:
+        - src/saveQuiz/**

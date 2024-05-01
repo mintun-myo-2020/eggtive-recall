@@ -1,0 +1,39 @@
+/* index.css */
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "OXYGEN";
+  src: url("/fonts/Oxygen-Regular.ttf");
+}
+
+@font-face {
+  font-family: "VIGA";
+  src: url("/fonts/Viga-Regular.ttf");
+}
+
+.btn {
+  @apply lg:w-32 items-center justify-center align-middle ml-auto uppercase self-center bg-emerald-400 text-black hover:cursor-pointer hover:bg-emerald-600 hover:text-white px-3 py-2 rounded-md font-medium;
+}
+
+.saveBtn {
+  @apply hover:scale-105 active:scale-100 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] transition duration-100 ease-in-out lg:w-32 items-center justify-center align-middle ml-auto uppercase self-center bg-gradient-to-br from-purple-500 to-indigo-500 hover:cursor-pointer hover:text-white px-3 py-2 rounded-md font-medium;
+}
+
+.navBtn {
+  @apply hover:scale-105 active:scale-100 transition duration-75 ease-in-out flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium h-full bg-gray-800
+}
+
+.miniNavBtn {
+  @apply text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium
+}
+
+.answerCardBtn {
+  @apply w-3/4 rounded my-2 mx-auto p-1 bg-black bg-opacity-50 flex items-center justify-center cursor-pointer hover:bg-opacity-40 active:scale-95 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] transition duration-75 ease-in-out
+}
+
+.pageBtn {
+  @apply bg-gray-800 hover:bg-gray-700 hover:scale-105 text-stone-100 py-2 px-4 rounded font-roboto active:scale-100 transition duration-75 ease-in-out
+}

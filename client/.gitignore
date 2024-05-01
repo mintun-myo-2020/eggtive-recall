@@ -27,3 +27,8 @@ dist-ssr
 
 # Contentlayer
 .contentlayer
+
+# Next
+.next
+next-env.d.ts
+dist

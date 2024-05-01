@@ -1,0 +1,49 @@
+{
+  "body": "{\"noteHtml\": \"Newtonian mechanics is a fundamental branch of physics that describes the motion of objects and the forces acting upon them. At its core are three laws formulated by Sir Isaac Newton in the 17th century. The first law, known as the law of inertia, states that an object at rest will remain at rest, and an object in motion will continue moving at a constant velocity unless acted upon by an external force. This law helps us understand the tendency of objects to maintain their state of motion.The second law of Newtonian mechanics relates the net force acting on an object to its mass and acceleration. This law is often expressed as the equation F = ma, where F represents the force applied to the object, m is its mass, and a is the resulting acceleration. This principle underscores the concept that the acceleration of an object is directly proportional to the force applied to it and inversely proportional to its mass. Through this law, students learn how forces influence the motion of objects and can predict their behavior under different conditions.The third law of Newtonian mechanics, often referred to as the law of action and reaction, states that for every action, there is an equal and opposite reaction. In simpler terms, this means that when one object exerts a force on another object, the second object exerts an equal force in the opposite direction. This law elucidates the interaction between two objects and is crucial for understanding phenomena such as collisions and the behavior of rockets in space.\"}",
+  "resource": "/generate-quiz",
+  "path": "/generate-quiz",
+  "httpMethod": "POST",
+  "isBase64Encoded": false,
+  "queryStringParameters": {
+    "param1": "value1",
+    "param2": "value2"
+  },
+  "multiValueQueryStringParameters": {
+    "param1": ["value1"],
+    "param2": ["value2", "value3"]
+  },
+  "headers": {
+    "Content-Type": "application/json",
+    "X-Custom-Header": "value"
+  },
+  "multiValueHeaders": {
+    "Content-Type": ["application/json"],
+    "X-Custom-Header": ["value1", "value2"]
+  },
+  "requestContext": {
+    "resourceId": "123456",
+    "apiId": "1234567890",
+    "resourcePath": "/generate-quiz",
+    "httpMethod": "POST",
+    "requestId": "c6af9ac6-7b61-11e6-9a41-93e8deadbeef",
+    "accountId": "123456789012",
+    "identity": {
+      "apiKey": null,
+      "userArn": null,
+      "cognitoAuthenticationType": null,
+      "caller": null,
+      "userAgent": "Custom User Agent String",
+      "user": null,
+      "cognitoIdentityPoolId": null,
+      "cognitoIdentityId": null,
+      "cognitoAuthenticationProvider": null,
+      "sourceIp": "127.0.0.1",
+      "accountId": null
+    },
+    "stage": "prod"
+  },
+  "pathParameters": null,
+  "stageVariables": null,
+  "bodyEncoding": "text",
+  "protocol": "HTTP/1.1"
+}
