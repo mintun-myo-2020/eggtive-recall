@@ -1,18 +1,18 @@
 "use client";
 
-import TextEditor from "../components/notebook/textEditor/TextEditor";
+import TextEditor from "../components/textEditor/TextEditor";
 
 import { useEffect, useState } from "react";
 
-import { getNoteContentWithNoteId, getNotes } from "../api/noteApiUtils";
+import { getNoteContentWithNoteId, getNotes } from "../../api/noteApiUtils";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../utils/firebase";
+import { auth } from "../../utils/firebase";
 
-import NotebookSidebar from "../components/notebook/sidebar/NotebookSidebar";
+import NotebookSidebar from "../components/sidebar/NotebookSidebar";
 import { usePathname, useRouter } from "next/navigation";
 
-const Notebook = () => {
-  const currentNoteId = usePathname();
+const Notebook = ({ params }: { params: { noteId: string } }) => {
+  const currentNoteId = params.noteId;
   const router = useRouter();
 
   const [user, loading, error] = useAuthState(auth);
