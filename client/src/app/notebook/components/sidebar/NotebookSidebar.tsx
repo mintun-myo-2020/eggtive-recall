@@ -1,7 +1,7 @@
 import { NotebookIcon, TrashIcon } from "lucide-react";
 import { Sidebar, Spinner } from "flowbite-react";
 import { useRouter } from "next/navigation";
-import { deleteNote } from "../../../api/noteApiUtils";
+import { deleteNote } from "@/utils/api/noteApiUtils";
 
 type SidebarProps = {
   noteTitles: Array<{ id: string | undefined; title: string }>;

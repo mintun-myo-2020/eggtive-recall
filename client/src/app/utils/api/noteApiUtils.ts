@@ -1,6 +1,7 @@
 import axios from "axios";
-import { ICardData, INote } from "../__types/types";
+
 import { API_BASE_URL, API_ENDPOINTS } from "./endpoints";
+import { INote } from "@/__types/types";
 
 export const getNotes = async (
   userId: string | undefined,

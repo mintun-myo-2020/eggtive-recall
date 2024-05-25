@@ -4,12 +4,12 @@ import TextEditor from "../components/textEditor/TextEditor";
 
 import { useEffect, useState } from "react";
 
-import { getNoteContentWithNoteId, getNotes } from "../../api/noteApiUtils";
+import { getNoteContentWithNoteId, getNotes } from "@/utils/api/noteApiUtils";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
 
 import NotebookSidebar from "../components/sidebar/NotebookSidebar";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const Notebook = ({ params }: { params: { noteId: string } }) => {
   const currentNoteId = params.noteId;

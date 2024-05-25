@@ -1,6 +1,6 @@
 import axios from "axios";
-import { ICardData } from "../__types/types";
 import { API_BASE_URL, API_ENDPOINTS } from "./endpoints";
+import { ICardData } from "@/__types/types";
 
 const associateCardToUser = (
   cardId: string | undefined,

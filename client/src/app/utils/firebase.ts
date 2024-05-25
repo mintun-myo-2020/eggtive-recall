@@ -21,7 +21,7 @@ import {
   where,
   addDoc,
 } from "firebase/firestore";
-import { API_BASE_URL, API_ENDPOINTS } from "../api/endpoints";
+import { API_BASE_URL, API_ENDPOINTS } from "./api/endpoints";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,

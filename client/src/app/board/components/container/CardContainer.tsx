@@ -6,7 +6,7 @@ import {
   IPositionData,
   IQuestion,
 } from "../../../__types/types";
-import { createOneCard } from "../../../api/cardApiUtils";
+import { createOneCard } from "@/utils/api/cardApiUtils";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../utils/firebase";
 

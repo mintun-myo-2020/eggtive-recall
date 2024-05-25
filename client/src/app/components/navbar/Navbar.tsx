@@ -6,7 +6,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 import Image from "next/image";
 
-import { API_BASE_URL, API_ENDPOINTS } from "../../api/endpoints";
+import { API_BASE_URL, API_ENDPOINTS } from "@/utils/api/endpoints";
 import { auth, logout } from "../../utils/firebase";
 import Link from "next/link";
 
@@ -74,13 +74,13 @@ const Navbar: React.FC<NavbarProps> = () => {
                 <Link href="/home" className="navBtn">
                   Home
                 </Link>
-                <Link href="about" className="navBtn">
+                <Link href="/about" className="navBtn">
                   About
                 </Link>
-                <Link href="board" className="navBtn">
+                <Link href="/board" className="navBtn">
                   Board
                 </Link>
-                <Link href="notebook" className="navBtn">
+                <Link href="/notebook" className="navBtn">
                   Notebook
                 </Link>
               </div>
