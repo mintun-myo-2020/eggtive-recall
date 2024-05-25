@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 
 import { Spinner } from "flowbite-react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { ICardData } from "../__types/types";
+import { ICardData } from "@/__types/types";
 import { getUserCards } from "@/utils/api/cardApiUtils";
 import CardContainer from "@/board/components/container/CardContainer";
-import { auth } from "../utils/firebase";
+import { auth } from "@/utils/firebase";
 
 const Board = () => {
   const [user, loading, error] = useAuthState(auth);

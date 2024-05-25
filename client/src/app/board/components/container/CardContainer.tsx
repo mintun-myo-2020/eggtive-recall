@@ -1,14 +1,14 @@
-import { MouseEventHandler, useEffect, useRef, useState } from "react";
+import { MouseEventHandler, useEffect, useRef } from "react";
 import Card from "../card/Card";
 import {
   IAnswer,
   ICardData,
   IPositionData,
   IQuestion,
-} from "../../../__types/types";
+} from "@/__types/types";
 import { createOneCard } from "@/utils/api/cardApiUtils";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../../utils/firebase";
+import { auth } from "@/utils/firebase";
 
 type CardContainerProps = {
   cards: ICardData[];
