@@ -1,19 +1,8 @@
-export interface Option {
-    a: string;
-    b: string;
-    c: string;
-    d: string;
-}
-
 export interface Question {
     question: string;
-    options: Option;
-    correctOption: string;
+    answer: string;
 }
 
 export interface QuizSchema {
-    quiz: {
-        questions: Question[];
-        userId: string;
-    };
+    quiz: Question[];
 }
