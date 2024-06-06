@@ -5,4 +5,5 @@ export interface Question {
 
 export interface QuizSchema {
     quiz: Question[];
+    userId: string | undefined;
 }

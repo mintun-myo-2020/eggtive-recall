@@ -5,8 +5,10 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const uri = process.env.MONGODB_URI; // Connection string for your MongoDB database
-const client = new MongoClient(uri || "");
+const dbPassword = process.env.MONGODB_PASSWORD;
+const dbName = process.env.MONGODB_NAME;
+const mongoURI = `mongodb+srv://mintunxdd:${dbPassword}@active-recall.qrbyadj.mongodb.net/${dbName}?retryWrites=true&w=majority`;
+const client = new MongoClient(mongoURI || "");
 
 export const handler: Handler = async (
   event: APIGatewayProxyEventV2,
@@ -15,20 +17,21 @@ export const handler: Handler = async (
   const body: QuizSchema = JSON.parse(event.body || "{}");
 
   const quiz = {
-    userId: body.quiz.userId,
-    questions: body.quiz.questions, // the questions from the quiz
+    userId: body.userId,
+    quiz: body.quiz, // the questions from the quiz
   };
 
   try {
     await client.connect();
-    const database = client.db("quizDB"); // replace with your database name
-    const collection = database.collection("quizzes"); 
+    const database = client.db("active-recall"); // replace with your database name
+    const collection = database.collection("quizzes");
     await collection.insertOne(quiz);
 
     return {
       statusCode: 200,
       body: JSON.stringify({
         message: "Quiz saved successfully",
+        quiz: quiz.quiz,
       }),
     };
   } catch (error) {
