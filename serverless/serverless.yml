@@ -1,14 +1,14 @@
 service: eggtive-recall-api
 
-frameworkVersion: '3'
+frameworkVersion: "3"
 
 plugins:
-  - serverless-esbuild 
+  - serverless-esbuild
+  - serverless-step-functions
   - serverless-offline
 
-package: 
+package:
   individually: true
-  
 
 custom:
   serverless-offline:
@@ -35,16 +35,11 @@ functions:
           path: hello
           method: post
           cors: true
-    package: 
+    package:
       include:
         - src/hello/**
   GenerateQuiz:
     handler: ./src/generateQuiz/handler.handler
-    events:
-      - http:
-          path: generate-quiz
-          method: post
-          cors: true
     environment:
       OPENAI_API_KEY: ${env:OPENAI_API_KEY}
     package:
@@ -53,11 +48,37 @@ functions:
 
   SaveQuiz:
     handler: ./src/saveQuiz/handler.handler
-    events:
-      - http:
-          path: save-quiz
-          method: post
-          cors: true
+    environment:
+      MONGODB_PASSWORD: ${env:MONGODB_PASSWORD}
+      MONGODB_NAME: ${env:MONGODB_NAME}
     package:
       include:
         - src/saveQuiz/**
+
+stepFunctions:
+  stateMachines:
+    CreateNewQuizStateMachine:
+      events:
+        - http:
+            path: quizzes/create
+            method: POST
+      definition:
+        StartAt: GenerateQuiz
+        States:
+          GenerateQuiz:
+            Type: Task
+            Resource:
+              Fn::GetAtt: [GenerateQuiz, Arn]
+            Next: SaveQuiz
+            Retry:
+              - ErrorEquals:
+                  - QuizEmptyError
+                IntervalSeconds: 2
+                MaxAttempts: 3
+                BackoffRate: 2
+          SaveQuiz:
+            Type: Task
+            InputPath: "$.body"
+            Resource:
+              Fn::GetAtt: [SaveQuiz, Arn]
+            End: true

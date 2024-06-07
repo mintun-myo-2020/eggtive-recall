@@ -11,19 +11,17 @@ const mongoURI = `mongodb+srv://mintunxdd:${dbPassword}@active-recall.qrbyadj.mo
 const client = new MongoClient(mongoURI || "");
 
 export const handler: Handler = async (
-  event: APIGatewayProxyEventV2,
+  event: string,
   context: Context
 ) => {
-  const body: QuizSchema = JSON.parse(event.body || "{}");
 
-  const quiz = {
-    userId: body.userId,
-    quiz: body.quiz, // the questions from the quiz
-  };
+  console.log("event", event);
+
+  const quiz: QuizSchema = JSON.parse(event);
 
   try {
     await client.connect();
-    const database = client.db("active-recall"); // replace with your database name
+    const database = client.db("active-recall");
     const collection = database.collection("quizzes");
     await collection.insertOne(quiz);
 

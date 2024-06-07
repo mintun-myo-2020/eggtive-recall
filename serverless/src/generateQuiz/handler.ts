@@ -2,19 +2,16 @@ import { Handler, APIGatewayProxyEventV2, Context } from "aws-lambda";
 import OpenAI from "openai";
 
 
-interface Body {
-  noteHtml: string;
-}
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
 export const handler: Handler = async (
-  event: APIGatewayProxyEventV2,
+  event: GenerateQuizEvent,
   context: Context
 ) => {
-  const body: Body = JSON.parse(event.body || "{}");
+
 
   const chatCompletion = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
@@ -26,19 +23,45 @@ export const handler: Handler = async (
       },
       {
         role: "user",
-        content: body.noteHtml,
+        content: event.noteHtml,
       },
     ],
   });
 
 
-  const quizContent = chatCompletion.choices[0].message.content || "{}";
-  const quiz = JSON.parse(quizContent).quiz;
+  try {
+    const quizContent = chatCompletion.choices[0].message.content || "{}";
+    const quiz = JSON.parse(quizContent).quiz;
+    const userId = event.userId;
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      quiz,
-    }),
-  };
+    if (!quiz || quiz.length === 0) {
+      throw new QuizEmptyError("Quiz is empty");
+    }
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        quiz,
+        userId,
+      }),
+    };
+  } catch (error) {
+    if (error instanceof QuizEmptyError) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          error: error.message,
+          type: 'QuizEmptyError',
+        }),
+      };
+    }
+
+    // Other types of errors
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: (error as Error).message,
+      }),
+    };
+  }
 };
