@@ -17,7 +17,7 @@ const toolBarClass =
 
 const isActiveClass = "bg-black/10 text-neutral-800";
 
-const BubbleToolbar: React.FC = () => {
+const BubbleToolbar = () => {
   const { editor } = useCurrentEditor();
 
   if (!editor) {
@@ -28,55 +28,49 @@ const BubbleToolbar: React.FC = () => {
   const handleItalic = () => editor.chain().focus().toggleItalic().run();
   const handleUnderline = () => editor.chain().focus().toggleUnderline().run();
   const handleCodeBlock = () => editor.chain().focus().toggleCodeBlock().run();
-  const handleLink = () => {};
+  const handleLink = () => { };
   const handleHighlight = () => editor.chain().focus().toggleHighlight().run();
   return (
     <div className={toolBarClass}>
       <span
         onClick={handleBold}
-        className={`${buttonClass} ${
-          editor.isActive("bold") ? isActiveClass : ""
-        }`}
+        className={`${buttonClass} ${editor.isActive("bold") ? isActiveClass : ""
+          }`}
       >
         <Bold size={14} />
       </span>
       <span
         onClick={handleItalic}
-        className={`${buttonClass} ${
-          editor.isActive("italic") ? isActiveClass : ""
-        }`}
+        className={`${buttonClass} ${editor.isActive("italic") ? isActiveClass : ""
+          }`}
       >
         <Italic size={14} />
       </span>
       <span
         onClick={handleUnderline}
-        className={`${buttonClass} ${
-          editor.isActive("underline") ? isActiveClass : ""
-        }`}
+        className={`${buttonClass} ${editor.isActive("underline") ? isActiveClass : ""
+          }`}
       >
         <Underline size={14} />
       </span>
       <span
         onClick={handleCodeBlock}
-        className={`${buttonClass} ${
-          editor.isActive("codeblock") ? isActiveClass : ""
-        }`}
+        className={`${buttonClass} ${editor.isActive("codeblock") ? isActiveClass : ""
+          }`}
       >
         <Code2 size={14} />
       </span>
       <span
         onClick={handleLink}
-        className={`${buttonClass} ${
-          editor.isActive("link") ? isActiveClass : ""
-        }`}
+        className={`${buttonClass} ${editor.isActive("link") ? isActiveClass : ""
+          }`}
       >
         <Link size={14} />
       </span>
       <span
         onClick={handleHighlight}
-        className={`${buttonClass} ${
-          editor.isActive("highlight") ? isActiveClass : ""
-        }`}
+        className={`${buttonClass} ${editor.isActive("highlight") ? isActiveClass : ""
+          }`}
       >
         <Highlighter size={14} />
       </span>

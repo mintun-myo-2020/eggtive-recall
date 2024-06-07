@@ -18,13 +18,13 @@ type SidebarProps = {
   >;
 };
 
-const NotebookSidebar: React.FC<SidebarProps> = ({
+const NotebookSidebar = ({
   noteTitles,
   isPageLoading,
   currentNoteId,
   idToken,
   setNoteTitles,
-}) => {
+}: SidebarProps) => {
   const router = useRouter();
 
   const handleSelectNote = (currentNoteId: string | undefined) => {
@@ -58,9 +58,8 @@ const NotebookSidebar: React.FC<SidebarProps> = ({
               <Sidebar.Item
                 key={"item_" + id}
                 onClick={() => handleSelectNote(id)}
-                className={`cursor-pointer rounded-sm min-h-5 h-full py-0.5 ${
-                  id === currentNoteId ? "bg-gray-300" : ""
-                }`}
+                className={`cursor-pointer rounded-sm min-h-5 h-full py-0.5 ${id === currentNoteId ? "bg-gray-300" : ""
+                  }`}
               >
                 {title.slice(0, 10)}
               </Sidebar.Item>

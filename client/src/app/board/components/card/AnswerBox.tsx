@@ -15,12 +15,12 @@ type AnswerBoxProps = {
 };
 const MIN_TEXTAREA_HEIGHT = 32;
 
-const AnswerBox: React.FC<AnswerBoxProps> = ({
+const AnswerBox = ({
   answer: answer,
-  id: id,
-  updateAnswer: updateAnswer,
-  handleMouseUpCard: handleMouseUpCard,
-}) => {
+  id,
+  updateAnswer,
+  handleMouseUpCard
+}: AnswerBoxProps) => {
   const newAnswerTextboxRef = useRef<HTMLTextAreaElement>(null);
   const attemptInputRef = useRef<HTMLInputElement>(null);
 

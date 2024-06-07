@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Editor} from "@tiptap/react";
+import { Editor } from "@tiptap/react";
 import {
   Bold,
   Code2,
@@ -22,7 +22,7 @@ type HeadingToolbarProps = {
   editor: Editor | null;
 };
 
-const HeadingToolbar: React.FC<HeadingToolbarProps> = ({ editor }) => {
+const HeadingToolbar = ({ editor }: HeadingToolbarProps) => {
   if (!editor) {
     return null;
   }
@@ -32,57 +32,51 @@ const HeadingToolbar: React.FC<HeadingToolbarProps> = ({ editor }) => {
   const handleItalic = () => editor.chain().focus().toggleItalic().run();
   const handleUnderline = () => editor.chain().focus().toggleUnderline().run();
   const handleCodeBlock = () => editor.chain().focus().toggleCodeBlock().run();
-  const handleLink = () => {};
+  const handleLink = () => { };
   const handleHighlight = () => editor.chain().focus().toggleHighlight().run();
   return (
     <div className={toolBarClass}>
-      
+
       <HeaderSelector editor={editor} />
       <span
         onClick={handleBold}
-        className={`${buttonClass} ${
-          editor.isActive("bold") ? isActiveClass : ""
-        }`}
+        className={`${buttonClass} ${editor.isActive("bold") ? isActiveClass : ""
+          }`}
       >
         <Bold size={14} />
       </span>
       <span
         onClick={handleItalic}
-        className={`${buttonClass} ${
-          editor.isActive("italic") ? isActiveClass : ""
-        }`}
+        className={`${buttonClass} ${editor.isActive("italic") ? isActiveClass : ""
+          }`}
       >
         <Italic size={14} />
       </span>
       <span
         onClick={handleUnderline}
-        className={`${buttonClass} ${
-          editor.isActive("underline") ? isActiveClass : ""
-        }`}
+        className={`${buttonClass} ${editor.isActive("underline") ? isActiveClass : ""
+          }`}
       >
         <Underline size={14} />
       </span>
       <span
         onClick={handleCodeBlock}
-        className={`${buttonClass} ${
-          editor.isActive("codeblock") ? isActiveClass : ""
-        }`}
+        className={`${buttonClass} ${editor.isActive("codeblock") ? isActiveClass : ""
+          }`}
       >
         <Code2 size={14} />
       </span>
       <span
         onClick={handleLink}
-        className={`${buttonClass} ${
-          editor.isActive("link") ? isActiveClass : ""
-        }`}
+        className={`${buttonClass} ${editor.isActive("link") ? isActiveClass : ""
+          }`}
       >
         <Link size={14} />
       </span>
       <span
         onClick={handleHighlight}
-        className={`${buttonClass} ${
-          editor.isActive("highlight") ? isActiveClass : ""
-        }`}
+        className={`${buttonClass} ${editor.isActive("highlight") ? isActiveClass : ""
+          }`}
       >
         <Highlighter size={14} />
       </span>

@@ -16,11 +16,11 @@ type CardContainerProps = {
   isEmpty: boolean;
 };
 
-const CardContainer: React.FC<CardContainerProps> = ({
+const CardContainer = ({
   cards,
   setCards,
   isEmpty,
-}) => {
+}: CardContainerProps) => {
   const [user, loading, error] = useAuthState(auth);
   const userId = user?.uid;
 

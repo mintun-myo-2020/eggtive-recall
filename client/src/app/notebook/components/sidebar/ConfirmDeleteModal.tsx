@@ -9,11 +9,11 @@ type ConfirmDeleteModalProps = {
   noteIdToDelete: string | undefined;
 };
 
-const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
+const ConfirmDeleteModal = ({
   setConfirmDelete,
   noteIdToDelete,
   setNoteToDelete,
-}) => {
+}: ConfirmDeleteModalProps) => {
   setNoteToDelete(noteIdToDelete);
   const [openModal, setOpenModal] = useState(false);
 

@@ -10,11 +10,9 @@ import { API_BASE_URL, API_ENDPOINTS } from "@/utils/api/endpoints";
 import { auth, logout } from "../../utils/firebase";
 import Link from "next/link";
 
-type NavbarProps = {};
-
 const cardURL = API_BASE_URL + API_ENDPOINTS.CARDS;
 
-const Navbar: React.FC<NavbarProps> = () => {
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, loading, error] = useAuthState(auth);
 

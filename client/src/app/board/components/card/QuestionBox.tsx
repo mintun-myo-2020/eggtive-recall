@@ -16,12 +16,12 @@ type QuestionBoxProps = {
 };
 const MIN_TEXTAREA_HEIGHT = 60;
 
-const QuestionBox: React.FC<QuestionBoxProps> = ({
+const QuestionBox = ({
   id,
   question,
   updateQuestion,
   handleMouseUpCard,
-}) => {
+}: QuestionBoxProps) => {
   const newQuestionTextboxRef = useRef<HTMLTextAreaElement>(null);
   const [isEditingQuestion, setIsEditingQuestion] = useState(false);
   const [newQuestion, setNewQuestion] = useState(question.question);

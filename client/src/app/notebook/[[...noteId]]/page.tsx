@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import { getNoteContentWithNoteId, getNotes } from "@/utils/api/noteApiUtils";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../utils/firebase";
+import { auth } from "@/utils/firebase";
 
 import NotebookSidebar from "../components/sidebar/NotebookSidebar";
 import { useRouter } from "next/navigation";

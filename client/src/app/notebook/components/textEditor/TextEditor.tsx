@@ -78,11 +78,11 @@ type TextAreaProps = {
   }) => void;
 };
 
-const TextEditor: React.FC<TextAreaProps> = ({
+const TextEditor = ({
   initialContent,
   noteId,
   updateNoteTitle,
-}) => {
+}: TextAreaProps) => {
   const [user, loading, error] = useAuthState(auth);
 
   const [editorContent, setEditorContent] = useState(initialContent);

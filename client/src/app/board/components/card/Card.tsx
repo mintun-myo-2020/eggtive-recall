@@ -18,7 +18,7 @@ type CardProps = {
   id?: string;
   question: IQuestion;
   answer: IAnswer;
-  position: IPositionData;
+  initialPosition: IPositionData;
   cards: ICardData[];
   setCards: React.Dispatch<React.SetStateAction<ICardData[]>>;
   updatePosition: (id: string | undefined, position: IPositionData) => void;
@@ -26,17 +26,17 @@ type CardProps = {
   updateAnswer: (id: string | undefined, answer: IAnswer) => void;
 };
 
-const Card: React.FC<CardProps> = ({
-  id: id,
-  question: question,
-  answer: answer,
-  position: initialPosition,
-  cards: cards,
-  setCards: setCards,
-  updatePosition: updatePosition,
-  updateQuestion: updateQuestion,
-  updateAnswer: updateAnswer,
-}) => {
+const Card = ({
+  id,
+  question,
+  answer,
+  initialPosition,
+  cards,
+  setCards,
+  updatePosition,
+  updateQuestion,
+  updateAnswer,
+}: CardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
   const [user, loading, error] = useAuthState(auth);

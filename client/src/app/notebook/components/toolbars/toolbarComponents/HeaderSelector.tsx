@@ -11,7 +11,7 @@ const buttonClass =
 
 const isActiveClass = "bg-black/10 text-neutral-800";
 
-const HeaderSelector: React.FC<HeaderSelectorProps> = ({ editor }) => {
+const HeaderSelector = ({ editor }: HeaderSelectorProps) => {
   const [currentHeader, setCurrentHeader] = useState("");
 
   const handleH1 = () => editor.chain().focus().setHeading({ level: 1 }).run();
@@ -37,16 +37,15 @@ const HeaderSelector: React.FC<HeaderSelectorProps> = ({ editor }) => {
       editor.off("transaction", handleHeaderChange);
     };
   }, [editor]);
-  
+
   return (
     <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }} size="small">
       <Select value={currentHeader}>
         <MenuItem value={"Title"}>
           <span
             onClick={handleH1}
-            className={`${buttonClass} ${
-              currentHeader === "Title" ? isActiveClass : ""
-            }`}
+            className={`${buttonClass} ${currentHeader === "Title" ? isActiveClass : ""
+              }`}
           >
             Title
           </span>
@@ -54,9 +53,8 @@ const HeaderSelector: React.FC<HeaderSelectorProps> = ({ editor }) => {
         <MenuItem value={"Header"}>
           <span
             onClick={handleH2}
-            className={`${buttonClass} ${
-              currentHeader === "Header" ? isActiveClass : ""
-            }`}
+            className={`${buttonClass} ${currentHeader === "Header" ? isActiveClass : ""
+              }`}
           >
             Header
           </span>
@@ -64,9 +62,8 @@ const HeaderSelector: React.FC<HeaderSelectorProps> = ({ editor }) => {
         <MenuItem value={"Subheader"}>
           <span
             onClick={handleH3}
-            className={`${buttonClass} ${
-              currentHeader === "Subheader" ? isActiveClass : ""
-            }`}
+            className={`${buttonClass} ${currentHeader === "Subheader" ? isActiveClass : ""
+              }`}
           >
             Subheader
           </span>
@@ -74,9 +71,8 @@ const HeaderSelector: React.FC<HeaderSelectorProps> = ({ editor }) => {
         <MenuItem value={"Paragraph"}>
           <span
             onClick={handleParagraph}
-            className={`${buttonClass} ${
-              currentHeader === "Paragraph" ? isActiveClass : ""
-            }`}
+            className={`${buttonClass} ${currentHeader === "Paragraph" ? isActiveClass : ""
+              }`}
           >
             Paragraph
           </span>
