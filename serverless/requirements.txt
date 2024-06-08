@@ -1,3 +1,2 @@
 openai==1.33.0
-typechat @ git+https://github.com/microsoft/TypeChat@ce83b7f63f19786106f82a37ca154bbb579d960b#subdirectory=python
 pymongo==4.7.3
