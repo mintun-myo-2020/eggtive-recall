@@ -1,0 +1,2 @@
+class QuizEmptyError(Exception):
+    pass

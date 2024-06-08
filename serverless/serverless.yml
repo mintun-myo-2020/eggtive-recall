@@ -1,16 +1,38 @@
-service: eggtive-recall-api
-
-frameworkVersion: "3"
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: eggtive
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: eggtive-recall
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: eggtive-recall-quiz
 
 plugins:
-  - serverless-esbuild
   - serverless-step-functions
+  - serverless-python-requirements
+  - serverless-prune-plugin
   - serverless-offline
 
 package:
   individually: true
+  patterns:
+    - "!./**"
+    - "./src/exceptions/**"
 
 custom:
+  pythonRequirements:
+    dockerizePip: true
+    useStaticCache: false
+    layer:
+      name: ${self:provider.stage}-${self:service}-python-requirements
+      description: Python requirements for ${self:service}
+      compatibleRuntimes:
+        - python3.12
+      compatibleArchitectures:
+        - arm64
+    
+  prune:
+    automatic: true
+    includeLayers: true
+    number: 3
   serverless-offline:
     httpPort: 4000
     lambdaPort: 4002
@@ -19,41 +41,33 @@ useDotenv: true
 
 provider:
   name: aws
-  runtime: nodejs20.x
+  runtime: python3.12
   region: ap-southeast-1
   stage: ${opt:stage, "dev"}
-  architecture: x86_64
+  architecture: arm64
   timeout: 30
+  layers:
+    - { Ref: PythonRequirementsLambdaLayer }
   environment:
     STAGE: ${self:provider.stage}
 
 functions:
-  Hello:
-    handler: ./src/hello.handler
-    events:
-      - http:
-          path: hello
-          method: post
-          cors: true
-    package:
-      include:
-        - src/hello/**
-  GenerateQuiz:
-    handler: ./src/generateQuiz/handler.handler
+  generate-quiz:
+    handler: src/create_quiz/generate_quiz.handler
     environment:
       OPENAI_API_KEY: ${env:OPENAI_API_KEY}
     package:
       include:
-        - src/generateQuiz/**
+        - src/create_quiz/**
 
-  SaveQuiz:
-    handler: ./src/saveQuiz/handler.handler
+  save-quiz:
+    handler: src/create_quiz/save_quiz.handler
     environment:
       MONGODB_PASSWORD: ${env:MONGODB_PASSWORD}
       MONGODB_NAME: ${env:MONGODB_NAME}
     package:
       include:
-        - src/saveQuiz/**
+        - src/create_quiz/**
 
 stepFunctions:
   stateMachines:
@@ -68,7 +82,7 @@ stepFunctions:
           GenerateQuiz:
             Type: Task
             Resource:
-              Fn::GetAtt: [GenerateQuiz, Arn]
+              Fn::GetAtt: [generate-quiz, Arn]
             Next: SaveQuiz
             Retry:
               - ErrorEquals:
@@ -80,5 +94,5 @@ stepFunctions:
             Type: Task
             InputPath: "$.body"
             Resource:
-              Fn::GetAtt: [SaveQuiz, Arn]
+              Fn::GetAtt: [save-quiz, Arn]
             End: true
