@@ -3,11 +3,10 @@ import os
 
 from pymongo import MongoClient
 
+from src.utils.mongodb import create_mongo_client
 
-db_password = os.getenv("MONGODB_PASSWORD")
-db_name = os.getenv("MONGODB_NAME")
-mongo_uri = f"mongodb+srv://mintunxdd:{db_password}@active-recall.qrbyadj.mongodb.net/{db_name}?retryWrites=true&w=majority"
-client = MongoClient(mongo_uri)
+
+mongo_client = create_mongo_client()
 
 
 def handler(event, context):
@@ -17,7 +16,7 @@ def handler(event, context):
 
     try:
 
-        database = client["active-recall"]
+        database = mongo_client["active-recall"]
         collection = database["quizzes"]
         collection.insert_one(quiz)
 
@@ -42,4 +41,4 @@ def handler(event, context):
             ),
         }
     finally:
-        client.close()
+        mongo_client.close()

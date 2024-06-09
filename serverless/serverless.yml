@@ -16,6 +16,7 @@ package:
   patterns:
     - "!./**"
     - "./src/exceptions/**"
+    - "./src/utils/**"
 
 custom:
   pythonRequirements:
@@ -28,7 +29,7 @@ custom:
         - python3.12
       compatibleArchitectures:
         - arm64
-    
+
   prune:
     automatic: true
     includeLayers: true
@@ -59,7 +60,6 @@ functions:
     package:
       include:
         - src/create_quiz/**
-
   save-quiz:
     handler: src/create_quiz/save_quiz.handler
     environment:
@@ -68,6 +68,30 @@ functions:
     package:
       include:
         - src/create_quiz/**
+  get-quizzes:
+    handler: src/get_quiz/get_quizzes.handler
+    environment:
+      MONGODB_PASSWORD: ${env:MONGODB_PASSWORD}
+      MONGODB_NAME: ${env:MONGODB_NAME}
+    events:
+      - http:
+          path: quizzes
+          method: GET
+    package:
+      include:
+        - src/get_quiz/**
+  get-quiz:
+    handler: src/get_quiz/get_quiz.handler
+    environment:
+      MONGODB_PASSWORD: ${env:MONGODB_PASSWORD}
+      MONGODB_NAME: ${env:MONGODB_NAME}
+    events:
+      - http:
+          path: quizzes/{quizId}
+          method: GET
+    package:
+      include:
+        - src/get_quiz/**
 
 stepFunctions:
   stateMachines:
