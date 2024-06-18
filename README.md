@@ -1,3 +1,6 @@
 # eggtive-recall
 
-readme coming soon......
+to run locally:
+```
+make -j 3
+```
