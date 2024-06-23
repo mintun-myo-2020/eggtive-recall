@@ -81,6 +81,9 @@ const Navbar = () => {
                 <Link href="/notebook" className="navBtn">
                   Notebook
                 </Link>
+                <Link href="/quiz" className="navBtn">
+                  Quiz
+                </Link>
               </div>
             </div>
 
@@ -122,6 +125,9 @@ const Navbar = () => {
           </Link>
           <Link href="/notebook" className="miniNavBtn">
             Notebook
+          </Link>
+          <Link href="/quiz" className="miniNavBtn">
+            Quiz
           </Link>
         </div>
       </div>

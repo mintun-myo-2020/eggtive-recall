@@ -11,9 +11,9 @@ export type IAnswer = {
   answer: string;
 }
 
-export type ICardData  = {
+export type ICardData = {
   _id?: string;
-  userId: string | undefined ;
+  userId: string | undefined;
   question: IQuestion;
   answer: IAnswer;
   position: IPositionData;
@@ -36,4 +36,20 @@ export type INote = {
   id?: string;
   title: string;
   content: string
+}
+
+export type IQuizQuestion = {
+  question: string;
+  answer: string;
+}
+
+export type IQuiz = {
+  _id: string;
+  quiz: IQuizQuestion[];
+  userId: string | undefined;
+}
+
+export type IQuizDetails = {
+  _id: string;
+  title: string;
 }
