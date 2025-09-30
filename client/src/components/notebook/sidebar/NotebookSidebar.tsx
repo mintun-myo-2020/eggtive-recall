@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-import { Sidebar } from "flowbite-react/lib/esm/components/Sidebar";
-import { NotebookIcon, TrashIcon } from "lucide-react";
-=======
 import { NotebookIcon, TrashIcon, PlusIcon } from "lucide-react";
->>>>>>> 636c11a (update notebooks)
 import { Spinner } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import { deleteNote } from "../../../api/noteApiUtils";
@@ -70,18 +65,16 @@ const NotebookSidebar: React.FC<SidebarProps> = ({
           {noteTitles.map(({ id, title }) => (
             <div
               key={id}
-              className={`group flex items-center p-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-50 ${
-                id === currentNoteId 
-                  ? "bg-blue-50 border border-blue-200" 
-                  : "border border-transparent"
-              }`}
+              className={`group flex items-center p-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-50 ${id === currentNoteId
+                ? "bg-blue-50 border border-blue-200"
+                : "border border-transparent"
+                }`}
               onClick={() => handleSelectNote(id)}
             >
               <div className="flex-1 min-w-0 max-w-[180px] overflow-hidden pr-2">
-                <p 
-                  className={`text-sm font-medium truncate ${
-                    id === currentNoteId ? "text-blue-700" : "text-gray-700"
-                  }`}
+                <p
+                  className={`text-sm font-medium truncate ${id === currentNoteId ? "text-blue-700" : "text-gray-700"
+                    }`}
                   title={title || "Untitled Note"} // Show full title on hover
                 >
                   {title || "Untitled Note"}
@@ -144,4 +137,4 @@ const NotebookSidebar: React.FC<SidebarProps> = ({
   );
 };
 
-export default NotebookSidebar;
+export default NotebookSidebar; 

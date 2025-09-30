@@ -6,7 +6,7 @@ import { API_BASE_URL, API_ENDPOINTS } from "../../api/endpoints";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebase";
 import { getUserCards } from "../../api/cardApiUtils";
-import { Spinner } from "flowbite-react/lib/esm/components/Spinner";
+import { Spinner } from "flowbite-react";
 
 const Board = () => {
   const [user, loading, error] = useAuthState(auth);
