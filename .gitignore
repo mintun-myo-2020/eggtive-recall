@@ -1,0 +1,41 @@
+# Environment files
+.env
+client/.env
+server/.env
+
+# Firebase service account keys
+server/storage/*.json
+server/middleware/*.json
+server/*firebase-adminsdk*.json
+*firebase-adminsdk*.json
+
+# Logs
+logs
+*.log
+
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs
+dist/
+build/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# IDE files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# Go specific
+*.test
+*.out
+go.work
