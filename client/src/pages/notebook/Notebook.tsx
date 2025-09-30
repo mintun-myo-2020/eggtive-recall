@@ -1,6 +1,6 @@
 import TextEditor from "../../components/notebook/textEditor/TextEditor";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { getNoteContentWithNoteId, getNotes } from "../../api/noteApiUtils";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -76,6 +76,13 @@ const Notebook = () => {
     getNoteTitles();
   }, [loading, user]);
 
+  const currentNoteIdRef = useRef(currentNoteId);
+  
+  // Update ref when currentNoteId changes
+  useEffect(() => {
+    currentNoteIdRef.current = currentNoteId;
+  }, [currentNoteId]);
+
   const updateNoteTitle = (updatedNote: {
     id: string | undefined;
     title: string;
@@ -93,7 +100,13 @@ const Notebook = () => {
     } else {
       // If the note doesn't exist, add it to the list of note titles
       setNoteTitles([...noteTitles, updatedNote]);
-      navigate(`/notebook/${updatedNote.id}`);
+      
+      // Only navigate if we're not already on this note's page
+      // This prevents unnecessary navigation that causes editor to lose focus
+      if (currentNoteIdRef.current !== updatedNote.id) {
+        // Use replace instead of navigate to avoid adding to history
+        navigate(`/notebook/${updatedNote.id}`, { replace: true });
+      }
     }
   };
 
