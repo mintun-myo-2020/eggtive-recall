@@ -2,10 +2,6 @@ import axios from "axios";
 import { ICardData } from "../types/types";
 import { API_BASE_URL, API_ENDPOINTS } from "./endpoints";
 
-const associateCardToUser = (
-  cardId: string | undefined,
-  userId: string | undefined
-) => {};
 
 export const getUserCards = async (
   userId: string | undefined,
@@ -29,18 +25,16 @@ export const getUserCards = async (
 export const createOneCard = async (
   newCard: ICardData,
   idToken: string | undefined
-): Promise<ICardData > => {
+): Promise<ICardData> => {
   try {
-    const newCardReq = [newCard];
     const url = API_BASE_URL + API_ENDPOINTS.CARDS;
     const headers = {
       Authorization: idToken,
     };
-    const response = await axios.post(url, newCardReq, {
+    const response = await axios.post(url, newCard, {
       headers: headers,
     });
-    const createdCard: ICardData = response.data.cards[0];
-    return createdCard;
+    return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error

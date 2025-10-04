@@ -1,8 +1,10 @@
 package middleware
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -33,13 +35,14 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		token, err := authClient.VerifyIDToken(context.Background(), authToken)
 		if err != nil {
-			log.Println("Failed to verify ID Token", err)
+			log.Printf("Failed to verify ID Token: %v", err)
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
 
 		// 2. AUTHORIZATION: Check user can access requested resources
 		if !isAuthorizedForResource(c, token.UID) {
+			log.Printf("Authorization failed: user %s tried to access resource for different user", token.UID)
 			c.JSON(http.StatusForbidden, gin.H{"error": "Access denied: cannot access other user's resources"})
 			c.Abort()
 			return
@@ -56,27 +59,47 @@ func AuthMiddleware() gin.HandlerFunc {
 func isAuthorizedForResource(c *gin.Context, authenticatedUserId string) bool {
 	// Check userId from URL parameter
 	userIdFromPath := c.Param("userId")
-	if userIdFromPath != "" && authenticatedUserId != userIdFromPath {
-		return false
+	if userIdFromPath != "" {
+		log.Printf("Checking path userId: %s vs authenticated: %s", userIdFromPath, authenticatedUserId)
+		if authenticatedUserId != userIdFromPath {
+			return false
+		}
 	}
 
 	// Check userId from query parameter
 	userIdFromQuery := c.Query("userId")
-	if userIdFromQuery != "" && authenticatedUserId != userIdFromQuery {
-		return false
+	if userIdFromQuery != "" {
+		log.Printf("Checking query userId: %s vs authenticated: %s", userIdFromQuery, authenticatedUserId)
+		if authenticatedUserId != userIdFromQuery {
+			return false
+		}
 	}
 
-	// Check userId from request body for POST/PUT requests
+	// For POST/PUT requests, read body properly without breaking controller binding
 	if c.Request.Method == "POST" || c.Request.Method == "PUT" {
-		var requestBody map[string]interface{}
-		if err := c.ShouldBindJSON(&requestBody); err == nil {
-			if userId, exists := requestBody["userId"]; exists {
-				if userIdStr, ok := userId.(string); ok && userIdStr != authenticatedUserId {
-					return false
+		// Read the raw body data
+		bodyBytes, err := io.ReadAll(c.Request.Body)
+		if err != nil {
+			log.Printf("Error reading request body: %v", err)
+			return true // Allow request to continue
+		}
+
+		// Reset the body for controllers to read
+		c.Request.Body = io.NopCloser(bytes.NewReader(bodyBytes))
+
+		// Parse JSON to check for userId
+		if len(bodyBytes) > 0 {
+
+			var requestBody map[string]interface{}
+			if json.Unmarshal(bodyBytes, &requestBody) == nil {
+				if userId, exists := requestBody["userId"]; exists {
+					if userIdStr, ok := userId.(string); ok && userIdStr != authenticatedUserId {
+						log.Printf("Body userId mismatch: %s vs authenticated: %s", userIdStr, authenticatedUserId)
+						return false
+					}
 				}
+				return true
 			}
-			// Re-bind the body for the controller to use
-			c.Set("requestBody", requestBody)
 		}
 	}
 
