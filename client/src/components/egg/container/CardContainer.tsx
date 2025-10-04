@@ -46,6 +46,29 @@ const CardContainer: React.FC<CardContainerProps> = ({
     setCards((prevCards) => [...prevCards, createdCard]);
   };
 
+  // Debounced save function to avoid API spam
+  const saveCardDebounced = useRef<{ [key: string]: NodeJS.Timeout }>({});
+
+  const debouncedSaveCard = async (card: ICardData) => {
+    const cardId = card._id || '';
+
+    // Clear existing timeout for this card
+    if (saveCardDebounced.current[cardId]) {
+      clearTimeout(saveCardDebounced.current[cardId]);
+    }
+
+    // Set new timeout
+    saveCardDebounced.current[cardId] = setTimeout(async () => {
+      try {
+        const idToken = await user?.getIdToken(true);
+        await createOneCard(card, idToken);
+        console.log(`Auto-saved card ${cardId}`);
+      } catch (error) {
+        console.error('Failed to auto-save card:', error);
+      }
+    }, 500); // Save 0.5 seconds after user stops typing
+  };
+
   const handleUpdateQuestion = async (
     id: string | undefined,
     question: IQuestion
@@ -53,25 +76,26 @@ const CardContainer: React.FC<CardContainerProps> = ({
     const updatedCards = cards.map((card) =>
       card._id === id ? { ...card, question: question } : card
     );
-    const idToken = await user?.getIdToken(true);
-
     setCards(updatedCards);
-    const currentCard = updatedCards.find(
-      (card) => card._id === id
-    ) as ICardData;
-    createOneCard(currentCard, idToken);
+
+    // Debounced save
+    const currentCard = updatedCards.find((card) => card._id === id);
+    if (currentCard) {
+      debouncedSaveCard(currentCard);
+    }
   };
+
   const handleUpdateAnswer = async (id: string | undefined, answer: IAnswer) => {
     const updatedCards = cards.map((card) =>
       card._id === id ? { ...card, answer: answer } : card
     );
-    const idToken = await user?.getIdToken(true);
-
     setCards(updatedCards);
-    const currentCard = updatedCards.find(
-      (card) => card._id === id
-    ) as ICardData;
-    createOneCard(currentCard, idToken);
+
+    // Debounced save
+    const currentCard = updatedCards.find((card) => card._id === id);
+    if (currentCard) {
+      debouncedSaveCard(currentCard);
+    }
   };
 
   const handleUpdatePosition = (
@@ -82,6 +106,12 @@ const CardContainer: React.FC<CardContainerProps> = ({
       card._id === id ? { ...card, position: position } : card
     );
     setCards(updatedCards);
+
+    // Debounced save for position changes too
+    const currentCard = updatedCards.find((card) => card._id === id);
+    if (currentCard) {
+      debouncedSaveCard(currentCard);
+    }
   };
 
   // FUTURE IMPLEMENTATION OF UPDATING CONTAINER SIZE

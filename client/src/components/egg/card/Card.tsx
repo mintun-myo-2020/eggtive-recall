@@ -54,47 +54,7 @@ const Card: React.FC<CardProps> = ({
     setPosition({ x: position.x, y: position.y });
   }, [position.x, position.y]);
 
-  //TODO: future implementation of dynamic container scrolling
-  // useEffect(() => {
-  //   const handleMouseMove = (event: MouseEvent) => {
-  //     console.log("X: ", event.clientX)
-  //     console.log("Y: ", event.clientY)
-  //     const container = cardRef.current?.parentElement;
-  //     if (container) {
-  //       const scrollDistance = 10;
 
-  //       // Scroll right if the mouse is near the right edge of the container
-  //       if (event.clientX > container.clientWidth) {
-  //         console.log(event.clientX);
-  //         container.parentElement?.scrollBy({
-  //           left: scrollDistance,
-  //           behavior: "smooth",
-  //         });
-  //       }
-
-  //       // Scroll bottom if the mouse is near the bottom edge of the container
-  //       if (event.clientY > 950) {
-  //         console.log(event.clientY);
-
-  //         container.parentElement?.scrollBy({
-  //           top: scrollDistance,
-  //           behavior: "smooth",
-  //         });
-  //       }
-  //     }
-  //   };
-
-  //   const cardElement = cardRef.current;
-  //   if (cardElement) {
-  //     cardElement.addEventListener("mousemove", handleMouseMove);
-  //   }
-
-  //   return () => {
-  //     if (cardElement) {
-  //       cardElement.removeEventListener("mousemove", handleMouseMove);
-  //     }
-  //   };
-  // }, [cards]);
 
   const trackPos = (data: IPositionData) => {
     setPosition({ x: data.x, y: data.y });
@@ -126,24 +86,15 @@ const Card: React.FC<CardProps> = ({
       const idToken = await user?.getIdToken(true);
       setCards(cards.filter((card) => card._id != id));
       deleteCard(id, idToken);
-
       return;
-    } else {
-      const currentCard = cards.find((card) => card._id === id) as ICardData;
-      const idToken = await user?.getIdToken(true);
-
-      createOneCard(currentCard, idToken);
     }
   };
 
   const handleMouseUpCard: MouseEventHandler<HTMLDivElement> = async (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    const currentCard = cards.find((card) => card._id === id) as ICardData;
-    const idToken = await user?.getIdToken(true);
-
-    createOneCard(currentCard, idToken);
-
+    // Remove unnecessary API call on mouse up
+    // Cards are now auto-saved via debouncing in CardContainer
     return;
   };
 
