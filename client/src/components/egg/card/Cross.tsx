@@ -1,19 +1,12 @@
-import { IPositionData } from "../../../types/types";
-
 interface CrossProps {
-  onMouseUp?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  onMouseDown?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  onTouchEnd?: (event: React.TouchEvent<HTMLButtonElement>) => void;
+  onClick: () => void;
 }
 
-const Cross = ({ onMouseUp, onMouseDown, onTouchEnd }: CrossProps) => {
+const Cross = ({ onClick }: CrossProps) => {
   return (
     <button
       className="absolute top-0 right-0 m-1 text-gray-700 hover:text-gray-200 transition-colors duration-300 ease-in-out focus:outline-none"
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      onTouchEnd={onTouchEnd}
-      onClick={() => {}}
+      onClick={onClick}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
