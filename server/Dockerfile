@@ -1,9 +1,15 @@
-FROM golang:1.18
+FROM golang:1.22-alpine
 
 WORKDIR /app
 
-COPY . /app
+# Copy go mod files first for better caching
+COPY go.mod go.sum ./
+RUN go mod download
 
+# Copy source code
+COPY . .
+
+# Build the application
 RUN go build -o main .
 
 EXPOSE 8080
