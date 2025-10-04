@@ -14,7 +14,6 @@ import (
 )
 
 func AuthMiddleware() gin.HandlerFunc {
-
 	path := storage.AuthPath
 	app, err := initalizeFirebaseApp(path)
 	if err != nil {
@@ -22,26 +21,66 @@ func AuthMiddleware() gin.HandlerFunc {
 	}
 
 	return func(c *gin.Context) {
-
 		authToken := c.GetHeader("Authorization")
 
+		// 1. AUTHENTICATION: Verify JWT token
 		authClient, err := app.Auth(context.Background())
 		if err != nil {
 			log.Println("Failed to init Firebase Auth", err)
 			c.AbortWithStatus(http.StatusInternalServerError)
 			return
 		}
+
 		token, err := authClient.VerifyIDToken(context.Background(), authToken)
 		if err != nil {
 			log.Println("Failed to verify ID Token", err)
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
-		c.Set("user", token)
-		c.Next()
 
+		// 2. AUTHORIZATION: Check user can access requested resources
+		if !isAuthorizedForResource(c, token.UID) {
+			c.JSON(http.StatusForbidden, gin.H{"error": "Access denied: cannot access other user's resources"})
+			c.Abort()
+			return
+		}
+
+		// Store user info for controllers
+		c.Set("user", token)
+		c.Set("authenticatedUserId", token.UID)
+		c.Next()
+	}
+}
+
+// isAuthorizedForResource checks if user can access the requested resource
+func isAuthorizedForResource(c *gin.Context, authenticatedUserId string) bool {
+	// Check userId from URL parameter
+	userIdFromPath := c.Param("userId")
+	if userIdFromPath != "" && authenticatedUserId != userIdFromPath {
+		return false
 	}
 
+	// Check userId from query parameter
+	userIdFromQuery := c.Query("userId")
+	if userIdFromQuery != "" && authenticatedUserId != userIdFromQuery {
+		return false
+	}
+
+	// Check userId from request body for POST/PUT requests
+	if c.Request.Method == "POST" || c.Request.Method == "PUT" {
+		var requestBody map[string]interface{}
+		if err := c.ShouldBindJSON(&requestBody); err == nil {
+			if userId, exists := requestBody["userId"]; exists {
+				if userIdStr, ok := userId.(string); ok && userIdStr != authenticatedUserId {
+					return false
+				}
+			}
+			// Re-bind the body for the controller to use
+			c.Set("requestBody", requestBody)
+		}
+	}
+
+	return true
 }
 
 func initalizeFirebaseApp(serviceAccountKeyPath string) (*firebase.App, error) {
