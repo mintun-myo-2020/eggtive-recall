@@ -24,6 +24,7 @@ type CardProps = {
   updateAnswer: (id: string | undefined, answer: IAnswer) => void;
   zIndex: number;
   bringToFront: (id: string | undefined) => void;
+  cancelPendingSave: (id: string | undefined) => void;
 };
 
 const Card: React.FC<CardProps> = ({
@@ -38,6 +39,7 @@ const Card: React.FC<CardProps> = ({
   updateAnswer,
   zIndex,
   bringToFront,
+  cancelPendingSave,
 }) => {
   const [user] = useAuthState(auth);
   const [position, setPosition] = useState<IPositionData>({
@@ -64,10 +66,16 @@ const Card: React.FC<CardProps> = ({
     event.stopPropagation();
   };
 
-  const handleDeleteCard = async () => {
+  const handleDeleteCard = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    // Cancel any pending auto-save for this card
+    cancelPendingSave(id);
     const idToken = await user?.getIdToken(true);
+    // Remove from UI first
     setCards(cards.filter((card) => card._id !== id));
-    deleteCard(id, idToken);
+    // Delete from database
+    await deleteCard(id, idToken);
   };
 
   const handleFlip = () => {
@@ -113,7 +121,7 @@ const Card: React.FC<CardProps> = ({
         className="absolute w-80 h-96 hover:cursor-grab active:cursor-grabbing"
         style={{ perspective: "1000px", zIndex }}
       >
-        <div className="absolute top-2 right-2 z-50">
+        <div className="absolute top-2 right-2 z-50 no-drag">
           <Cross onClick={handleDeleteCard} />
         </div>
         <div
@@ -173,8 +181,8 @@ const Card: React.FC<CardProps> = ({
                   onClick={handleFlip}
                   disabled={userAttempt.trim() === ""}
                   className={`no-drag w-full py-3 rounded-lg font-semibold text-white transition-all ${userAttempt.trim() === ""
-                      ? "bg-gray-300 cursor-not-allowed"
-                      : "bg-indigo-600 hover:bg-indigo-700 hover:shadow-lg"
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-indigo-600 hover:bg-indigo-700 hover:shadow-lg"
                     }`}
                 >
                   Reveal Answer

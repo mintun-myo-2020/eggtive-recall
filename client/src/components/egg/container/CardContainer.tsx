@@ -157,6 +157,15 @@ const CardContainer: React.FC<CardContainerProps> = ({
     );
   }
 
+  const cancelPendingSave = (id: string | undefined) => {
+    const cardId = id || '';
+    if (saveCardDebounced.current[cardId]) {
+      clearTimeout(saveCardDebounced.current[cardId]);
+      delete saveCardDebounced.current[cardId];
+      console.log(`Cancelled pending save for card ${cardId}`);
+    }
+  };
+
   const bringToFront = async (id: string | undefined) => {
     // Find max zIndex
     const maxZIndex = Math.max(...cards.map(c => c.zIndex || 0), 0);
@@ -197,6 +206,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
           updateAnswer={handleUpdateAnswer}
           zIndex={card.zIndex || 0}
           bringToFront={bringToFront}
+          cancelPendingSave={cancelPendingSave}
         />
       ))}
     </div>

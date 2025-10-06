@@ -77,7 +77,7 @@ func (cc *CardController) UpsertCard(c *gin.Context) {
 func (cc *CardController) DeleteCard(c *gin.Context) {
 	err := cc.cardService.DeleteCard(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "err.Error()"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 

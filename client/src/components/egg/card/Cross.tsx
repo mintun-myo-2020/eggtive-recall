@@ -1,11 +1,11 @@
 interface CrossProps {
-  onClick: () => void;
+  onClick: (e: React.MouseEvent) => void;
 }
 
 const Cross = ({ onClick }: CrossProps) => {
   return (
     <button
-      className="absolute top-0 right-0 m-1 text-gray-700 hover:text-gray-200 transition-colors duration-300 ease-in-out focus:outline-none"
+      className="absolute top-0 right-0 m-1 text-gray-700 hover:text-red-600 transition-colors duration-300 ease-in-out focus:outline-none"
       onClick={onClick}
     >
       <svg
