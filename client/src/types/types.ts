@@ -17,6 +17,7 @@ export type ICardData  = {
   question: IQuestion;
   answer: IAnswer;
   position: IPositionData;
+  zIndex?: number;
 };
 
 export type IGoUser = {

@@ -21,7 +21,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
   setCards,
   isEmpty,
 }) => {
-  const [user, loading, error] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const userId = user?.uid;
 
   const CardContainerRef = useRef<HTMLDivElement>(null);
@@ -33,6 +33,8 @@ const CardContainer: React.FC<CardContainerProps> = ({
     const y = event.clientY - 85;
     const idToken = await user?.getIdToken(true);
 
+    const maxZIndex = Math.max(...cards.map(c => c.zIndex || 0), 0);
+
     const newCard: ICardData = {
       userId: userId,
       question: { question: "" },
@@ -41,6 +43,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
         x: x,
         y: y,
       },
+      zIndex: maxZIndex + 1,
     };
     const createdCard: ICardData = await createOneCard(newCard, idToken);
     setCards((prevCards) => [...prevCards, createdCard]);
@@ -154,13 +157,33 @@ const CardContainer: React.FC<CardContainerProps> = ({
     );
   }
 
+  const bringToFront = async (id: string | undefined) => {
+    // Find max zIndex
+    const maxZIndex = Math.max(...cards.map(c => c.zIndex || 0), 0);
+
+    // Update the clicked card's zIndex
+    const updatedCards = cards.map((card) =>
+      card._id === id ? { ...card, zIndex: maxZIndex + 1 } : card
+    );
+    setCards(updatedCards);
+
+    // Save to database
+    const currentCard = updatedCards.find((card) => card._id === id);
+    if (currentCard) {
+      debouncedSaveCard(currentCard);
+    }
+  };
+
+  // Sort cards by zIndex for rendering order
+  const sortedCards = [...cards].sort((a, b) => (a.zIndex || 0) - (b.zIndex || 0));
+
   return (
     <div
       ref={CardContainerRef}
       className="relative w-full h-screen bg-bgGray"
       onDoubleClick={handleDoubleClick}
     >
-      {cards.map((card) => (
+      {sortedCards.map((card) => (
         <Card
           key={card._id}
           id={card._id}
@@ -172,6 +195,8 @@ const CardContainer: React.FC<CardContainerProps> = ({
           updatePosition={handleUpdatePosition}
           updateQuestion={handleUpdateQuestion}
           updateAnswer={handleUpdateAnswer}
+          zIndex={card.zIndex || 0}
+          bringToFront={bringToFront}
         />
       ))}
     </div>
