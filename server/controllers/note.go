@@ -27,9 +27,18 @@ func (nc *NoteController) UpsertNote(c *gin.Context) {
 		NoteId      string `json:"noteId,omitempty"`
 	}
 
-	if err := c.ShouldBindJSON(&jsonInput); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	// Check if request body was pre-parsed by authorization middleware
+	if requestBody, exists := c.Get("requestBody"); exists {
+		if body, ok := requestBody.(map[string]interface{}); ok {
+			jsonInput.HtmlContent, _ = body["htmlContent"].(string)
+			jsonInput.UserId, _ = body["userId"].(string)
+			jsonInput.NoteId, _ = body["noteId"].(string)
+		}
+	} else {
+		if err := c.ShouldBindJSON(&jsonInput); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
 	}
 
 	contentRegex := regexp.MustCompile(`<.*?>(.*?)</.*?>`)
@@ -54,6 +63,7 @@ func (nc *NoteController) UpsertNote(c *gin.Context) {
 }
 
 func (nc *NoteController) GetNotesWithUserID(c *gin.Context) {
+	// Authorization is handled by middleware - user can only access their own data
 	userId := c.Param("userId")
 
 	notes, err := nc.noteService.GetNotesWithUserID(userId)
@@ -69,10 +79,7 @@ func (nc *NoteController) GetNoteWithUserIDAndNoteID(c *gin.Context) {
 	userId := c.Query("userId")
 	noteId := c.Query("noteId")
 
-	println(userId, noteId)
 	note, err := nc.noteService.GetNoteWithUserIDAndNoteID(userId, noteId)
-	println(note.Body)
-
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

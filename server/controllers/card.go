@@ -41,18 +41,29 @@ func (cc *CardController) GetAllCards(c *gin.Context) {
 }
 
 func (cc *CardController) UpsertCard(c *gin.Context) {
-	var cards []models.Card
+	// Try to bind as single card first
+	var singleCard models.Card
+	if err := c.ShouldBindJSON(&singleCard); err == nil {
+		// Single card format
+		err := cc.cardService.UpsertCard(&singleCard)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, singleCard)
+		return
+	}
 
+	// If single card binding failed, try array format
+	var cards []models.Card
 	if err := c.ShouldBindJSON(&cards); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON format"})
 		return
 	}
 
 	numCards := len(cards)
-
 	for i := range cards {
 		err := cc.cardService.UpsertCard(&cards[i])
-
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -60,14 +71,13 @@ func (cc *CardController) UpsertCard(c *gin.Context) {
 	}
 
 	message := fmt.Sprintf("Successfully created %d cards", numCards)
-
 	c.JSON(http.StatusOK, gin.H{"message": message, "cards": cards})
 }
 
 func (cc *CardController) DeleteCard(c *gin.Context) {
 	err := cc.cardService.DeleteCard(c.Param("id"))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "err.Error()"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 

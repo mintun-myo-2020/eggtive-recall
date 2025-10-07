@@ -1,9 +1,7 @@
 import {
-  MouseEventHandler,
   useState,
   useLayoutEffect,
   useRef,
-  LegacyRef,
   useEffect,
 } from "react";
 import { IQuestion } from "../../../types/types";
@@ -12,7 +10,6 @@ type QuestionBoxProps = {
   id?: string;
   question: IQuestion;
   updateQuestion: (id: string | undefined, newQuestion: IQuestion) => void;
-  handleMouseUpCard: MouseEventHandler<HTMLDivElement>;
 };
 const MIN_TEXTAREA_HEIGHT = 60;
 
@@ -20,7 +17,6 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({
   id,
   question,
   updateQuestion,
-  handleMouseUpCard,
 }) => {
   const newQuestionTextboxRef = useRef<HTMLTextAreaElement>(null);
   const [isEditingQuestion, setIsEditingQuestion] = useState(false);
@@ -51,9 +47,7 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({
     setNewQuestion(event.target.value);
   };
 
-  const handleDoubleClick: MouseEventHandler<HTMLDivElement> = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
+  const handleDoubleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     setIsEditingQuestion(true);
   };
@@ -70,7 +64,6 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({
     <div
       className="w-full pl-2 pb-2 bg-inherit text-center rounded-t-md shadow-t-lg border-b border-gray-500"
       onDoubleClick={handleDoubleClick}
-      onMouseUp={handleMouseUpCard}
     >
       <div className="h-2 my-2"></div>
       {isEditingQuestion ? (

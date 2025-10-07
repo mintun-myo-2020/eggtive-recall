@@ -1,8 +1,10 @@
 package middleware
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -14,7 +16,6 @@ import (
 )
 
 func AuthMiddleware() gin.HandlerFunc {
-
 	path := storage.AuthPath
 	app, err := initalizeFirebaseApp(path)
 	if err != nil {
@@ -22,26 +23,87 @@ func AuthMiddleware() gin.HandlerFunc {
 	}
 
 	return func(c *gin.Context) {
-
 		authToken := c.GetHeader("Authorization")
 
+		// 1. AUTHENTICATION: Verify JWT token
 		authClient, err := app.Auth(context.Background())
 		if err != nil {
 			log.Println("Failed to init Firebase Auth", err)
 			c.AbortWithStatus(http.StatusInternalServerError)
 			return
 		}
+
 		token, err := authClient.VerifyIDToken(context.Background(), authToken)
 		if err != nil {
-			log.Println("Failed to verify ID Token", err)
+			log.Printf("Failed to verify ID Token: %v", err)
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
-		c.Set("user", token)
-		c.Next()
 
+		// 2. AUTHORIZATION: Check user can access requested resources
+		if !isAuthorizedForResource(c, token.UID) {
+			log.Printf("Authorization failed: user %s tried to access resource for different user", token.UID)
+			c.JSON(http.StatusForbidden, gin.H{"error": "Access denied: cannot access other user's resources"})
+			c.Abort()
+			return
+		}
+
+		// Store user info for controllers
+		c.Set("user", token)
+		c.Set("authenticatedUserId", token.UID)
+		c.Next()
+	}
+}
+
+// isAuthorizedForResource checks if user can access the requested resource
+func isAuthorizedForResource(c *gin.Context, authenticatedUserId string) bool {
+	// Check userId from URL parameter
+	userIdFromPath := c.Param("userId")
+	if userIdFromPath != "" {
+		log.Printf("Checking path userId: %s vs authenticated: %s", userIdFromPath, authenticatedUserId)
+		if authenticatedUserId != userIdFromPath {
+			return false
+		}
 	}
 
+	// Check userId from query parameter
+	userIdFromQuery := c.Query("userId")
+	if userIdFromQuery != "" {
+		log.Printf("Checking query userId: %s vs authenticated: %s", userIdFromQuery, authenticatedUserId)
+		if authenticatedUserId != userIdFromQuery {
+			return false
+		}
+	}
+
+	// For POST/PUT requests, read body properly without breaking controller binding
+	if c.Request.Method == "POST" || c.Request.Method == "PUT" {
+		// Read the raw body data
+		bodyBytes, err := io.ReadAll(c.Request.Body)
+		if err != nil {
+			log.Printf("Error reading request body: %v", err)
+			return true // Allow request to continue
+		}
+
+		// Reset the body for controllers to read
+		c.Request.Body = io.NopCloser(bytes.NewReader(bodyBytes))
+
+		// Parse JSON to check for userId
+		if len(bodyBytes) > 0 {
+
+			var requestBody map[string]interface{}
+			if json.Unmarshal(bodyBytes, &requestBody) == nil {
+				if userId, exists := requestBody["userId"]; exists {
+					if userIdStr, ok := userId.(string); ok && userIdStr != authenticatedUserId {
+						log.Printf("Body userId mismatch: %s vs authenticated: %s", userIdStr, authenticatedUserId)
+						return false
+					}
+				}
+				return true
+			}
+		}
+	}
+
+	return true
 }
 
 func initalizeFirebaseApp(serviceAccountKeyPath string) (*firebase.App, error) {

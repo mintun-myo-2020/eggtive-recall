@@ -14,18 +14,24 @@ func SetupRouter() *gin.Engine {
 	r := gin.Default()
 
 	r.Use(middleware.CorsMiddleware())
-	r.Use(middleware.AuthMiddleware())
 
-	// Ping test
+	// Public routes (no auth required)
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
 	})
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"status": "healthy"})
+	})
+
+	// Protected routes (auth + authorization required)
+	protected := r.Group("/")
+	protected.Use(middleware.AuthMiddleware())
 
 	mongoCardsDBCollection := storage.GetCollection("cards")
 	cardStorage := storage.NewMongoDBCardStorage(mongoCardsDBCollection)
 	cardService := services.NewCardService(cardStorage)
 	cardController := controllers.NewCardController(*cardService)
-	cardGroup := r.Group("/card")
+	cardGroup := protected.Group("/card")
 	{
 		cardGroup.GET("/:userId", cardController.GetCardsWithUserId)
 		cardGroup.GET("/", cardController.GetAllCards)
@@ -37,7 +43,7 @@ func SetupRouter() *gin.Engine {
 	userStorage := storage.NewMongoDBUserStorage(mongoUserDBCollection)
 	userService := services.NewUserService(userStorage)
 	userController := controllers.NewUserController(userService)
-	userGroup := r.Group("/user")
+	userGroup := protected.Group("/user")
 	{
 		userGroup.POST("/", userController.CreateUser)
 	}
@@ -46,7 +52,7 @@ func SetupRouter() *gin.Engine {
 	noteStorage := storage.NewMongoDBNoteStorage(mongoNotesDBCollection)
 	noteService := services.NewNoteService(noteStorage)
 	noteController := controllers.NewNoteController(noteService)
-	noteGroup := r.Group("/note")
+	noteGroup := protected.Group("/note")
 	{
 		noteGroup.POST("/", noteController.UpsertNote)
 		noteGroup.GET("/:userId", noteController.GetNotesWithUserID)

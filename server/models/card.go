@@ -11,4 +11,5 @@ type Card struct {
 	Question *Question `json:"question"`
 	Answer   *Answer   `json:"answer"`
 	Position *Position `json:"position"`
+	ZIndex   int       `bson:"zIndex" json:"zIndex,omitempty"`
 }

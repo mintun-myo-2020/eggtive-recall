@@ -3,7 +3,6 @@ import {
   useEffect,
   useRef,
   useLayoutEffect,
-  MouseEventHandler,
 } from "react";
 import { IAnswer } from "../../../types/types";
 
@@ -11,15 +10,13 @@ type AnswerBoxProps = {
   answer: IAnswer;
   id?: string;
   updateAnswer: (id: string | undefined, answer: IAnswer) => void;
-  handleMouseUpCard: MouseEventHandler<HTMLDivElement>;
 };
 const MIN_TEXTAREA_HEIGHT = 32;
 
 const AnswerBox: React.FC<AnswerBoxProps> = ({
-  answer: answer,
-  id: id,
-  updateAnswer: updateAnswer,
-  handleMouseUpCard: handleMouseUpCard,
+  answer,
+  id,
+  updateAnswer,
 }) => {
   const newAnswerTextboxRef = useRef<HTMLTextAreaElement>(null);
   const attemptInputRef = useRef<HTMLInputElement>(null);
@@ -120,10 +117,7 @@ const AnswerBox: React.FC<AnswerBoxProps> = ({
   }, [remainingTries]);
 
   return (
-    <div
-      onMouseUp={handleMouseUpCard}
-      className="w-full pt-2 pb-1 bg-inherit rounded-b-md text-center shadow-t-lg"
-    >
+    <div className="w-full pt-2 pb-1 bg-inherit rounded-b-md text-center shadow-t-lg">
       {isAnswerRevealed && isEditingAnswer && (
         <div>
           <div className="flex pr-4 justify-between">
