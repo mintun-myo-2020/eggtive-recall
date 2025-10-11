@@ -49,15 +49,23 @@ const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider);
     const user = res.user;
-    const q = query(collection(db, "users"), where("uid", "==", user.uid));
-    const docs = await getDocs(q);
-    if (docs.docs.length === 0) {
-      await addDoc(collection(db, "users"), {
+
+    // Try to send to backend, but don't block login if it fails
+    try {
+      const idToken = await user.getIdToken();
+      await axios.post(userURL, {
         uid: user.uid,
         name: user.displayName,
-        authProvider: "google",
         email: user.email,
+        authProvider: "google",
+      }, {
+        headers: {
+          Authorization: idToken
+        }
       });
+    } catch (backendErr) {
+      // Log but don't block the login
+      console.warn("Failed to sync user to backend:", backendErr);
     }
   } catch (err) {
     console.error(err);

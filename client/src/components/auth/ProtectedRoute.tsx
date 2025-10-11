@@ -27,7 +27,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  if (!user.emailVerified) {
+  if (!user.emailVerified && user.providerData[0]?.providerId === 'password') {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <h2 className="text-xl font-semibold mb-4">Email Verification Required</h2>
