@@ -60,7 +60,7 @@ const signInWithGoogle = async () => {
         authProvider: "google",
       }, {
         headers: {
-          Authorization: idToken
+          Authorization: `Bearer ${idToken}`
         }
       });
     } catch (backendErr) {

@@ -8,7 +8,7 @@ export const getNotes = async (
 ): Promise<INote[] | undefined> => {
   try {
     const headers = {
-      Authorization: idToken,
+      Authorization: `Bearer ${idToken}`,
     };
     const response = await axios.get(
       API_BASE_URL + API_ENDPOINTS.NOTES + userId,
@@ -31,7 +31,7 @@ export const getNoteContentWithNoteId = async (
   }
   try {
     const headers = {
-      Authorization: idToken,
+      Authorization: `Bearer ${idToken}`,
     };
     const url = `${API_BASE_URL}${API_ENDPOINTS.NOTES}?userId=${userId}&noteId=${currentNoteId}`;
     const response = await axios.get(url, { headers });
@@ -50,7 +50,7 @@ export const saveNote = async (
   try {
     const url = API_BASE_URL + API_ENDPOINTS.NOTES;
     const headers = {
-      Authorization: idToken,
+      Authorization: `Bearer ${idToken}`,
     };
     const reqBody: {
       htmlContent: string;
@@ -74,7 +74,7 @@ export const deleteNote = async (
   try {
     const url = API_BASE_URL + API_ENDPOINTS.NOTES + noteId;
     const headers = {
-      Authorization: idToken,
+      Authorization: `Bearer ${idToken}`,
     };
     await axios.delete(url, { headers });
   } catch (err) {

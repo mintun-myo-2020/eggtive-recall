@@ -9,7 +9,7 @@ export const getUserCards = async (
 ): Promise<ICardData[] | undefined> => {
   try {
     const headers = {
-      Authorization: idToken,
+      Authorization: `Bearer ${idToken}`,
     };
     const response = await axios.get(
       API_BASE_URL + API_ENDPOINTS.CARDS + userId,
@@ -29,7 +29,7 @@ export const createOneCard = async (
   try {
     const url = API_BASE_URL + API_ENDPOINTS.CARDS;
     const headers = {
-      Authorization: idToken,
+      Authorization: `Bearer ${idToken}`,
     };
     const response = await axios.post(url, newCard, {
       headers: headers,
@@ -60,7 +60,7 @@ export const deleteCard = (
 ): void => {
   const url = API_BASE_URL + API_ENDPOINTS.CARDS;
   const headers = {
-    Authorization: idToken,
+    Authorization: `Bearer ${idToken}`,
   };
   axios.delete(url + id, {
     headers: headers,
