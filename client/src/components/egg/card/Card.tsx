@@ -118,7 +118,7 @@ const Card: React.FC<CardProps> = ({
     >
       <div
         onDoubleClick={handleDoubleClick}
-        className="absolute w-80 h-96 hover:cursor-grab active:cursor-grabbing"
+        className="absolute w-64 h-80 sm:w-72 sm:h-88 md:w-80 md:h-96 hover:cursor-grab active:cursor-grabbing"
         style={{ perspective: "1000px", zIndex }}
       >
         <div className="absolute top-2 right-2 z-50 no-drag">
@@ -131,13 +131,13 @@ const Card: React.FC<CardProps> = ({
         >
           {/* Front of card - Question */}
           <div
-            className="absolute w-full h-full bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl shadow-xl border border-indigo-200 p-6 flex flex-col justify-between"
+            className="absolute w-full h-full bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl sm:rounded-2xl shadow-xl border border-indigo-200 p-4 sm:p-5 md:p-6 flex flex-col justify-between"
             style={{ backfaceVisibility: "hidden" }}
           >
             <div className="flex-1 flex items-center justify-center">
               {isEditingQuestion ? (
                 <textarea
-                  className="no-drag w-full h-32 p-4 text-xl font-semibold text-gray-800 bg-white rounded-lg border-2 border-indigo-300 focus:outline-none focus:border-indigo-500 resize-none"
+                  className="no-drag w-full h-24 sm:h-28 md:h-32 p-3 sm:p-4 text-base sm:text-lg md:text-xl font-semibold text-gray-800 bg-white rounded-lg border-2 border-indigo-300 focus:outline-none focus:border-indigo-500 resize-none"
                   placeholder="Enter your question..."
                   value={localQuestion}
                   onChange={handleQuestionChange}
@@ -152,7 +152,7 @@ const Card: React.FC<CardProps> = ({
                 />
               ) : (
                 <p
-                  className="text-2xl font-bold text-gray-800 text-center cursor-pointer hover:text-indigo-600"
+                  className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 text-center cursor-pointer hover:text-indigo-600"
                   onDoubleClick={(e) => {
                     e.stopPropagation();
                     setIsEditingQuestion(true);
@@ -164,10 +164,10 @@ const Card: React.FC<CardProps> = ({
             </div>
 
             {!isEditingQuestion && localAnswer.trim() !== "" && (
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 <input
                   type="text"
-                  className="no-drag w-full px-4 py-3 text-lg bg-white rounded-lg border-2 border-gray-300 focus:outline-none focus:border-indigo-500 placeholder-gray-400"
+                  className="no-drag w-full px-3 sm:px-4 py-2 sm:py-3 text-base sm:text-lg bg-white rounded-lg border-2 border-gray-300 focus:outline-none focus:border-indigo-500 placeholder-gray-400"
                   placeholder="Type your answer..."
                   value={userAttempt}
                   onChange={(e) => setUserAttempt(e.target.value)}
@@ -180,7 +180,7 @@ const Card: React.FC<CardProps> = ({
                 <button
                   onClick={handleFlip}
                   disabled={userAttempt.trim() === ""}
-                  className={`no-drag w-full py-3 rounded-lg font-semibold text-white transition-all ${userAttempt.trim() === ""
+                  className={`no-drag w-full py-2 sm:py-3 rounded-lg text-sm sm:text-base font-semibold text-white transition-all ${userAttempt.trim() === ""
                     ? "bg-gray-300 cursor-not-allowed"
                     : "bg-indigo-600 hover:bg-indigo-700 hover:shadow-lg"
                     }`}
@@ -198,7 +198,7 @@ const Card: React.FC<CardProps> = ({
                     setIsEditingAnswer(true);
                     setIsFlipped(true);
                   }}
-                  className="no-drag w-full py-3 rounded-lg font-semibold text-white bg-emerald-600 hover:bg-emerald-700 hover:shadow-lg transition-all"
+                  className="no-drag w-full py-2 sm:py-3 rounded-lg text-sm sm:text-base font-semibold text-white bg-emerald-600 hover:bg-emerald-700 hover:shadow-lg transition-all"
                 >
                   Create Answer
                 </button>
@@ -208,7 +208,7 @@ const Card: React.FC<CardProps> = ({
 
           {/* Back of card - Answer */}
           <div
-            className="absolute w-full h-full bg-gradient-to-br from-emerald-50 to-teal-100 rounded-2xl shadow-xl border border-emerald-200 p-6 flex flex-col justify-between"
+            className="absolute w-full h-full bg-gradient-to-br from-emerald-50 to-teal-100 rounded-xl sm:rounded-2xl shadow-xl border border-emerald-200 p-4 sm:p-5 md:p-6 flex flex-col justify-between"
             style={{
               backfaceVisibility: "hidden",
               transform: "rotateY(180deg)",
@@ -217,7 +217,7 @@ const Card: React.FC<CardProps> = ({
             <div className="flex-1 flex items-center justify-center">
               {isEditingAnswer ? (
                 <textarea
-                  className="no-drag w-full h-32 p-4 text-xl font-semibold text-gray-800 bg-white rounded-lg border-2 border-emerald-300 focus:outline-none focus:border-emerald-500 resize-none"
+                  className="no-drag w-full h-24 sm:h-28 md:h-32 p-3 sm:p-4 text-base sm:text-lg md:text-xl font-semibold text-gray-800 bg-white rounded-lg border-2 border-emerald-300 focus:outline-none focus:border-emerald-500 resize-none"
                   placeholder="Enter the correct answer..."
                   value={localAnswer}
                   onChange={handleAnswerChange}
@@ -232,13 +232,13 @@ const Card: React.FC<CardProps> = ({
                   autoFocus
                 />
               ) : (
-                <div className="text-center space-y-4">
-                  <p className="text-sm text-gray-600 font-medium">Your attempt:</p>
-                  <p className="text-lg text-gray-700 italic">{userAttempt}</p>
-                  <div className="border-t-2 border-emerald-300 pt-4">
-                    <p className="text-sm text-gray-600 font-medium mb-2">Correct answer:</p>
+                <div className="text-center space-y-2 sm:space-y-3 md:space-y-4">
+                  <p className="text-xs sm:text-sm text-gray-600 font-medium">Your attempt:</p>
+                  <p className="text-base sm:text-lg text-gray-700 italic">{userAttempt}</p>
+                  <div className="border-t-2 border-emerald-300 pt-2 sm:pt-3 md:pt-4">
+                    <p className="text-xs sm:text-sm text-gray-600 font-medium mb-1 sm:mb-2">Correct answer:</p>
                     <p
-                      className="text-3xl font-bold text-emerald-600 cursor-pointer hover:text-emerald-700"
+                      className="text-xl sm:text-2xl md:text-3xl font-bold text-emerald-600 cursor-pointer hover:text-emerald-700"
                       onDoubleClick={(e) => {
                         e.stopPropagation();
                         setIsEditingAnswer(true);
@@ -257,7 +257,7 @@ const Card: React.FC<CardProps> = ({
                   setIsFlipped(false);
                   setUserAttempt("");
                 }}
-                className="no-drag w-full py-3 rounded-lg font-semibold text-white bg-emerald-600 hover:bg-emerald-700 hover:shadow-lg transition-all"
+                className="no-drag w-full py-2 sm:py-3 rounded-lg text-sm sm:text-base font-semibold text-white bg-emerald-600 hover:bg-emerald-700 hover:shadow-lg transition-all"
               >
                 Try Again
               </button>

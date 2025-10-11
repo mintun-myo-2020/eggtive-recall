@@ -29,8 +29,8 @@ const CardContainer: React.FC<CardContainerProps> = ({
   const handleDoubleClick: MouseEventHandler<HTMLDivElement> = async (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    const x = event.clientX - 150;
-    const y = event.clientY - 85;
+    const x = Math.round(event.clientX - 150);
+    const y = Math.round(event.clientY - 85);
     const idToken = await user?.getIdToken(true);
 
     const maxZIndex = Math.max(...cards.map(c => c.zIndex || 0), 0);
@@ -105,8 +105,14 @@ const CardContainer: React.FC<CardContainerProps> = ({
     id: string | undefined,
     position: IPositionData
   ) => {
+    // Round position to integers for backend compatibility
+    const roundedPosition = {
+      x: Math.round(position.x),
+      y: Math.round(position.y)
+    };
+
     const updatedCards = cards.map((card) =>
-      card._id === id ? { ...card, position: position } : card
+      card._id === id ? { ...card, position: roundedPosition } : card
     );
     setCards(updatedCards);
 
