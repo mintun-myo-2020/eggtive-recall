@@ -77,7 +77,7 @@ const Notebook = () => {
   }, [loading, user]);
 
   const currentNoteIdRef = useRef(currentNoteId);
-  
+
   // Update ref when currentNoteId changes
   useEffect(() => {
     currentNoteIdRef.current = currentNoteId;
@@ -100,7 +100,7 @@ const Notebook = () => {
     } else {
       // If the note doesn't exist, add it to the list of note titles
       setNoteTitles([...noteTitles, updatedNote]);
-      
+
       // Only navigate if we're not already on this note's page
       // This prevents unnecessary navigation that causes editor to lose focus
       if (currentNoteIdRef.current !== updatedNote.id) {
@@ -111,22 +111,20 @@ const Notebook = () => {
   };
 
   return (
-    <div>
-      <div className="flex flex-row">
-        <NotebookSidebar
-          noteTitles={noteTitles}
-          isPageLoading={isPageLoading}
-          currentNoteId={currentNoteId}
-          idToken={user?.getIdToken()}
-          setNoteTitles={setNoteTitles}
+    <div className="flex h-full">
+      <NotebookSidebar
+        noteTitles={noteTitles}
+        isPageLoading={isPageLoading}
+        currentNoteId={currentNoteId}
+        idToken={user?.getIdToken()}
+        setNoteTitles={setNoteTitles}
+      />
+      <div className="grow">
+        <TextEditor
+          initialContent={currentNoteContent || ""}
+          noteId={currentNoteId}
+          updateNoteTitle={updateNoteTitle}
         />
-        <div className="grow">
-          <TextEditor
-            initialContent={currentNoteContent || ""}
-            noteId={currentNoteId}
-            updateNoteTitle={updateNoteTitle}
-          />
-        </div>
       </div>
     </div>
   );

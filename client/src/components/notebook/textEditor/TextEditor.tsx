@@ -5,7 +5,7 @@ import {
   useEditor,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import HeadingToolbar from "../toolbars/HeadingToolbar";
+import MainToolbar from "../toolbars/MainToolbar";
 import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
 import Highlight from "@tiptap/extension-highlight";
@@ -65,9 +65,9 @@ const editorClass: EditorProps = {
     class:
       "prose dark:prose-invert " +
       "prose-sm sm:prose-base lg:prose-lg " +
-      "xl:prose-2xl md:ml-2 mt-1 md:mr-2 focus:outline-none " +
-      "border p-4 pr-0 md:pr-2 border-gray-400 min-h-[12rem] " +
-      "max-w-screen overflow-y-auto rounded-md ",
+      "xl:prose-2xl mx-2 sm:mx-3 md:mx-4 mt-2 sm:mt-3 focus:outline-none " +
+      "border p-3 sm:p-4 md:p-5 border-gray-300 min-h-[60vh] sm:min-h-[70vh] " +
+      "max-w-full overflow-y-auto rounded-md ",
   },
 };
 
@@ -105,7 +105,7 @@ const TextEditor: React.FC<TextAreaProps> = ({
       // Set status to unsaved immediately
       setSaveStatus('unsaved');
 
-      // Set new timeout for auto-save (2 seconds after user stops typing)
+      // auto-save 0.5 seconds after user stops typing
       autoSaveTimeoutRef.current = setTimeout(async () => {
         if (content.trim() && user) {
           setSaveStatus('saving');
@@ -113,7 +113,7 @@ const TextEditor: React.FC<TextAreaProps> = ({
             const idToken = await user.getIdToken();
             const userId = user.uid;
             const res = await saveNote(content, userId, idToken, noteId);
-            
+
             if (res) {
               const newNote = { id: res.id, title: res.title };
               updateNoteTitle(newNote);
@@ -170,12 +170,12 @@ const TextEditor: React.FC<TextAreaProps> = ({
       const idToken = await user.getIdToken();
       const userId = user.uid;
       const res = await saveNote(editorContent, userId, idToken, noteId);
-      
+
       if (res) {
         const newNote = { id: res.id, title: res.title };
         updateNoteTitle(newNote);
         setSaveStatus('saved');
-        
+
         // Clear any pending auto-save
         if (autoSaveTimeoutRef.current) {
           clearTimeout(autoSaveTimeoutRef.current);
@@ -214,26 +214,35 @@ const TextEditor: React.FC<TextAreaProps> = ({
   }
 
   return (
-    <div className="grid md:p-5 ">
-      <HeadingToolbar editor={editor} />
-      <EditorContent editor={editor} />
+    <div className="flex flex-col h-full overflow-y-auto">
+      <div className="p-2 sm:p-3 md:p-5">
+        <MainToolbar editor={editor} />
+      </div>
 
-      <div className="flex items-center justify-between m-2">
+      <div className="flex-1">
+        <EditorContent editor={editor} />
+      </div>
+
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mx-2 sm:mx-3 md:mx-4 mt-3 sm:mt-4 pb-4 sm:pb-5">
         {/* Save Status Indicator */}
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+        <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600">
           {getSaveStatusIcon()}
-          <span>{getSaveStatusText()}</span>
+          <span className="hidden sm:inline">{getSaveStatusText()}</span>
+          <span className="sm:hidden">
+            {saveStatus === 'saving' ? 'Saving...' : saveStatus === 'saved' ? 'Saved' : 'Unsaved'}
+          </span>
         </div>
 
         {/* Manual Save Button */}
         <button
           type="button"
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleManualSave}
           disabled={saveStatus === 'saving'}
         >
-          <SaveIcon size={16} />
-          Save Now
+          <SaveIcon className="w-4 h-4" />
+          <span className="hidden sm:inline">Save Now</span>
+          <span className="sm:hidden">Save</span>
         </button>
       </div>
     </div>

@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	firebase "firebase.google.com/go"
 	"github.com/gin-gonic/gin"
@@ -23,7 +24,18 @@ func AuthMiddleware() gin.HandlerFunc {
 	}
 
 	return func(c *gin.Context) {
-		authToken := c.GetHeader("Authorization")
+		authHeader := c.GetHeader("Authorization")
+
+		var authToken string
+		prefixBearer := "Bearer "
+
+		if strings.HasPrefix(authHeader, prefixBearer) {
+			authToken = strings.TrimPrefix(authHeader, prefixBearer)
+		} else {
+			c.JSON(http.StatusForbidden, gin.H{"error": "Access denied: Bearer prefix missing"})
+			c.Abort()
+			return
+		}
 
 		// 1. AUTHENTICATION: Verify JWT token
 		authClient, err := app.Auth(context.Background())

@@ -9,7 +9,6 @@ import { auth, logout } from "../../utils/firebase";
 type NavbarProps = {
 };
 
-const cardURL = API_BASE_URL + API_ENDPOINTS.CARDS;
 
 const Navbar: React.FC<NavbarProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -70,12 +69,6 @@ const Navbar: React.FC<NavbarProps> = () => {
                 </Link>
                 <Link to="about" className="navBtn">
                   About
-                </Link>
-                <Link to="board" className="navBtn">
-                  Board
-                </Link>
-                <Link to="notebook" className="navBtn">
-                  Notebook
                 </Link>
               </div>
             </div>

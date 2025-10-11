@@ -21,14 +21,22 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user?.emailVerified) {
-      setIsLoggingIn(true);
-      navigate("/notebook");
+    if (loading) return;
+    
+    if (user) {
+      // Allow Google users or verified email users
+      const isGoogleUser = user.providerData[0]?.providerId === 'google.com';
+      if (isGoogleUser || user.emailVerified) {
+        setIsLoggingIn(true);
+        navigate("/notebook");
+      }
     }
   }, [user, loading, navigate]);
 
-  const handleLogin = async (
-  ) => {
+  const handleLogin = async (event?: React.FormEvent) => {
+    if (event) {
+      event.preventDefault();
+    }
     await logInWithEmailAndPassword(email, password);
   };
 
@@ -37,9 +45,14 @@ const Login = () => {
     handleLogin();
   }
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleGoogleLogin = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+    await signInWithGoogle();
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
+      event.preventDefault();
       handleLogin();
     }
   };
@@ -104,8 +117,8 @@ const Login = () => {
             Login
           </Button>
           <Button
-            type="submit"
-            onClick={signInWithGoogle}
+            type="button"
+            onClick={handleGoogleLogin}
             fullWidth
             variant="contained"
             sx={{
