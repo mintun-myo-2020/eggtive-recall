@@ -4,14 +4,17 @@ import (
 	"context"
 
 	"github.com/myo-mintun-2020/eggtive-recall/models"
-	"github.com/myo-mintun-2020/eggtive-recall/storage"
 )
 
-type UserService struct {
-	storage storage.UserStorage
+type UserStorage interface {
+	InsertUser(ctx context.Context, user *models.User) error
 }
 
-func NewUserService(storage storage.UserStorage) *UserService {
+type UserService struct {
+	storage UserStorage
+}
+
+func NewUserService(storage UserStorage) *UserService {
 	return &UserService{
 		storage: storage,
 	}
