@@ -10,15 +10,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type NoteStorage interface {
-	generateID() string
-	UpsertNote(ctx context.Context, note *models.Note) error
-	GetAllNotes(ctx context.Context) ([]models.Note, error)
-	GetNotesWithUserID(ctx context.Context, userId string) ([]models.Note, error)
-	GetNoteWithUserIDAndNoteID(ctx context.Context, userId string, noteId string) (models.Note, error)
-	DeleteNoteWithNoteID(ctx context.Context, noteId string) error
-}
-
 type MongoDBNoteStorage struct {
 	collection *mongo.Collection
 }

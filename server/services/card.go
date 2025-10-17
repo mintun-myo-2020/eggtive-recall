@@ -5,14 +5,20 @@ import (
 	"log"
 
 	"github.com/myo-mintun-2020/eggtive-recall/models"
-	"github.com/myo-mintun-2020/eggtive-recall/storage"
 )
 
-type CardService struct {
-	storage storage.CardStorage
+type CardStorage interface {
+	UpsertCard(ctx context.Context, card *models.Card) error
+	GetAllCards(ctx context.Context) ([]models.Card, error)
+	GetCardsWithUserId(ctx context.Context, userId string) ([]models.Card, error)
+	DeleteCard(ctx context.Context, id string) error
 }
 
-func NewCardService(storage storage.CardStorage) *CardService {
+type CardService struct {
+	storage CardStorage
+}
+
+func NewCardService(storage CardStorage) *CardService {
 	return &CardService{
 		storage: storage,
 	}

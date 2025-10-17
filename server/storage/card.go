@@ -12,14 +12,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type CardStorage interface {
-	generateID() string
-	UpsertCard(ctx context.Context, card *models.Card) error
-	GetAllCards(ctx context.Context) ([]models.Card, error)
-	GetCardsWithUserId(ctx context.Context, userId string) ([]models.Card, error)
-	DeleteCard(ctx context.Context, id string) error
-}
-
 type MongoDBCardStorage struct {
 	collection *mongo.Collection
 }

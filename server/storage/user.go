@@ -8,11 +8,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type UserStorage interface {
-	GenerateID() string
-	InsertUser(ctx context.Context, user *models.User) error
-}
-
 type MongoDBUserStorage struct {
 	collection *mongo.Collection
 }

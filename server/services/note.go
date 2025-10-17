@@ -4,14 +4,21 @@ import (
 	"context"
 
 	"github.com/myo-mintun-2020/eggtive-recall/models"
-	"github.com/myo-mintun-2020/eggtive-recall/storage"
 )
 
-type NoteService struct {
-	storage storage.NoteStorage
+type NoteStorage interface {
+	UpsertNote(ctx context.Context, note *models.Note) error
+	GetAllNotes(ctx context.Context) ([]models.Note, error)
+	GetNotesWithUserID(ctx context.Context, userId string) ([]models.Note, error)
+	GetNoteWithUserIDAndNoteID(ctx context.Context, userId string, noteId string) (models.Note, error)
+	DeleteNoteWithNoteID(ctx context.Context, noteId string) error
 }
 
-func NewNoteService(storage storage.NoteStorage) *NoteService {
+type NoteService struct {
+	storage NoteStorage
+}
+
+func NewNoteService(storage NoteStorage) *NoteService {
 	return &NoteService{
 		storage: storage,
 	}
