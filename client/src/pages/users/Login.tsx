@@ -6,10 +6,9 @@ import {
   signInWithGoogle,
 } from "../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Spinner } from "flowbite-react";
-import { Box, Button, Grid, TextField } from "@mui/material";
+import { Button, Label, TextInput, Card, Spinner } from "flowbite-react";
 import { SiGoogle } from "@icons-pack/react-simple-icons";
-import { red } from "@mui/material/colors";
+import { HiMail, HiLockClosed } from "react-icons/hi";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -22,7 +21,7 @@ const Login = () => {
 
   useEffect(() => {
     if (loading) return;
-    
+
     if (user) {
       // Allow Google users or verified email users
       const isGoogleUser = user.providerData[0]?.providerId === 'google.com';
@@ -59,90 +58,100 @@ const Login = () => {
 
   if (isLoggingIn) {
     return (
-      <div className="Eggtive">
-        <div className="flex justify-center items-center h-screen bg-gray-100">
-          <Spinner />
-          <p className="text-lg text-gray-500 ">Loading...</p>
+      <div className="flex justify-center items-center h-screen bg-gray-50">
+        <div className="text-center">
+          <Spinner size="xl" />
+          <p className="mt-4 text-lg text-gray-600">Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex bg-bgGray justify-center items-center h-screen ">
-      <div className="max-w-sm mx-auto p-6 bg-white rounded shadow">
-        <h1 className="text-center font-oxygen text-3xl mb-3">
-          Login to Eggtive
-        </h1>
-        <Box
-          noValidate
-          component={"form"}
-          onSubmit={handleLogin}
-          sx={{ mt: 3 }}
-        >
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
+    <div className="flex  justify-center items-center min-h-screen py-12 px-4">
+      <Card className="w-full max-w-md">
+        <div className="space-y-6">
+          <div className="text-center">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Welcome back
+            </h1>
+            <p className="text-gray-600">Sign in to your Eggtive account</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <Label htmlFor="email" value="Email address" />
+              <TextInput
                 id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                type="email"
+                required
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyUp={handleKeyPress}
               />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
+            </div>
+
+            <div>
+              <Label htmlFor="password" value="Password" />
+              <TextInput
                 id="password"
-                autoComplete="new-password"
+                type="password"
+                required
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyUp={handleKeyPress}
               />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            onClick={handleButtonClick}
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Login
-          </Button>
+            </div>
+
+            <div className="flex items-center justify-end">
+              <Link
+                to="/reset"
+                className="text-sm text-blue-600 hover:underline"
+              >
+                Forgot password?
+              </Link>
+            </div>
+
+            <Button
+              type="submit"
+              color="light"
+              onClick={handleButtonClick}
+              className="w-full"
+              outline
+
+            >
+              Sign in
+            </Button>
+          </form>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="bg-white px-2 text-gray-500">Or continue with</span>
+            </div>
+          </div>
+
           <Button
             type="button"
             onClick={handleGoogleLogin}
-            fullWidth
-            variant="contained"
-            sx={{
-              mb: 2,
-              background: red[400],
-              "&:hover": { background: red[400] },
-            }}
+            className="w-full"
+            color="light"
+            outline
           >
-            <SiGoogle className="mr-3" /> Login with Google
+            <SiGoogle className="mr-2 h-5 w-5" />
+            Sign in with Google
           </Button>
-          <div className="text-center text-gray-500 text-sm">
-            <Link className="text-blue-500" to="/reset">
-              Forgot Password
+
+          <div className="text-center text-sm text-gray-600">
+            Don't have an account?{" "}
+            <Link to="/register" className="text-blue-600 hover:underline font-medium">
+              Sign up
             </Link>
           </div>
-          <div className="text-center text-gray-500 text-sm">
-            Don't have an account?{" "}
-            <Link className="text-blue-500" to="/register">
-              Register
-            </Link>{" "}
-            now.
-          </div>
-        </Box>
-      </div>
+        </div>
+      </Card>
     </div>
   );
 };
