@@ -13,9 +13,9 @@ type CardController struct {
 	cardService services.CardService
 }
 
-func NewCardController(cardService services.CardService) *CardController {
+func NewCardController(cardService *services.CardService) *CardController {
 	return &CardController{
-		cardService: cardService,
+		cardService: *cardService,
 	}
 }
 
