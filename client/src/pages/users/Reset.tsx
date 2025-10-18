@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { sendPasswordReset } from "../../utils/firebase";
 import { Button, Label, TextInput, Card, Alert } from "flowbite-react";
-import { HiMail, HiArrowLeft, HiInformationCircle } from "react-icons/hi";
 
 const Reset = () => {
   const [email, setEmail] = useState<string>("");
@@ -15,12 +14,15 @@ const Reset = () => {
   };
 
   const handleReset = async () => {
-    await sendPasswordReset(email);
-    setEmailSent(true);
+    try {
+      await sendPasswordReset(email);
+      setEmailSent(true);
+    } catch (err) {
+      console.error(err);
+    }
   };
-  // TODO: "check your email" is showing even when there was no email inputted, need to validate if email was actually sent...
   return (
-    <div className="flex justify-center items-center min-h-screen py-12 px-4">
+    <div className="flex bg-gray-50 justify-center items-center min-h-screen py-12 px-4">
       <Card className="w-full max-w-md">
         <div className="space-y-6">
           <div className="text-center">
@@ -33,7 +35,7 @@ const Reset = () => {
           </div>
 
           {emailSent && (
-            <Alert color="success" icon={HiInformationCircle}>
+            <Alert color="success" >
               <span className="font-medium">Check your email!</span> We've sent you a password reset link.
             </Alert>
           )}
@@ -56,8 +58,8 @@ const Reset = () => {
               type="submit"
               onClick={handleReset}
               className="w-full"
+              size="lg"
               color="light"
-              outline
             >
               Send reset link
             </Button>
@@ -68,7 +70,6 @@ const Reset = () => {
               to="/login"
               className="inline-flex items-center text-sm text-blue-600 hover:underline font-medium"
             >
-              <HiArrowLeft className="mr-2 h-4 w-4" />
               Back to sign in
             </Link>
           </div>

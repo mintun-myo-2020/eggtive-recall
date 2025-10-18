@@ -99,10 +99,14 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
 const registerWithEmailAndPassword = async (
   name: string,
   email: string,
-  password: string
+  password: string,
+  confirmPassword: string,
 ) => {
   try {
-
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
     sendEmailVerification(user).then(() => {
@@ -120,16 +124,7 @@ const registerWithEmailAndPassword = async (
 };
 
 const sendPasswordReset = async (email: string) => {
-  try {
-    await sendPasswordResetEmail(auth, email);
-    alert("Password reset link sent");
-  } catch (err) {
-    if (err instanceof Error) {
-      alert(err.message);
-    } else {
-      alert("An error occurred");
-    }
-  }
+  await sendPasswordResetEmail(auth, email);
 };
 
 const logout = () => {

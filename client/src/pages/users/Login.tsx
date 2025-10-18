@@ -6,9 +6,8 @@ import {
   signInWithGoogle,
 } from "../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Button, Label, TextInput, Card, Spinner } from "flowbite-react";
+import { Button, Label, TextInput, Card, Spinner, Flowbite } from "flowbite-react";
 import { SiGoogle } from "@icons-pack/react-simple-icons";
-import { HiMail, HiLockClosed } from "react-icons/hi";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -68,7 +67,7 @@ const Login = () => {
   }
 
   return (
-    <div className="flex  justify-center items-center min-h-screen py-12 px-4">
+    <div className="flex bg-gray-50 justify-center items-center min-h-screen py-12 px-4">
       <Card className="w-full max-w-md">
         <div className="space-y-6">
           <div className="text-center">
@@ -114,11 +113,10 @@ const Login = () => {
 
             <Button
               type="submit"
-              color="light"
               onClick={handleButtonClick}
               className="w-full"
-              outline
-
+              size="lg"
+              color="light"
             >
               Sign in
             </Button>
